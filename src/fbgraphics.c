@@ -182,7 +182,7 @@ void fbg_clearQueue(struct lfds711_ringbuffer_state *rs, struct lfds711_freelist
 
 void fbg_freeTasks(struct _fbg *fbg) {
     int i = 0;
-    for (i = 0; i < fbg->parrallel_tasks; i += 1) {
+    for (i = 0; i < fbg->parallel_tasks; i += 1) {
         pthread_join(fbg->tasks[i], NULL);
 
         struct _fbg_fragment *frag = fbg->fragments[i];
@@ -199,7 +199,7 @@ void fbg_freeTasks(struct _fbg *fbg) {
         free(frag);
     }
 
-    if (fbg->parrallel_tasks > 0) {
+    if (fbg->parallel_tasks > 0) {
         pthread_barrier_destroy(fbg->sync_barrier);
 
         free(fbg->sync_barrier);
@@ -208,7 +208,7 @@ void fbg_freeTasks(struct _fbg *fbg) {
     free(fbg->tasks);
     free(fbg->fragments);
 
-    fbg->parrallel_tasks = 0;
+    fbg->parallel_tasks = 0;
 }
 #endif
 
@@ -252,7 +252,7 @@ void fbg_computeFramerate(struct _fbg *fbg, int to_string) {
 
 #ifdef FBG_PARALLEL
 void fbg_drawFramerate(struct _fbg *fbg, struct _fbg_font *fnt, int task, int x, int y, int r, int g, int b) {
-    if (task > fbg->parrallel_tasks) {
+    if (task > fbg->parallel_tasks) {
         return;
     }
 
@@ -280,7 +280,7 @@ void fbg_drawFramerate(struct _fbg *fbg, struct _fbg_font *fnt, int task, int x,
 }
 
 int fbg_getFramerate(struct _fbg *fbg, int task) {
-    if (task > fbg->parrallel_tasks) {
+    if (task > fbg->parallel_tasks) {
         return -1;
     }
 
@@ -379,9 +379,9 @@ void fbg_createFragment(struct _fbg *fbg,
         void *(*user_fragment_start)(struct _fbg *fbg),
         void (*user_fragment)(struct _fbg *fbg, void *user_data),
         void (*user_fragment_stop)(struct _fbg *fbg, void *user_data),
-        unsigned int parrallel_tasks,
+        unsigned int parallel_tasks,
         unsigned int queue_size) {
-    if (parrallel_tasks < 1) {
+    if (parallel_tasks < 1) {
         return;
     }
 
@@ -389,15 +389,15 @@ void fbg_createFragment(struct _fbg *fbg,
         fbg_freeTasks(fbg);
     }
 
-    fbg->parrallel_tasks = parrallel_tasks;
+    fbg->parallel_tasks = parallel_tasks;
 
-    fbg->tasks = (pthread_t *)malloc(sizeof(pthread_t) * fbg->parrallel_tasks);
+    fbg->tasks = (pthread_t *)malloc(sizeof(pthread_t) * fbg->parallel_tasks);
     if (!fbg->tasks) {
         fprintf(stderr, "fbg_createFragment: tasks malloc failed!\n");
         return;
     }
 
-    fbg->fragments = (struct _fbg_fragment **)malloc(sizeof(struct _fbg_fragment *) * fbg->parrallel_tasks);
+    fbg->fragments = (struct _fbg_fragment **)malloc(sizeof(struct _fbg_fragment *) * fbg->parallel_tasks);
     if (!fbg->fragments) {
         fprintf(stderr, "fbg_createFragment: fragments malloc failed!\n");
 
@@ -408,7 +408,7 @@ void fbg_createFragment(struct _fbg *fbg,
 
     pthread_barrier_t *sync_barrier = (pthread_barrier_t *)malloc(sizeof(pthread_barrier_t));
 
-    int err = pthread_barrier_init(sync_barrier, NULL, fbg->parrallel_tasks);
+    int err = pthread_barrier_init(sync_barrier, NULL, fbg->parallel_tasks);
     if (err) {
         fprintf(stderr, "fbg_createFragment: pthread_barrier_init failed!\n");
 
@@ -422,7 +422,7 @@ void fbg_createFragment(struct _fbg *fbg,
 
     int i = 0, j = 0;
     int created_tasks = 0;
-    for (i = 0; i < fbg->parrallel_tasks; i += 1) {
+    for (i = 0; i < fbg->parallel_tasks; i += 1) {
         // create a task fbg structure for each threads
         struct _fbg *task_fbg = (struct _fbg *)calloc(1, sizeof(struct _fbg));
         if (!task_fbg) {
@@ -513,12 +513,12 @@ void fbg_createFragment(struct _fbg *fbg,
         created_tasks += 1;
     }
 
-    if (fbg->parrallel_tasks != created_tasks) {
+    if (fbg->parallel_tasks != created_tasks) {
         fprintf(stderr, "fbg_createFragment: Some of the specified number of tasks failed to initialize, as such no tasks were created.\n");
 
         fbg_freeTasks(fbg);
 
-        fbg->parrallel_tasks = 0;
+        fbg->parallel_tasks = 0;
     }
 }
 #endif
@@ -572,7 +572,7 @@ void fbg_draw(struct _fbg *fbg, int sync_with_tasks) {
     int ringbuffer_read_status = 0;
     void *key;
 
-    for (i = 0; i < fbg->parrallel_tasks; i += 1) {
+    for (i = 0; i < fbg->parallel_tasks; i += 1) {
         struct _fbg_fragment *fragment = fbg->fragments[i];
         struct _fbg_freelist_data *freelist_data;
         unsigned char *task_buffer;

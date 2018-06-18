@@ -118,7 +118,7 @@
 
 #ifdef FBG_PARALLEL
         // the number of fragment tasks
-        unsigned int parrallel_tasks;
+        unsigned int parallel_tasks;
 
         pthread_t *tasks;
 
@@ -309,16 +309,16 @@
     extern int fbg_getFramerate(struct _fbg *fbg, int task);
 
 #ifdef FBG_PARALLEL
-    // create a fbg parrallel task (also called 'fragments')
+    // create a fbg parallel task (also called 'fragments')
     //  fbg : pointer returned by fbg_setup
     //  fragment : a function taking a _fbg_fragment structure as argument
-    //  parrallel_tasks : the number of parrallel tasks to register
-    extern void fbg_createFragment(struct _fbg *fbg, void *(*fragment_start)(struct _fbg *fbg), void (*fragment)(struct _fbg *fbg, void *user_data), void (*fragment_stop)(struct _fbg *fbg, void *user_data), unsigned int parrallel_tasks, unsigned int queue_size);
+    //  parallel_tasks : the number of parallel tasks to register
+    extern void fbg_createFragment(struct _fbg *fbg, void *(*fragment_start)(struct _fbg *fbg), void (*fragment)(struct _fbg *fbg, void *user_data), void (*fragment_stop)(struct _fbg *fbg, void *user_data), unsigned int parallel_tasks, unsigned int queue_size);
 #endif
 
     // ### Helper functions
 
-    // initialize the library with default framebuffer device (/dev/fb0) and no parrallel tasks
+    // initialize the library with default framebuffer device (/dev/fb0) and no parallel tasks
     #define fbg_init() fbg_setup(NULL)
 
     // draw a rectangle which use the fill color set by fbg_fill()
