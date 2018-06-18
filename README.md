@@ -40,7 +40,7 @@ If you want to use the parralelism features with more advanced graphics primitiv
 
 FBGraphics is fast but should be used with caution, no bounds checking happen on most primitives.
 
-Multi-core support is totally optional and is only enabled when `FBG_PARRALEL` C definition is present.
+Multi-core support is totally optional and is only enabled when `FBG_PARRALLEL` C definition is present.
 
 Note : This library does not let you setup the framebuffer, it expect the framebuffer to be configured prior launch with a command such as :
 
@@ -178,7 +178,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         }
     }
     
-    // simple graphics primitive (4 blue rectangle which will be handled by different threads in parralel)
+    // simple graphics primitive (4 blue rectangle which will be handled by different threads in parrallel)
     fbg_rect(fbg, fbg->task_id * 32, 0, 32, 32, 0, 0, 255);
 }
 ```
@@ -203,7 +203,7 @@ Where :
 * `fragmentStart`is a C function which will be executed when the thread start (can be NULL)
 * `fragment`is a C function which will be executed indefinitly for each threads and where all the draw code will happen
 * `fragmentStop` is a C function which will be executed when the thread end  (can be NULL)
-* `3`is the number of parralel tasks (this will launch 3 threads)
+* `3`is the number of parrallel tasks (this will launch 3 threads)
 * `7` is the buffer queue length for each threads (the amount of frame buffers stored in the internal ringbuffer queue)
 
 And finally you just have to make a call to your fragment function in your drawing loop and call  `fbg_draw`!
@@ -219,7 +219,7 @@ Note : This example will use 4 threads (including your app one) for drawing thin
 
 And that is all you have to do!
 
-See `simple_parralel_example.c` example for the full code.
+See `simple_parrallel_example.c` example for the full code.
 
 Note : You can only create one Fragment per fbg instance, another call to `fbg_createFragment` will stop all tasks for the passed fbg context and will create a new set of tasks.
 
@@ -263,7 +263,7 @@ All examples were tested on a Raspberry PI 3B with framebuffer settings : 512x24
 
 For the default build (no parralelism), FBGraphics come with a header file `fbgraphics.h` and a C file `fbgraphics.c` to be included / compiled with your program, you will also need to compile the `lodepng.c` library, see the examples directory for examples of Makefile.
 
-For parralelism support, `FBG_PARRALEL` need to be defined and you will need the [liblfds](http://liblfds.org/) library :
+For parralelism support, `FBG_PARRALLEL` need to be defined and you will need the [liblfds](http://liblfds.org/) library :
 
  * Get latest liblfds 7.1.1 package on the official website
  * uncompress, go into the directory `liblfds711`
@@ -271,7 +271,7 @@ For parralelism support, `FBG_PARRALEL` need to be defined and you will need the
  * type `make` in a terminal
  * `liblfds711.a` can now be found in the `bin` directory, you need to link against it when compiling (see examples)
 
-To compile parralel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make`.
+To compile parrallel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make`.
 
 ## Screenshots
 

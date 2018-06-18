@@ -33,7 +33,7 @@
     #include <sys/time.h>
     #include <stdint.h>
 
-#ifdef FBG_PARRALEL
+#ifdef FBG_PARRALLEL
     #include <stdatomic.h>
     #include <pthread.h>
 
@@ -99,7 +99,7 @@
         int width_n_height;
 
         // fps
-#ifdef FBG_PARRALEL
+#ifdef FBG_PARRALLEL
         atomic_uint_fast16_t fps;
 #else
         int16_t fps;
@@ -116,9 +116,9 @@
 
         int bgr;
 
-#ifdef FBG_PARRALEL
+#ifdef FBG_PARRALLEL
         // the number of fragment tasks
-        unsigned int parralel_tasks;
+        unsigned int parrallel_tasks;
 
         pthread_t *tasks;
 
@@ -133,7 +133,7 @@
 #endif
     };
 
-#ifdef FBG_PARRALEL
+#ifdef FBG_PARRALLEL
     struct _fbg_freelist_data {
         struct lfds711_freelist_element freelist_element;
 
@@ -223,7 +223,7 @@
     //  r, g, b : background color
     extern void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned char b);
 
-#ifdef FBG_PARRALEL
+#ifdef FBG_PARRALLEL
     // draw to screen
     //  fbg : pointer returned by fbg_setup
     //  sync_with_task : 1 = wait for all fragment tasks to be finished before rendering
@@ -308,17 +308,17 @@
     // return task framerate
     extern int fbg_getFramerate(struct _fbg *fbg, int task);
 
-#ifdef FBG_PARRALEL
-    // create a fbg parralel task (also called 'fragments')
+#ifdef FBG_PARRALLEL
+    // create a fbg parrallel task (also called 'fragments')
     //  fbg : pointer returned by fbg_setup
     //  fragment : a function taking a _fbg_fragment structure as argument
-    //  parralel_tasks : the number of parralel tasks to register
-    extern void fbg_createFragment(struct _fbg *fbg, void *(*fragment_start)(struct _fbg *fbg), void (*fragment)(struct _fbg *fbg, void *user_data), void (*fragment_stop)(struct _fbg *fbg, void *user_data), unsigned int parralel_tasks, unsigned int queue_size);
+    //  parrallel_tasks : the number of parrallel tasks to register
+    extern void fbg_createFragment(struct _fbg *fbg, void *(*fragment_start)(struct _fbg *fbg), void (*fragment)(struct _fbg *fbg, void *user_data), void (*fragment_stop)(struct _fbg *fbg, void *user_data), unsigned int parrallel_tasks, unsigned int queue_size);
 #endif
 
     // ### Helper functions
 
-    // initialize the library with default framebuffer device (/dev/fb0) and no parralel tasks
+    // initialize the library with default framebuffer device (/dev/fb0) and no parrallel tasks
     #define fbg_init() fbg_setup(NULL)
 
     // draw a rectangle which use the fill color set by fbg_fill()
