@@ -329,7 +329,7 @@ To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and
 
 ![Earth with four threads](/screenshot3.png?raw=true "Earth with four threads")
 
-![Flags of the world with four threads](/screenshot3.png?raw=true "Flags of the world with four threads")
+![Flags of the world with four threads](/screenshot4.png?raw=true "Flags of the world with four threads")
 
 ## License
 
