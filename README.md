@@ -22,7 +22,7 @@ Table of Contents
 * FBGraphics
    * [About](#about)
       * [Quickstart](#quickstart)
-      * [Parralelism](#parallelism)
+      * [Parallelism](#parallelism)
       * [Technical implementation](#technical-implementation)
    * [Benchmark](#benchmark)
    * [Documentation](#documentation)
@@ -144,7 +144,7 @@ int main(int argc, char* argv[]) {
 
 Note : Functions like `fbg_clear` or `fbg_fpixel` are fast functions, there is slower equivalent (but more parametrable) such as `fbg_background`
 
-### Parralelism
+### Parallelism
 
 Exploiting multiple cores with FBGraphics is really easy, first you have to prepare 3 functions (of which two are optional if you don't have any allocations to do) of the following definition :
 
