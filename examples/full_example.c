@@ -36,23 +36,20 @@ void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
 }
 
 void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
+    fbg_clear(fbg, 0);
+
     // what we do here is use the perlin noise function and draw it fullscreen
     // we also mix in a fullscreen texture (which can be repeated along x/y axis if needed)
 
     float perlin_freq = 0.03 + abs(sin(user_data->motion * 8.)) * 8.;
 
-    fbg_clear(fbg, 0);
-    //fbg_fadeDown(fbg, 2);
-
     int x, y;
-    for (y = fbg->task_id; y < fbg->height; y += 2) {
+    for (y = fbg->task_id - 1; y < fbg->height; y += fbg->parallel_tasks) {
         float perlin_x = user_data->xxm * fbg->height;
         float perlin_y = user_data->xxm * fbg->height;
 
         int rep = 4;
 
-        float rdx = (((float)rand() / RAND_MAX) * 2 - 1);
-        float rdy = (((float)rand() / RAND_MAX) * 2 - 1);
         for (x = 0; x < fbg->width; x += 1) {
             float p = perlin2d(x + perlin_x, y, perlin_freq, 2);
 
@@ -60,7 +57,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             int g = p*255;
             int b = p*255;
 
-            int yy = fmin(fmax(y + user_data->pr * p, 0), fbg->height - 1);
+            int yy = fminf(fmaxf(y + user_data->pr * p, 0), fbg->height - 1);
             int xx = x;
 
             int ytl = (((yy * rep - (int)(user_data->motion * 4)) % texture->height) * 3) * texture->width;
@@ -80,10 +77,11 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     user_data->motion += 0.001;
 }
 
-void additiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
+// we mix the buffers
+void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
     int j = 0;
     for (j = 0; j < fbg->size; j += 1) {
-        fbg->back_buffer[j] = _FBG_MIN(fbg->back_buffer[j] + buffer[j], 255);
+        fbg->back_buffer[j] = (fbg->back_buffer[j] > buffer[j]) ? fbg->back_buffer[j] : buffer[j];
     }
 }
 
@@ -104,14 +102,14 @@ int main(int argc, char* argv[]) {
 
     struct _fbg_font *bbfont = fbg_createFont(fbg, bbimg, 8, 8, 33);
 
-    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 2, 63);
+    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3, 7);
 
     do {
         fbg_clear(fbg, 0);
 
         //fbg_fadeDown(fbg, 2);
 
-        fbg_draw(fbg, 1, additiveMixing);
+        fbg_draw(fbg, 1, selectiveMixing);
 
         // we just draw texts from this thread
         fbg_write(fbg, "FBGraphics", 4, 2);

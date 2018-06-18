@@ -223,14 +223,13 @@ Note : By default, the resulting buffer of each tasks are additively mixed into 
 
 ```c
 // function called for each tasks in the fbg_draw function
-// all tasks buffer will be mixed additively into the back buffer (this is the default behavior)
-void additiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
+void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
     // fbg is the main fbg structure defined by fbg_setup or fbg_init
     // buffer is the current task buffer
     // task_id is the current task id
     int j = 0;
     for (j = 0; j < fbg->size; j += 1) {
-        fbg->back_buffer[j] = _FBG_MIN(fbg->back_buffer[j] + buffer[j], 255);
+        fbg->back_buffer[j] = (fbg->back_buffer[j] > buffer[j]) ? fbg->back_buffer[j] : buffer[j];
     }
 }
 ```
@@ -240,6 +239,8 @@ Then you just have to specify it to the `fbg_draw` function :
 ```c
 fbg_draw(fbg, 1, additiveMixing);
 ```
+
+By using the mixing function, you can have different layers handled by different cores with different compositing rule.
 
 See `simple_parallel_example.c` and `full_example.c` for more informations.
 
@@ -255,7 +256,7 @@ FBGraphics parallelism make use of the [liblfds](http://liblfds.org/) library fo
 
 ## Benchmark
 
-See screenshots below.
+A simple unoptimized per pixels screen clearing with 4 cores on a Raspberry PI 3B :  30 FPS @ 1280x768 and 370 FPS @ 320x240
 
 ### Full example
 
@@ -269,7 +270,9 @@ Fullscreen per pixels perlin noise with texture mapping and scrolling (unoptimiz
 | :-------------------------- | :------ |
 | 1                           | 42 FPS  |
 | 2                           | 81 FPS  |
-| 3                           | 118 FPS |
+| 3                           | 120 FPS |
+
+See screenshots below.
 
 ### Tunnel example
 
@@ -288,11 +291,15 @@ Fullscreen texture-mapped and animated tunnel made of 40800 2px rectangles with 
 
 Note : The framerate drop with 4 cores is due to the main thread being too busy which make all the other threads follow due to the synchronization.
 
+See screenshots below.
+
 ## Documentation
 
 All usable functions and structures are documented in the `fbgraphics.h` file
 
 Examples demonstrating all features are also available in the `examples` directory.
+
+Some effects come from [my Open Processing sketches](https://www.openprocessing.org/user/130883#sketches)
 
 ## Building
 
@@ -319,6 +326,10 @@ To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and
 ![Full example screenshot with three threads](/screenshot1.png?raw=true "Full example screenshot with three threads")
 
 ![Tunnel with four threads](/screenshot2.png?raw=true "Tunnel with four threads")
+
+![Earth with four threads](/screenshot3.png?raw=true "Earth with four threads")
+
+![Flags of the world with four threads](/screenshot3.png?raw=true "Flags of the world with four threads")
 
 ## License
 

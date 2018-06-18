@@ -11,7 +11,6 @@ void int_handler(int dummy) {
     keep_running = 0;
 }
 
-struct _fbg_img *texture;
 struct _fbg_img *tunnel_texture;
 
 struct _fragment_user_data {
@@ -130,7 +129,6 @@ int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 #endif
 
-    texture = fbg_loadPNG(fbg, "texture.png");
     tunnel_texture = fbg_loadPNG(fbg, "tunnel.png");
     struct _fbg_img *bbimg = fbg_loadPNG(fbg, "bbmode1_8x8.png");
 
@@ -176,7 +174,6 @@ int main(int argc, char* argv[]) {
     fbg_close(fbg);
 
     fbg_freeImage(tunnel_texture);
-    fbg_freeImage(texture);
     fbg_freeImage(bbimg);
     fbg_freeFont(bbfont);
 

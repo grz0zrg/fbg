@@ -46,7 +46,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     }
     
     // simple graphics primitive (4 blue rectangle which will be handled by different threads)
-    fbg_rect(fbg, fbg->width / 2 - 32 + fbg->task_id * 32 + offset_x, 0, 32, 32, 0, 0, 255);
+    fbg_rect(fbg, fbg->width / 2 - 32 + fbg->task_id * 32 + offset_x, 0, 32, 32, 255, 0, 0);
 
     user_data->offset_x += 0.01f;
 }
