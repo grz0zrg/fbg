@@ -178,12 +178,12 @@
     // background fade to black with controllable factor
     //  fbg : pointer returned by fbg_setup
     //  rgb_fade_amount : the RGB fade amount
-    extern void fbg_fade_down(struct _fbg *fbg, unsigned char rgb_fade_amount);
+    extern void fbg_fadeDown(struct _fbg *fbg, unsigned char rgb_fade_amount);
 
     // background fade to white with controllable factor
     //  fbg : pointer returned by fbg_setup
     //  rgb_fade_amount : the RGB fade amount
-    extern void fbg_fade_up(struct _fbg *fbg, unsigned char rgb_fade_amount);
+    extern void fbg_fadeUp(struct _fbg *fbg, unsigned char rgb_fade_amount);
 
     // fast grayscale background clearing
     //  fbg : pointer returned by fbg_setup
@@ -227,7 +227,8 @@
     // draw to screen
     //  fbg : pointer returned by fbg_setup
     //  sync_with_task : 1 = wait for all fragment tasks to be finished before rendering
-    extern void fbg_draw(struct _fbg *fbg, int sync_with_task);
+    //  user_mixing : a function used to mix the result of fragment tasks
+    extern void fbg_draw(struct _fbg *fbg, int sync_with_task, void (*user_mixing)(struct _fbg *fbg, unsigned char *buffer, int task_id));
 #else
     // draw to screen
     //  fbg : pointer returned by fbg_setup
@@ -311,7 +312,9 @@
 #ifdef FBG_PARALLEL
     // create a fbg parallel task (also called 'fragments')
     //  fbg : pointer returned by fbg_setup
-    //  fragment : a function taking a _fbg_fragment structure as argument
+    //  fragment_start : a function taking a _fbg structure as argument
+    //  fragment : a function taking a _fbg structure as argument and user_data pointer
+    //  fragment_stop : a function taking user_data pointer as argument
     //  parallel_tasks : the number of parallel tasks to register
     extern void fbg_createFragment(struct _fbg *fbg, void *(*fragment_start)(struct _fbg *fbg), void (*fragment)(struct _fbg *fbg, void *user_data), void (*fragment_stop)(struct _fbg *fbg, void *user_data), unsigned int parallel_tasks, unsigned int queue_size);
 #endif

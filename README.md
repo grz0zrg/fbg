@@ -163,7 +163,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     // this function will be executed by each threads
     // you are free to call any FBG graphics primitive here
     
-    fbg_fclear(fbg, 0);
+    fbg_clear(fbg, 0);
     
     // you are also free to fill each threads back buffer the way you want to
     // fbg->task_id : thread identifier (starting at 1, 0 is reserved for the main thread)
@@ -210,7 +210,7 @@ And finally you just have to make a call to your fragment function in your drawi
 
 ```c
 fragment(fbg, NULL);
-fbg_draw(fbg, 1);
+fbg_draw(fbg, 1, NULL);
 ```
 
 The second argument to `fbg_draw` tell FBG to synchronize with all the threads, it will wait until all the data are received from all the threads, if disabled, data from some threads may not arrive in time and make it into the second frame.
@@ -219,7 +219,29 @@ Note : This example will use 4 threads (including your app one) for drawing thin
 
 And that is all you have to do!
 
-See `simple_parallel_example.c` example for the full code.
+Note : By default, the resulting buffer of each tasks are additively mixed into the main back buffer, you can override this behavior by specifying a mixing function as the last argument of `fbg_draw` such as :
+
+```c
+// function called for each tasks in the fbg_draw function
+// all tasks buffer will be mixed additively into the back buffer (this is the default behavior)
+void additiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
+    // fbg is the main fbg structure defined by fbg_setup or fbg_init
+    // buffer is the current task buffer
+    // task_id is the current task id
+    int j = 0;
+    for (j = 0; j < fbg->size; j += 1) {
+        fbg->back_buffer[j] = _FBG_MIN(fbg->back_buffer[j] + buffer[j], 255);
+    }
+}
+```
+
+Then you just have to specify it to the `fbg_draw` function :
+
+```c
+fbg_draw(fbg, 1, additiveMixing);
+```
+
+See `simple_parallel_example.c` and `full_example.c` for more informations.
 
 Note : You can only create one Fragment per fbg instance, another call to `fbg_createFragment` will stop all tasks for the passed fbg context and will create a new set of tasks.
 
@@ -232,6 +254,8 @@ Each threads begin by fetching a pre-allocated buffer from a freelist, then the 
 FBGraphics parallelism make use of the [liblfds](http://liblfds.org/) library for the Ringbuffer and Freelist data structure.
 
 ## Benchmark
+
+See screenshots below.
 
 ### Full example
 
@@ -246,6 +270,23 @@ Fullscreen per pixels perlin noise with texture mapping and scrolling (unoptimiz
 | 1                           | 42 FPS  |
 | 2                           | 81 FPS  |
 | 3                           | 118 FPS |
+
+### Tunnel example
+
+Fullscreen texture-mapped and animated tunnel made of 40800 2px rectangles with motion blur (unoptimized)
+
+**Device** : Raspberry PI 3B ( Quad Core 1.2GHz )
+
+**Settings** : 320x240
+
+| Cores used to draw graphics | FPS     |
+| :-------------------------- | :------ |
+| 1                           | 36 FPS  |
+| 2                           | 69 FPS  |
+| 3                           | 99 FPS |
+| 4                           | 66 FPS |
+
+Note : The framerate drop with 4 cores is due to the main thread being too busy which make all the other threads follow due to the synchronization.
 
 ## Documentation
 
@@ -275,7 +316,9 @@ To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and
 
 ## Screenshots
 
-![Full example screenshot with three threads](/screenshot.png?raw=true "Full example screenshot with three threads")
+![Full example screenshot with three threads](/screenshot1.png?raw=true "Full example screenshot with three threads")
+
+![Tunnel with four threads](/screenshot2.png?raw=true "Tunnel with four threads")
 
 ## License
 

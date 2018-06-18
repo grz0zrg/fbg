@@ -13,7 +13,10 @@ int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 
     struct _fbg *fbg = fbg_init();
-
+    if (fbg == NULL) {
+        return 0;
+    }
+    
     struct _fbg_img *texture = fbg_loadPNG(fbg, "texture.png");
     struct _fbg_img *bb_font_img = fbg_loadPNG(fbg, "bbmode1_8x8.png");
 

@@ -231,8 +231,8 @@ void fbg_close(struct _fbg *fbg) {
 void fbg_computeFramerate(struct _fbg *fbg, int to_string) {
     gettimeofday(&fbg->fps_stop, NULL);
 
-    double ms = (fbg->fps_stop.tv_sec - fbg->fps_start.tv_sec) * 1000 + (fbg->fps_stop.tv_usec - fbg->fps_start.tv_usec) / 1000;
-    if (ms >= 1000) {
+    double ms = (fbg->fps_stop.tv_sec - fbg->fps_start.tv_sec) * 1000000.0 - (fbg->fps_stop.tv_usec - fbg->fps_start.tv_usec);
+    if (ms >= 1000.0) {
         gettimeofday(&fbg->fps_start, NULL);
 
 #ifdef FBG_PARALLEL
@@ -264,7 +264,7 @@ void fbg_drawFramerate(struct _fbg *fbg, struct _fbg_font *fnt, int task, int x,
     if (task > 0) {
         task -= 1;
 
-        static char fps_char[100];
+        static char fps_char[10];
 
         atomic_uint_fast16_t fps = atomic_load_explicit(&fbg->fragments[task]->fbg->fps, memory_order_relaxed);
 
@@ -363,9 +363,9 @@ void fbg_fragment(struct _fbg_fragment *fbg_fragment) {
 
             // push to main thread
             fbg_fragmentPush(fbg_fragment);
-        }
 
-        fbg_computeFramerate(fbg, 0);
+            fbg_computeFramerate(fbg, 0);
+        }
     }
 
     if (fbg_fragment->user_fragment_stop) {
@@ -435,6 +435,8 @@ void fbg_createFragment(struct _fbg *fbg,
 
         task_fbg->width = task_fbg->vinfo.xres;
         task_fbg->height = task_fbg->vinfo.yres;
+
+        task_fbg->parallel_tasks = fbg->parallel_tasks;
 
         task_fbg->width_n_height = task_fbg->width * task_fbg->height;
 
@@ -566,11 +568,23 @@ void fbg_getPixel(struct _fbg *fbg, int x, int y, struct _fbg_rgb *color) {
 }
 
 #ifdef FBG_PARALLEL
-void fbg_draw(struct _fbg *fbg, int sync_with_tasks) {
+void fbg_additiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
+    int j = 0;
+    for (j = 0; j < fbg->size; j += 1)
+    {
+        fbg->back_buffer[j] = _FBG_MIN(fbg->back_buffer[j] + buffer[j], 255);
+    }
+}
+
+void fbg_draw(struct _fbg *fbg, int sync_with_tasks, void (*user_mixing)(struct _fbg *fbg, unsigned char *buffer, int task_id)) {
     int i = 0;
     int j = 0;
     int ringbuffer_read_status = 0;
     void *key;
+
+    if (user_mixing == NULL) {
+        user_mixing = fbg_additiveMixing;
+    }
 
     for (i = 0; i < fbg->parallel_tasks; i += 1) {
         struct _fbg_fragment *fragment = fbg->fragments[i];
@@ -590,9 +604,7 @@ void fbg_draw(struct _fbg *fbg, int sync_with_tasks) {
 
             task_buffer = freelist_data->buffer;
 
-            for (j = 0; j < fbg->size; j += 1) {
-                fbg->back_buffer[j] = _FBG_MIN(fbg->back_buffer[j] + task_buffer[j], 255);
-            }
+            user_mixing(fbg, task_buffer, i + 1);
 
             LFDS711_FREELIST_SET_VALUE_IN_ELEMENT(freelist_data->freelist_element, freelist_data);
             lfds711_freelist_push(&fragment->freelist_state, &freelist_data->freelist_element, NULL);
@@ -617,7 +629,7 @@ void fbg_clear(struct _fbg *fbg, unsigned char color) {
     memset(fbg->back_buffer, color, fbg->size);
 }
 
-void fbg_fade_down(struct _fbg *fbg, unsigned char rgb_fade_amount) {
+void fbg_fadeDown(struct _fbg *fbg, unsigned char rgb_fade_amount) {
     int i = 0;
 
     char *pix_pointer = (char *)(fbg->back_buffer);
@@ -632,7 +644,7 @@ void fbg_fade_down(struct _fbg *fbg, unsigned char rgb_fade_amount) {
     }
 }
 
-void fbg_fade_up(struct _fbg *fbg, unsigned char rgb_fade_amount) {
+void fbg_fadeUp(struct _fbg *fbg, unsigned char rgb_fade_amount) {
     int i = 0;
 
     char *pix_pointer = (char *)(fbg->back_buffer);

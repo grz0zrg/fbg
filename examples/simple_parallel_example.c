@@ -36,7 +36,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     // fbg->task_id : thread identifier (starting at 1, 0 is reserved for the main thread)
     // each threads will draw an horizontal line, the shade of the blue color will change based on the thread it is drawn from
     int x = 0, y = 0;
-    for (y = fbg->task_id; y < fbg->height; y += 4) {
+    for (y = fbg->task_id; y < fbg->height; y += (fbg->parallel_tasks + 1)) {
         for (x = 0; x < fbg->width; x += 1) {
             int i = (x + y * fbg->width) * 3;
             fbg->back_buffer[i] = fbg->task_id * 85; // note : BGR format
@@ -59,6 +59,9 @@ int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 
     struct _fbg *fbg = fbg_init();
+    if (fbg == NULL) {
+        return 0;
+    }
 
     struct _fbg_img *bb_font_img = fbg_loadPNG(fbg, "bbmode1_8x8.png");
 
@@ -75,7 +78,7 @@ int main(int argc, char* argv[]) {
         fbg_clear(fbg, 0);
 
         fragment(fbg, user_data);
-        fbg_draw(fbg, 1);
+        fbg_draw(fbg, 1, NULL);
 
         // we use a utility function to draw the framerate of each cores (including main app #0)
         fbg_write(fbg, "FPS:\n#0:\n#1:\n#2:\n#3:", 4, 2);

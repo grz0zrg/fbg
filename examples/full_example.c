@@ -42,7 +42,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     float perlin_freq = 0.03 + abs(sin(user_data->motion * 8.)) * 8.;
 
     fbg_clear(fbg, 0);
-    //fbg_fade_down(fbg, 2);
+    //fbg_fadeDown(fbg, 2);
 
     int x, y;
     for (y = fbg->task_id; y < fbg->height; y += 2) {
@@ -80,13 +80,20 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     user_data->motion += 0.001;
 }
 
-int main(int argc, char* argv[]) {
-    int i, x, y;
+void additiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
+    int j = 0;
+    for (j = 0; j < fbg->size; j += 1) {
+        fbg->back_buffer[j] = _FBG_MIN(fbg->back_buffer[j] + buffer[j], 255);
+    }
+}
 
+int main(int argc, char* argv[]) {
     srand(time(NULL));
 
     struct _fbg *fbg = fbg_init();
-
+    if (fbg == NULL) {
+        return 0;
+    }
 
 #ifdef __unix__
     signal(SIGINT, int_handler);
@@ -102,9 +109,9 @@ int main(int argc, char* argv[]) {
     do {
         fbg_clear(fbg, 0);
 
-        //fbg_fade_down(fbg, 2);
+        //fbg_fadeDown(fbg, 2);
 
-        fbg_draw(fbg, 1);
+        fbg_draw(fbg, 1, additiveMixing);
 
         // we just draw texts from this thread
         fbg_write(fbg, "FBGraphics", 4, 2);
