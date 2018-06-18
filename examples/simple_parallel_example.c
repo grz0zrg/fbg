@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
 
         // we use a utility function to draw the framerate of each cores (including main app #0)
         fbg_write(fbg, "FPS:\n#0:\n#1:\n#2:\n#3:", 4, 2);
-        for (i = 0; i <= fbg->parrallel_tasks; i += 1) {
+        for (i = 0; i <= fbg->parallel_tasks; i += 1) {
             fbg_drawFramerate(fbg, bbfont, i, 4 + 8 + 8 + 8 + 8, 2 + 8 + 8 * i, 255, 255, 255);
         }
 
