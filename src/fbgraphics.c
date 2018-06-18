@@ -38,7 +38,7 @@
 
 #include "fbgraphics.h"
 
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
 void fbg_freelistCleanup(struct lfds711_freelist_state *fs, struct lfds711_freelist_element *fe) {
     struct _fbg_freelist_data *freelist_data;
     freelist_data = LFDS711_FREELIST_GET_VALUE_FROM_ELEMENT(*fe);
@@ -155,7 +155,7 @@ struct _fbg *fbg_setup(char *user_fb_device) {
 
     fbg_textColor(fbg, 255, 255, 255);
 
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
     fbg->state = 1;
     fbg->frame = 0;
     fbg->fps = 0;
@@ -164,7 +164,7 @@ struct _fbg *fbg_setup(char *user_fb_device) {
     return fbg;
 }
 
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
 void fbg_terminateFragments(struct _fbg *fbg) {
     fbg->state = 0;
 }
@@ -213,7 +213,7 @@ void fbg_freeTasks(struct _fbg *fbg) {
 #endif
 
 void fbg_close(struct _fbg *fbg) {
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
     fbg_terminateFragments(fbg);
 
     fbg_freeTasks(fbg);
@@ -235,7 +235,7 @@ void fbg_computeFramerate(struct _fbg *fbg, int to_string) {
     if (ms >= 1000) {
         gettimeofday(&fbg->fps_start, NULL);
 
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
         atomic_exchange_explicit(&fbg->fps, fbg->frame, memory_order_relaxed);
 #else
         fbg->fps = fbg->frame;
@@ -250,7 +250,7 @@ void fbg_computeFramerate(struct _fbg *fbg, int to_string) {
     fbg->frame += 1;
 }
 
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
 void fbg_drawFramerate(struct _fbg *fbg, struct _fbg_font *fnt, int task, int x, int y, int r, int g, int b) {
     if (task > fbg->parrallel_tasks) {
         return;
@@ -260,7 +260,7 @@ void fbg_drawFramerate(struct _fbg *fbg, struct _fbg_font *fnt, int task, int x,
         fnt = &fbg->current_font;
     }
 
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
     if (task > 0) {
         task -= 1;
 
@@ -284,7 +284,7 @@ int fbg_getFramerate(struct _fbg *fbg, int task) {
         return -1;
     }
 
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
     if (task > 0) {
         task -= 1;
         
@@ -565,7 +565,7 @@ void fbg_getPixel(struct _fbg *fbg, int x, int y, struct _fbg_rgb *color) {
     memcpy(color, (char *)(fbg->disp_buffer + ofs), 3);
 }
 
-#ifdef FBG_PARRALLEL
+#ifdef FBG_PARALLEL
 void fbg_draw(struct _fbg *fbg, int sync_with_tasks) {
     int i = 0;
     int j = 0;
