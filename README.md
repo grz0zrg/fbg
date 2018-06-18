@@ -162,9 +162,9 @@ void *fragmentStart(struct _fbg *fbg) {
 void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     // this function will be executed by each threads
     // you are free to call any FBG graphics primitive here
-    
+
     fbg_fclear(fbg, 0);
-    
+
     // you are also free to fill each threads back buffer the way you want to
     // fbg->task_id : thread identifier (starting at 1, 0 is reserved for the main thread)
     // each threads will draw an horizontal line, the shade of the blue color will change based on the thread it is drawn from
@@ -177,7 +177,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             fbg->back_buffer[i + 2] = 0;
         }
     }
-    
+
     // simple graphics primitive (4 blue rectangle which will be handled by different threads in parallel)
     fbg_rect(fbg, fbg->task_id * 32, 0, 32, 32, 0, 0, 255);
 }
