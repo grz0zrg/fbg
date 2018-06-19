@@ -74,7 +74,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         for (int e = 0; e <= (int)xc_off / 2; e += dots_step) {
             float dd = (float)e / xc_off;
 
-            rect_size = 1 + (1.0f - dd, 0.) * 4;
+            rect_size = 1 + (1.0f - dd) * 4;
 
             // / (dd+0.5) : shrinking near the center (otherwise : equal distribution of the dots)
             final_x = xoff - (xc_off) + (xc_off / (dd+0.5f)) * fabsf(0.5f-(dd+0.5f)) * 2 ;
@@ -128,7 +128,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         for (int e = 0; e <= (int)xc_off / 2; e += dots_step) {
             float dd = (float)e / xc_off;
 
-            rect_size = 1 + (1.0f - dd, 0.) * 4;
+            rect_size = 1 + (1.0f - dd) * 4;
 
             final_x = xoff - (xc_off) + (xc_off-(xc_off / (dd+0.5)) * fabsf(0.5f-(dd+0.5f))) * 2;
             

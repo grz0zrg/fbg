@@ -115,6 +115,7 @@
         int frame;
 
         int bgr;
+        int page_flipping;
 
 #ifdef FBG_PARALLEL
         // the number of fragment tasks
@@ -168,8 +169,9 @@
 
     // initialize the library
     //  fb_device : framebuffer device (example : /dev/fb0)
+    //  page_flipping : wether to use page flipping for double buffering
     // return _fbg structure pointer to pass to any FBG library functions
-    extern struct _fbg *fbg_setup(char *fb_device);
+    extern struct _fbg *fbg_setup(char *fb_device, int page_flipping);
 
     // free up the library and close all devices
     //  fbg : pointer returned by fbg_setup
@@ -215,8 +217,41 @@
     // draw a rectangle
     //  fbg : pointer returned by fbg_setup
     //  x, y : rectangle position (upper left coordinate)
+    //  w, h : rectangle dimensions
     //  r, g, b : rectangle color
     extern void fbg_rect(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b);
+
+    // draw a rectangle (fast) use the fill color set by fbg_fill()
+    //  fbg : pointer returned by fbg_setup
+    //  x, y : rectangle position (upper left coordinate)
+    //  w, h : rectangle dimensions
+    extern void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h);
+
+    // draw a horizontal line
+    //  fbg : pointer returned by fbg_setup
+    //  x, y : line position (upper left coordinate)
+    //  w : line length
+    extern void fbg_hline(struct _fbg *fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b);
+
+    // draw a vertical line
+    //  fbg : pointer returned by fbg_setup
+    //  x, y : line position (upper left coordinate)
+    //  h : line length
+    extern void fbg_vline(struct _fbg *fbg, int x, int y, int h, unsigned char r, unsigned char g, unsigned char b);
+
+    // draw a line with Bresenham algorithm
+    //  fbg : pointer returned by fbg_setup
+    //  x1, y1 : point position
+    //  x2, y2 : point position
+    //  r, g, b : line color
+    extern void fbg_line(struct _fbg *fbg, int x1, int y1, int x2, int y2, unsigned char r, unsigned char g, unsigned char b);
+
+    // draw a polygon
+    //  fbg : pointer returned by fbg_setup
+    //  num_vertices : the number of vertices
+    //  vertices : pointer to a list of vertices
+    //  r, g, b : polygon color
+    extern void fbg_polygon(struct _fbg *fbg, int num_vertices, int *vertices, unsigned char r, unsigned char g, unsigned char b);
 
     // fill the background with a color
     //  fbg : pointer returned by fbg_setup
@@ -239,7 +274,7 @@
     //  fbg : pointer returned by fbg_setup
     extern void fbg_flip(struct _fbg *fbg);
 
-    // create empty image
+    // create an empty image
     //  width : image width
     //  height : image height
     // return _fbg_img structure
@@ -261,7 +296,7 @@
     //  fbg : pointer returned by fbg_setup
     extern void fbg_imageFlip(struct _fbg_img *img);
 
-    // free image
+    // free an image
     //  img : image structure pointer
     extern void fbg_freeImage(struct _fbg_img *img);
 
@@ -321,13 +356,8 @@
 
     // ### Helper functions
 
-    // initialize the library with default framebuffer device (/dev/fb0) and no parallel tasks
-    #define fbg_init() fbg_setup(NULL)
-
-    // draw a rectangle which use the fill color set by fbg_fill()
-    //  fbg : pointer returned by fbg_setup
-    //  x, y : rectangle position (upper left coordinate)
-    #define fbg_frect(fbg, x, y, w, h) fbg_rect(fbg, x, y, w, h, fbg->fill_color.r, fbg->fill_color.g, fbg->fill_color.b)
+    // initialize the library with default framebuffer device (/dev/fb0) and no page flipping
+    #define fbg_init() fbg_setup(NULL, 0)
 
     // fade to black
     //  fbg : pointer returned by fbg_setup
@@ -342,5 +372,6 @@
 
     #define _FBG_MAX(a,b) ((a) > (b) ? a : b)
     #define _FBG_MIN(a,b) ((a) < (b) ? a : b)
+    #define _FBG_SGN(x) ((x<0)?-1:((x>0)?1:0))
 
 #endif

@@ -12,6 +12,7 @@ void int_handler(int dummy) {
 int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 
+    // open "/dev/fb0" by default, use fbg_setup("/dev/fb1", 0) if you want to use another framebuffer
     struct _fbg *fbg = fbg_init();
     if (fbg == NULL) {
         return 0;
@@ -23,7 +24,7 @@ int main(int argc, char* argv[]) {
     struct _fbg_font *bbfont = fbg_createFont(fbg, bb_font_img, 8, 8, 33);
 
     do {
-        fbg_clear(fbg, 0); // can also be replaced by fbg_fill(fbg, 0, 0, 0);
+        fbg_clear(fbg, 0); // can also be replaced by fbg_background(fbg, 0, 0, 0);
 
         fbg_draw(fbg);
 

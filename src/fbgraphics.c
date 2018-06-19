@@ -51,7 +51,7 @@ void fbg_ringbufferCleanup(struct lfds711_ringbuffer_state *rs, void *key, void 
 }
 #endif
 
-struct _fbg *fbg_setup(char *user_fb_device) {
+struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
     int x = 0, y = 0;
 
     struct _fbg *fbg = (struct _fbg *)calloc(1, sizeof(struct _fbg));
@@ -70,7 +70,7 @@ struct _fbg *fbg_setup(char *user_fb_device) {
         return NULL;
     }
     
-    if (ioctl(fbg->fd, FBIOGET_VSCREENINFO, &fbg->vinfo)) {
+    if (ioctl(fbg->fd, FBIOGET_VSCREENINFO, &fbg->vinfo) == -1) {
         fprintf(stderr, "fbg_init: '%s' Cannot obtain framebuffer FBIOGET_VSCREENINFO informations!\n", fb_device);
 
         close(fbg->fd);
@@ -78,7 +78,7 @@ struct _fbg *fbg_setup(char *user_fb_device) {
         return NULL;
     }
 
-    if (ioctl(fbg->fd, FBIOGET_FSCREENINFO, &fbg->finfo)) {
+    if (ioctl(fbg->fd, FBIOGET_FSCREENINFO, &fbg->finfo) == -1) {
         fprintf(stderr, "fbg_init: '%s' Cannot obtain framebuffer FBIOGET_FSCREENINFO informations!\n", fb_device);
 
         close(fbg->fd);
@@ -92,20 +92,6 @@ struct _fbg *fbg_setup(char *user_fb_device) {
     fbg->width_n_height = fbg->width * fbg->height;
 
     fbg->size = fbg->vinfo.xres * fbg->vinfo.yres * (fbg->vinfo.bits_per_pixel / 8);
-
-    fprintf(stdout, "fbg_init: '%s' (%dx%d (%dx%d virtual) %d bpp (%d/%d, %d/%d, %d/%d) (%d smen_len) %d line_length)\n", 
-        fb_device,
-        fbg->vinfo.xres, fbg->vinfo.yres, 
-        fbg->vinfo.xres_virtual, fbg->vinfo.yres_virtual,
-        fbg->vinfo.bits_per_pixel,
-        fbg->vinfo.red.length,
-        fbg->vinfo.red.offset,
-        fbg->vinfo.green.length,
-        fbg->vinfo.green.offset,
-        fbg->vinfo.blue.length,
-        fbg->vinfo.blue.offset,
-        fbg->finfo.smem_len,
-        fbg->finfo.line_length);
 
     if (fbg->vinfo.bits_per_pixel != 24) {
         fprintf(stderr, "fbg_init: '%s' Unsupported format (only 24 bits framebuffer is supported)!\n", fb_device);
@@ -125,24 +111,48 @@ struct _fbg *fbg_setup(char *user_fb_device) {
         fbg->bgr = 1;
     }
 
-    fbg->back_buffer = calloc(1, fbg->size * sizeof(char));
-    if (!fbg->back_buffer) {
-        fprintf(stderr, "fbg_init: back_buffer calloc failed!\n");
+    if (page_flipping) {
+        // check for page flipping support
+        if (ioctl(fbg->fd, FBIOPAN_DISPLAY, &fbg->vinfo) == -1) {
+            fprintf(stderr, "fbg_init: '%s' FBIOPAN_DISPLAY / page flipping not supported!\n", fb_device);
+        } else {
+            // double the virtual height
+            fbg->vinfo.yres_virtual = fbg->vinfo.yres_virtual * 2;
+            if (ioctl(fbg->fd, FBIOPUT_VSCREENINFO, &fbg->vinfo) == -1) {
+                fprintf(stderr, "fbg_init: '%s' FBIOPUT_VSCREENINFO failed, page flipping disabled!\n", fb_device);
+            } else {
+                fbg->page_flipping = 1;
 
-        close(fbg->fd);
+                fprintf(stdout, "fbg_init: '%s' Page flipping enabled!\n", fb_device);
 
-        return NULL;
+                if (ioctl(fbg->fd, FBIOGET_FSCREENINFO, &fbg->finfo) == -1) {
+                    fprintf(stderr, "fbg_init: '%s' Cannot obtain framebuffer FBIOGET_FSCREENINFO informations!\n", fb_device);
+
+                    close(fbg->fd);
+
+                    return NULL;
+                }
+            }
+        }
+
+        if (!fbg->page_flipping) {
+            fprintf(stderr, "fbg_init: '%s' FBIOPAN_DISPLAY / page flipping not supported!\n", fb_device);
+        }
     }
 
-    fbg->disp_buffer = calloc(1, fbg->size * sizeof(char));
-    if (!fbg->disp_buffer) {
-        fprintf(stderr, "fbg_init: disp_buffer calloc failed!\n");
-
-        free(fbg->back_buffer);
-        close(fbg->fd);
-
-        return NULL;
-    }
+    fprintf(stdout, "fbg_init: '%s' (%dx%d (%dx%d virtual) %d bpp (%d/%d, %d/%d, %d/%d) (%d smen_len) %d line_length)\n", 
+        fb_device,
+        fbg->vinfo.xres, fbg->vinfo.yres, 
+        fbg->vinfo.xres_virtual, fbg->vinfo.yres_virtual,
+        fbg->vinfo.bits_per_pixel,
+        fbg->vinfo.red.length,
+        fbg->vinfo.red.offset,
+        fbg->vinfo.green.length,
+        fbg->vinfo.green.offset,
+        fbg->vinfo.blue.length,
+        fbg->vinfo.blue.offset,
+        fbg->finfo.smem_len,
+        fbg->finfo.line_length);
 
     // initialize framebuffer
     fbg->buffer = (unsigned char *)mmap(0, fbg->finfo.smem_len,
@@ -150,6 +160,33 @@ struct _fbg *fbg_setup(char *user_fb_device) {
         MAP_SHARED,
         fbg->fd, 0);
 
+    memset(fbg->buffer, 0, fbg->finfo.smem_len);
+
+    // setup page flipping
+    if (fbg->page_flipping) {
+        fbg->disp_buffer = fbg->buffer;
+        fbg->back_buffer = fbg->buffer + fbg->width * (fbg->vinfo.bits_per_pixel >> 3) * fbg->height;
+    } else {
+        // setup front & back buffers
+        fbg->back_buffer = calloc(1, fbg->size * sizeof(char));
+        if (!fbg->back_buffer) {
+            fprintf(stderr, "fbg_init: back_buffer calloc failed!\n");
+
+            close(fbg->fd);
+
+            return NULL;
+        }
+
+        fbg->disp_buffer = calloc(1, fbg->size * sizeof(char));
+        if (!fbg->disp_buffer) {
+            fprintf(stderr, "fbg_init: disp_buffer calloc failed!\n");
+
+            free(fbg->back_buffer);
+            close(fbg->fd);
+
+            return NULL;
+        }
+    }
 
     gettimeofday(&fbg->fps_start, NULL);
 
@@ -219,8 +256,11 @@ void fbg_close(struct _fbg *fbg) {
     fbg_freeTasks(fbg);
 #endif
 
-    free(fbg->back_buffer);
-    free(fbg->disp_buffer);
+    if (!fbg->page_flipping) {
+        free(fbg->back_buffer);
+        free(fbg->disp_buffer);
+    }
+
     munmap(fbg->buffer, fbg->finfo.smem_len);
     close(fbg->fd);
 
@@ -545,6 +585,98 @@ void fbg_fpixel(struct _fbg *fbg, int x, int y) {
     memcpy(pix_pointer, &fbg->fill_color, 3);
 }
 
+void fbg_hline(struct _fbg *fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b) {
+    int xx;
+
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length + ((x << 1) + x)));
+
+    for (xx = 0; xx < w; xx += 1) {
+        *pix_pointer++ = r;
+        *pix_pointer++ = g;
+        *pix_pointer++ = b;
+    }
+}
+
+void fbg_vline(struct _fbg *fbg, int x, int y, int h, unsigned char r, unsigned char g, unsigned char b) {
+    int yy;
+
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length + ((x << 1) + x)));
+
+    for (yy = 0; yy < h; yy += 1) {
+        *pix_pointer++ = r;
+        *pix_pointer++ = g;
+        *pix_pointer++ = b;
+
+        pix_pointer += fbg->finfo.line_length - 3;
+    }
+}
+
+// source : http://www.brackeen.com/vga/shapes.html
+void fbg_line(struct _fbg *fbg, int x1, int y1, int x2, int y2, unsigned char r, unsigned char g, unsigned char b) {
+    int i, dx, dy, sdx, sdy, dxabs, dyabs, x, y, px, py;
+
+    dx = x2 - x1;
+    dy = y2 - y1;
+    dxabs = abs(dx);
+    dyabs = abs(dy);
+    sdx = _FBG_SGN(dx);
+    sdy = _FBG_SGN(dy);
+    x = dyabs >> 1;
+    y = dxabs >> 1;
+    px = x1;
+    py = y1;
+
+    char *pix_pointer = (char *)(fbg->back_buffer + (py * fbg->finfo.line_length + ((px << 1) + px)));
+
+    *pix_pointer++ = r;
+    *pix_pointer++ = g;
+    *pix_pointer++ = b;
+
+    if (dxabs >= dyabs) {
+        for (i = 0; i < dxabs; i += 1) {
+            y += dyabs;
+            if (y >= dxabs)
+            {
+                y -= dxabs;
+                py += sdy;
+            }
+            px += sdx;
+
+            fbg_pixel(fbg, px, py, r, g, b);
+        }
+    } else {
+        for (i = 0; i < dyabs; i += 1) {
+            x += dxabs;
+            if (x >= dyabs)
+            {
+                x -= dyabs;
+                px += sdx;
+            }
+            py += sdy;
+
+            fbg_pixel(fbg, px, py, r, g, b);
+        }
+    }
+}
+
+void fbg_polygon(struct _fbg *fbg, int num_vertices, int *vertices, unsigned char r, unsigned char g, unsigned char b) {
+    int i;
+
+    for (i = 0; i < num_vertices - 1; i += 1) {
+        fbg_line(fbg, vertices[(i << 1) + 0],
+            vertices[(i << 1) + 1],
+            vertices[(i << 1) + 2],
+            vertices[(i << 1) + 3],
+            r, g, b);
+    }
+
+    fbg_line(fbg, vertices[0],
+         vertices[1],
+         vertices[(num_vertices << 1) - 2],
+         vertices[(num_vertices << 1) - 1],
+         r, g, b);
+}
+
 void fbg_rect(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b) {
     int xx = 0, yy = 0, w3 = w * 3;
 
@@ -558,6 +690,27 @@ void fbg_rect(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, uns
         }
 
         pix_pointer += (fbg->finfo.line_length - w3);
+    }
+}
+
+void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h) {
+    int xx, yy, w3 = w * 3;
+
+    char *fpix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length + ((x << 1) + x)));
+
+    char *org_pointer = fpix_pointer;
+    char *pix_pointer = fpix_pointer;
+
+    for (xx = 0; xx < w; xx += 1) {
+        *pix_pointer++ = fbg->fill_color.r;
+        *pix_pointer++ = fbg->fill_color.g;
+        *pix_pointer++ = fbg->fill_color.b;
+    }
+
+    for (yy = 0; yy < h; yy += 1) {
+        fpix_pointer += fbg->finfo.line_length;
+
+        memcpy(fpix_pointer, org_pointer, w3);
     }
 }
 
@@ -613,11 +766,29 @@ void fbg_draw(struct _fbg *fbg, int sync_with_tasks, void (*user_mixing)(struct 
 #else
 void fbg_draw(struct _fbg *fbg) {
 #endif
+#ifdef FBIO_WAITFORVSYNC
+    static int dummy = 0;
+    ioctl(fbg->fd, FBIO_WAITFORVSYNC, &dummy);
+#endif
 
-    memcpy(fbg->buffer, fbg->disp_buffer, fbg->size);
+    if (!fbg->page_flipping) {
+        memcpy(fbg->buffer, fbg->disp_buffer, fbg->size);
+    }
 }
 
 void fbg_flip(struct _fbg *fbg) {
+    if (fbg->page_flipping) {
+        if (fbg->vinfo.yoffset == 0) {
+            fbg->vinfo.yoffset = fbg->height;
+        } else {
+            fbg->vinfo.yoffset = 0;
+        }
+
+        if (ioctl(fbg->fd, FBIOPAN_DISPLAY, &fbg->vinfo) == -1) {
+            fprintf(stderr, "fbg_flip: FBIOPAN_DISPLAY failed!\n");
+        }
+    }
+
     unsigned char *tmp_buffer = fbg->disp_buffer;
     fbg->disp_buffer = fbg->back_buffer;
     fbg->back_buffer = tmp_buffer;

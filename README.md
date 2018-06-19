@@ -7,14 +7,14 @@ Features :
  * Optional : Full parallelism, execute graphics code on multiple CPU cores **with a single function**
  * Displaying and loading PNG images (provided by [LodePNG](https://lodev.org/lodepng/))
  * Bitmap fonts for drawing texts
- * Bare-metal graphics primitive (pixels, rectangles)
- * Double buffering
+ * Bare-metal graphics primitive (pixels, rectangles, lines, polygon)
+ * Double buffering (with optional page flipping mechanism)
  * 24 bpp only (may change in the future!)
  * Easy to do fading and screen-clearing related effects (motion blur etc.)
  * Framerate tracking & display for all cores
  * Lightweight enough to be hackable; adapt to all kinds of needs (and still support parallelism easily)
 
-The library is relatively generic,  it only manipulate buffers and render them to the framebuffer device so it should be easy to extract some parts to adapt it to other means.
+The library is relatively generic,  most functions (including parallel ones) only manipulate buffers, it should be easy to extract some parts and adapt it to other means, you may want to check `fbg_setup` `fbg_draw` `fbg_flip`and `fbg_close` for that.
 
 Table of Contents
 =================
@@ -40,9 +40,13 @@ If you want to use the parallelism features with more advanced graphics primitiv
 
 FBGraphics is fast but should be used with caution, no bounds checking happen on most primitives.
 
-Multi-core support is totally optional and is only enabled when `FBG_PARALLEL` C definition is present.
+Multi-core support is optional and is only enabled when `FBG_PARALLEL` C definition is present.
 
-Note : This library does not let you setup the framebuffer, it expect the framebuffer to be configured prior launch with a command such as :
+The library support a mechanism known as page flipping, it allow fast double buffering by doubling the framebuffer virtual area, it is disabled by default because it is actually slower on some devices. You can enable it with a `fbg_setup` call.
+
+VSync is automatically enabled if supported.
+
+**Note** : This library does not let you setup the framebuffer, it expect the framebuffer to be configured prior launch with a command such as :
 
 ```
 fbset -fb /dev/fb0 -g 512 240 512 240 24 -vsync high
@@ -51,7 +55,7 @@ setterm -cursor off > /dev/tty0
 
 ### Quickstart
 
-The simplest example (without texts and images) :
+The simplest example (no parallelism, without texts and images) :
 
 ```c
 #include <sys/stat.h>
@@ -68,7 +72,7 @@ void int_handler(int dummy) {
 int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 
-    struct _fbg *fbg = fbg_setup("/dev/fb0"); // you can also directly use fbg_init(); for "/dev/fb0"
+    struct _fbg *fbg = fbg_setup("/dev/fb0", 0); // you can also directly use fbg_init(); for "/dev/fb0", last argument mean that will not use page flipping mechanism  for double buffering (it is actually slower on some devices!)
 
     do {
         fbg_clear(fbg, 0); // can also be replaced by fbg_fill(fbg, 0, 0, 0);
@@ -204,7 +208,7 @@ Where :
 * `fragment`is a C function which will be executed indefinitly for each threads and where all the draw code will happen
 * `fragmentStop` is a C function which will be executed when the thread end  (can be NULL)
 * `3`is the number of parallel tasks (this will launch 3 threads)
-* `7` is the buffer queue length for each threads (the amount of frame buffers stored in the internal ringbuffer queue)
+* `7` is the buffer queue length for each threads (the amount of frame buffers stored in the internal ringbuffer queue), this has an impact on memory and may have an impact on performances
 
 And finally you just have to make a call to your fragment function in your drawing loop and call  `fbg_draw`!
 
@@ -215,11 +219,13 @@ fbg_draw(fbg, 1, NULL);
 
 The second argument to `fbg_draw` tell FBG to synchronize with all the threads, it will wait until all the data are received from all the threads, if disabled, data from some threads may not arrive in time and make it into the second frame.
 
-Note : This example will use 4 threads (including your app one) for drawing things on the screen but calling the fragment function in your drawing loop is totally optional, you could for example make use of threads for intensive drawing tasks and just use the main thread to draw the GUI or the inverse etc. it is up to you!
+**Note** : This example will use 4 threads (including your app one) for drawing things on the screen but calling the fragment function in your drawing loop is totally optional, you could for example make use of threads for intensive drawing tasks and just use the main thread to draw the GUI or the inverse etc. it is up to you!
 
 And that is all you have to do!
 
-Note : By default, the resulting buffer of each tasks are additively mixed into the main back buffer, you can override this behavior by specifying a mixing function as the last argument of `fbg_draw` such as :
+See `simple_parallel_example.c` and `full_example.c` for more informations.
+
+**Note** : By default, the resulting buffer of each tasks are additively mixed into the main back buffer, you can override this behavior by specifying a mixing function as the last argument of `fbg_draw` such as :
 
 ```c
 // function called for each tasks in the fbg_draw function
@@ -240,11 +246,9 @@ Then you just have to specify it to the `fbg_draw` function :
 fbg_draw(fbg, 1, additiveMixing);
 ```
 
-By using the mixing function, you can have different layers handled by different cores with different compositing rule.
+By using the mixing function, you can have different layers handled by different cores with different compositing rule, see `compositing.c` for an example of alpha blending compositing 2 layers running on their own cores.
 
-See `simple_parallel_example.c` and `full_example.c` for more informations.
-
-Note : You can only create one Fragment per fbg instance, another call to `fbg_createFragment` will stop all tasks for the passed fbg context and will create a new set of tasks.
+**Note** : You can only create one Fragment per fbg instance, another call to `fbg_createFragment` will stop all tasks for the passed fbg context and will create a new set of tasks.
 
 ### Technical implementation
 
@@ -307,7 +311,7 @@ C11 standard should be supported by the C compiler.
 
 All examples make use of the framebuffer device `/dev/fb0` and can be built by typing `make` into the examples directory then run them by typing `./run_quickstart` for example (this handle the framebuffer setup prior launch), you will need to compile liblfds for the parallelism features. (see below)
 
-All examples were tested on a Raspberry PI 3B with framebuffer settings : 512x240 24 bpp
+All examples were tested on a Raspberry PI 3B with framebuffer settings : 320x240 24 bpp
 
 For the default build (no parallelism), FBGraphics come with a header file `fbgraphics.h` and a C file `fbgraphics.c` to be included / compiled with your program, you will also need to compile the `lodepng.c` library, see the examples directory for examples of Makefile.
 
@@ -330,6 +334,8 @@ To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and
 ![Earth with four threads](/screenshot3.png?raw=true "Earth with four threads")
 
 ![Flags of the world with four threads](/screenshot4.png?raw=true "Flags of the world with four threads")
+
+![Compositing with three threads](/screenshot5.png?raw=true "Compositing with three threads")
 
 ## License
 

@@ -10,12 +10,14 @@ SRC3=$(SRC_LIBS) perlin.c full_example.c
 SRC4=$(SRC_LIBS) tunnel.c
 SRC5=$(SRC_LIBS) earth.c
 SRC6=$(SRC_LIBS) flags.c
+SRC7=$(SRC_LIBS) compositing.c
 OUT1=quickstart
 OUT2=simple_parallel_example
 OUT3=full_example
 OUT4=tunnel
 OUT5=earth
 OUT6=flags
+OUT7=compositing
 LIBS1=-lm
 LIBS2=-lm -lpthread liblfds711.a
 INCS=-I ../src/ -I.
@@ -27,6 +29,7 @@ all:
 	$(CC) $(SRC4) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT4)
 	$(CC) $(SRC5) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT5)
 	$(CC) $(SRC6) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT6)
+	$(CC) $(SRC7) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT7)
 
 debug:
 	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS1) -o $(OUT1)
@@ -35,6 +38,7 @@ debug:
 	$(CC) $(SRC4) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(DEBUG_FLAGS) $(LIBS2) -o $(OUT4)
 	$(CC) $(SRC5) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(DEBUG_FLAGS) $(LIBS2) -o $(OUT5)
 	$(CC) $(SRC6) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(DEBUG_FLAGS) $(LIBS2) -o $(OUT6)
+	$(CC) $(SRC7) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(DEBUG_FLAGS) $(LIBS2) -o $(OUT7)
 
 quickstart: $(SRC1)
 	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS1) -o $(OUT1)
@@ -54,6 +58,9 @@ earth: $(SRC5)
 flags: $(SRC6)
 	$(CC) $(SRC6) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT6)
 
+compositing: $(SRC7)
+	$(CC) $(SRC7) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT7)
+
 clean:
 	rm -f *.o $(OUT)
-	rm $(OUT1) $(OUT2) $(OUT3) $(OUT4) $(OUT5) $(OUT6)
+	rm $(OUT1) $(OUT2) $(OUT3) $(OUT4) $(OUT5) $(OUT6) $(OUT7)
