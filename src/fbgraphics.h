@@ -41,337 +41,539 @@
 #endif
 
 // ### Library structures
+
+    //! RGB color data structure
+    /*! Hold RGB components [0,255] */
     struct _fbg_rgb {
         unsigned char r;
         unsigned char g;
         unsigned char b;
     };
 
+    //! Image data structure
+    /*! Hold images informations and data */
     struct _fbg_img {
+        //! 24 bpp RGB image data
         unsigned char *data;
 
+        //! Image width in pixels
         unsigned int width;
+        //! Image height in pixels
         unsigned int height;
     };
 
+    //! Bitmap font data structure
+    /*! Hold bitmap font informations and associated image */
     struct _fbg_font {
+        //! Pre-computed X glyphs coordinates
         int *glyph_coord_x;
+        //! Pre-computed Y glyphs coordinates
         int *glyph_coord_y;
 
+        //! Width of a glyph
         int glyph_width;
+        //! Height of a glyph
         int glyph_height;
 
-        int first_char;
+        //! First ASCII character of the bitmap font file
+        unsigned char first_char;
 
+        //! Associated font image data structure
         struct _fbg_img *bitmap;
     };
 
+    //! FB Graphics context data structure
+    /*! Hold all data related to a FBG context */
     struct _fbg {
-        // file descriptor (framebuffer device)
+        //! Framebuffer device file descriptor
         int fd;
 
-        // framebuffer informations
+        //! Framebuffer device var. informations
         struct fb_var_screeninfo vinfo;
+        //! Framebuffer device fix. informations
         struct fb_fix_screeninfo finfo;
 
-        // framebuffer real size (take into account BPP)
+        //! Framebuffer real data length (with BPP)
         int size;
 
-        // framebuffer
+        //! Memory-mapped framebuffer
         unsigned char *buffer;
-        // displayed buffer
+        //! Front / display buffer
         unsigned char *disp_buffer;
-        // back buffer
+        //! Back buffer
+        /*! All FB Graphics functions draw into this buffer. */
         unsigned char *back_buffer;
 
-        // fill color state
+        //! Current fill color
+        /*! Default to black. */
         struct _fbg_rgb fill_color;
 
-        // text color state
+        //! Current text color
+        /*! Default to white. */
         struct _fbg_rgb text_color;
 
-        // current font
+        //! Current font
+        /*! No fonts is loaded by default and the first loaded font will be assigned automatically as the current font. */
         struct _fbg_font current_font;
 
-        // display resolution
+        //! Display width in pixels
         int width;
+        //! Display height in pixels
         int height;
+        //! Display lenght in pixels (width * height)
         int width_n_height;
 
-        // fps
+        //! Current FPS
 #ifdef FBG_PARALLEL
         atomic_uint_fast16_t fps;
 #else
         int16_t fps;
 #endif
 
+        //! Current FPS as a string
         char fps_char[10];
 
-        // fps computation stuff
+        //! First frame time for the current second
         struct timeval fps_start;
+        //! Last frame time for the current second
         struct timeval fps_stop;
 
-        // frame counter
+        //! Frame counter for the current second
         int frame;
 
+        //! Flag indicating a BGR framebuffer
         int bgr;
+        //! Flag indicating that page flipping is enabled
         int page_flipping;
 
 #ifdef FBG_PARALLEL
-        // the number of fragment tasks
+        //! Total number of actual parallel tasks
         unsigned int parallel_tasks;
 
+        //! pthread array of tasks
         pthread_t *tasks;
 
+        //! Array of tasks data structure
         struct _fbg_fragment **fragments;
 
-        // the current task id
+        //! Task id associated to that FBG context
         int task_id;
 
+        //! FBG synchronization barrier
         pthread_barrier_t *sync_barrier;
 
+        //! FBG tasks running flag (shared between all tasks)
         atomic_int state;
 #endif
     };
 
 #ifdef FBG_PARALLEL
+    //! Freelist data structure
+    /*! Hold pre-allocated data associated with a task */
     struct _fbg_freelist_data {
         struct lfds711_freelist_element freelist_element;
 
         unsigned char *buffer;
     };
 
+    //! Task (fragment) data structure
+    /*! Hold a task data */
     struct _fbg_fragment {
+        //! Pointer to the main FBG state
         atomic_int *state;
 
+        //! Task own FBG context
         struct _fbg *fbg;
 
+        //! Ringbuffer element
         struct lfds711_ringbuffer_element *ringbuffer_element;
+        //! Ringbuffer state
         struct lfds711_ringbuffer_state ringbuffer_state;
 
+        //! Freelist state
         struct lfds711_freelist_state freelist_state;
+        //! Pre-allocated tasks data
         struct _fbg_freelist_data *fbg_freelist_data;
 
+        //! Temporary task data
         struct _fbg_freelist_data *tmp_fbg_freelist_data;
 
-        // user-defined fragment function
+        //! User-defined task start function
         void *(*user_fragment_start)(struct _fbg *fbg);
+        //! User-defined task function
         void (*user_fragment)(struct _fbg *fbg, void *user_data);
+        //! User-defined task end function
         void (*user_fragment_stop)(struct _fbg *fbg, void *user_data);
 
+        //! User-defined data
         void *user_data;
 
+        //! Ringbuffer queue lenght
         unsigned int queue_size;
     };
 #endif
 
-    // ### Library functions
+// ### Library functions
 
-    // initialize the library
-    //  fb_device : framebuffer device (example : /dev/fb0)
-    //  page_flipping : wether to use page flipping for double buffering
-    // return _fbg structure pointer to pass to any FBG library functions
+    //! initialize a FB Graphics context
+    /*!
+      \param fb_device framebuffer device (example : /dev/fb0)
+      \param page_flipping wether to use page flipping mechanism for double buffering (slow on some devices)
+      \return _fbg structure pointer to pass to any FBG library functions
+      \sa fbg_close(), fbg_init()
+    */
     extern struct _fbg *fbg_setup(char *fb_device, int page_flipping);
 
-    // free up the library and close all devices
-    //  fbg : pointer returned by fbg_setup
+    //! free up the memory associated with a FB Graphics context and close the framebuffer device
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \sa fbg_setup(), fbg_init()
+    */
     extern void fbg_close(struct _fbg *fbg);
 
-    // background fade to black with controllable factor
-    //  fbg : pointer returned by fbg_setup
-    //  rgb_fade_amount : the RGB fade amount
+    //! background fade to black with controllable factor
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param rgb_fade_amount fade amount
+      \sa fbg_fade(), fbg_fadeUp()
+    */
     extern void fbg_fadeDown(struct _fbg *fbg, unsigned char rgb_fade_amount);
 
-    // background fade to white with controllable factor
-    //  fbg : pointer returned by fbg_setup
-    //  rgb_fade_amount : the RGB fade amount
+    //! background fade to white with controllable factor
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param rgb_fade_amount fade amount
+      \sa fbg_fadeDown()
+    */
     extern void fbg_fadeUp(struct _fbg *fbg, unsigned char rgb_fade_amount);
 
-    // fast grayscale background clearing
-    //  fbg : pointer returned by fbg_setup
-    //  brightness : pixel brightness
+    //! fast grayscale background clearing
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param brightness pixel brightness (grayscale)
+      \sa fbg_background()
+    */
     extern void fbg_clear(struct _fbg *fbg, unsigned char brightness);
 
-    // set the filling color for drawing operations
-    //  fbg : pointer returned by fbg_setup
-    //  r, g, b : fill color
+    //! set the filling color for fast drawing operations
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param r
+      \param g
+      \param b
+      \sa fbg_fpixel(), fbg_frect()
+    */
     extern void fbg_fill(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned char b);
 
-    // get the RGB value of a pixel
-    //  fbg : pointer returned by fbg_setup
-    //  x, y : pixel position (upper left coordinate)
-    //  color : _fbg_rgb structure which will contain the pixel colors
+    //! get the RGB value of a pixel
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x
+      \param y
+      \param color a pointer to a _fbg_rgb data structure
+    */
     extern void fbg_getPixel(struct _fbg *fbg, int x, int y, struct _fbg_rgb *color);
 
-    // standard pixel drawing
-    //  fbg : pointer returned by fbg_setup
-    //  x, y : pixel position (upper left coordinate)
-    //  r, g, b : pixel color
+    //! draw a pixel
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x pixel X position (upper left coordinate)
+      \param y pixel Y position (upper left coordinate)
+      \param r
+      \param g
+      \param b
+      \sa fbg_fpixel()
+    */
     extern void fbg_pixel(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b);
 
-    // fast pixel drawing which use the fill color set by fbg_fill()
-    //  fbg : pointer returned by fbg_setup
-    //  x, y : pixel position (upper left coordinate)
+    //! fast pixel drawing which use the fill color set by fbg_fill()
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x pixel X position (upper left coordinate)
+      \param y pixel Y position (upper left coordinate)
+      \sa fbg_pixel(), fbg_fill()
+    */
     extern void fbg_fpixel(struct _fbg *fbg, int x, int y);
 
-    // draw a rectangle
-    //  fbg : pointer returned by fbg_setup
-    //  x, y : rectangle position (upper left coordinate)
-    //  w, h : rectangle dimensions
-    //  r, g, b : rectangle color
+    //! draw a rectangle
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x rectangle X position (upper left coordinate)
+      \param y rectangle Y position (upper left coordinate)
+      \param w rectangle width
+      \param h rectangle height
+      \param r
+      \param g
+      \param b
+      \sa fbg_frect()
+    */
     extern void fbg_rect(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b);
 
-    // draw a rectangle (fast) use the fill color set by fbg_fill()
-    //  fbg : pointer returned by fbg_setup
-    //  x, y : rectangle position (upper left coordinate)
-    //  w, h : rectangle dimensions
+    //! fast rectangle drawing which use the fill color set by fbg_fill()
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x rectangle X position (upper left coordinate)
+      \param y rectangle Y position (upper left coordinate)
+      \param w rectangle width
+      \param h rectangle height
+      \sa fbg_fill, fbg_rect()
+    */
     extern void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h);
 
-    // draw a horizontal line
-    //  fbg : pointer returned by fbg_setup
-    //  x, y : line position (upper left coordinate)
-    //  w : line length
+    //! draw a horizontal line
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x line X position (upper left coordinate)
+      \param y line Y position (upper left coordinate)
+      \param w line width
+      \param r
+      \param g
+      \param b
+      \sa fbg_vline, fbg_line()
+    */
     extern void fbg_hline(struct _fbg *fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b);
 
-    // draw a vertical line
-    //  fbg : pointer returned by fbg_setup
-    //  x, y : line position (upper left coordinate)
-    //  h : line length
+    //! draw a vertical line
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x line X position (upper left coordinate)
+      \param y line Y position (upper left coordinate)
+      \param h line height
+      \param r
+      \param g
+      \param b
+      \sa fbg_hline, fbg_line()
+    */
     extern void fbg_vline(struct _fbg *fbg, int x, int y, int h, unsigned char r, unsigned char g, unsigned char b);
 
-    // draw a line with Bresenham algorithm
-    //  fbg : pointer returned by fbg_setup
-    //  x1, y1 : point position
-    //  x2, y2 : point position
-    //  r, g, b : line color
+    //! draw a line from two points (Bresenham algorithm)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x1 point 1 X position (upper left coordinate)
+      \param y1 point 1 Y position (upper left coordinate)
+      \param x2 point 2 X position (upper left coordinate)
+      \param y2 point 2 Y position (upper left coordinate)
+      \param r
+      \param g
+      \param b
+      \sa fbg_hline(), fbg_vline(), fbg_polygon()
+    */
     extern void fbg_line(struct _fbg *fbg, int x1, int y1, int x2, int y2, unsigned char r, unsigned char g, unsigned char b);
 
-    // draw a polygon
-    //  fbg : pointer returned by fbg_setup
-    //  num_vertices : the number of vertices
-    //  vertices : pointer to a list of vertices
-    //  r, g, b : polygon color
+    //! draw a polygon
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param num_vertices the number of vertices
+      \param vertices pointer to a list of vertices (a list of X/Y points)
+      \param r
+      \param g
+      \param b
+    */
     extern void fbg_polygon(struct _fbg *fbg, int num_vertices, int *vertices, unsigned char r, unsigned char g, unsigned char b);
 
-    // fill the background with a color
-    //  fbg : pointer returned by fbg_setup
-    //  r, g, b : background color
+    //! clear the background with a color
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param r
+      \param g
+      \param b
+      \sa fbg_clear()
+    */
     extern void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned char b);
 
 #ifdef FBG_PARALLEL
-    // draw to screen
-    //  fbg : pointer returned by fbg_setup
-    //  sync_with_task : 1 = wait for all fragment tasks to be finished before rendering
-    //  user_mixing : a function used to mix the result of fragment tasks
+    //! draw to the screen
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param sync_with_task 1 = wait for all fragment tasks to be finished before rendering
+      \param user_mixing a function used to mix the result of fragment tasks
+    */
     extern void fbg_draw(struct _fbg *fbg, int sync_with_task, void (*user_mixing)(struct _fbg *fbg, unsigned char *buffer, int task_id));
 #else
-    // draw to screen
-    //  fbg : pointer returned by fbg_setup
+    //! draw to the screen
+    /*!
+      \param fbg pointer to a FBG context / data structure
+    */
     extern void fbg_draw(struct _fbg *fbg);
 #endif
 
-    // flip buffers
-    //  fbg : pointer returned by fbg_setup
+    //! flip the buffers
+    /*!
+      \param fbg pointer to a FBG context / data structure
+    */
     extern void fbg_flip(struct _fbg *fbg);
 
-    // create an empty image
-    //  width : image width
-    //  height : image height
-    // return _fbg_img structure
+    //! create an empty image
+    /*!
+      \param width image width
+      \param height image height
+      \return _fbg_img data structure pointer
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont()
+    */
     extern struct _fbg_img *fbg_createImage(unsigned int width, unsigned int height);
 
-    // load a PNG image
-    //  filename : PNG image filename
-    // return _fbg_img structure
+    //! load a PNG image from a file
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param filename PNG image filename
+      \return _fbg_img data structure pointer
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont()
+    */
     extern struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename);
 
-    // draw an image
-    //  fbg : pointer returned by fbg_setup
-    //  img : image structure pointer
-    //  x, y : draw position (upper left coordinate)
-    //  w, h : width / height of the image (cannot be higher than the image width / height)
-    extern void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int w, int h);
+    //! draw an image
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param img image structure pointer
+      \param x image X position (upper left coordinate)
+      \param y image Y position (upper left coordinate)
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip()
+    */
+    extern void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y);
 
-    // flip an image vertically
-    //  fbg : pointer returned by fbg_setup
+    //! draw a clipped image
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param img image structure pointer
+      \param x image X position (upper left coordinate)
+      \param y image Y position (upper left coordinate)
+      \param cx The X coordinate where to start clipping
+      \param cy The Y coordinate where to start clipping
+      \param cw The width of the clipped image
+      \param ch The height of the clipped image
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_freeImage(), fbg_image(), fbg_imageFlip()
+    */
+    extern void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch);
+
+    //! flip an image vertically
+    /*!
+      \param img image structure pointer
+      \sa fbg_createImage(), fbg_loadPNG()
+    */
     extern void fbg_imageFlip(struct _fbg_img *img);
 
-    // free an image
-    //  img : image structure pointer
+    //! free the memory associated with an image
+    /*!
+      \param img image structure pointer
+      \sa fbg_createImage(), fbg_loadPNG()
+    */
     extern void fbg_freeImage(struct _fbg_img *img);
 
-    // create a bitmap font from an image file
-    //  fbg : pointer returned by fbg_setup
-    //  img : image structure pointer
-    //  glyph_width : single glyph width
-    //  glyph_height : single glyph height
-    //  first_char : the first character of the bitmap font
-    // return _fbg_font structure
+    //! create a bitmap font from an image
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param img image structure pointer
+      \param glyph_width glyph / character width
+      \param glyph_height glyph / character height
+      \param first_char the first character of the bitmap font
+      \return _fbg_font structure pointer
+      \sa fbg_freeFont(), fbg_textFont(), fbg_text(), fbg_write(), fbg_drawFramerate()
+    */
     extern struct _fbg_font *fbg_createFont(struct _fbg *fbg, struct _fbg_img *img, int glyph_width, int glyph_height, unsigned char first_char);
 
-    // set the current font
-    //  fnt : _fbg_font structure
+    //! set the current font
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param font _fbg_font structure pointer
+      \sa fbg_createFont(), fbg_text(), fbg_write(), fbg_drawFramerate()
+    */
     extern void fbg_textFont(struct _fbg *fbg, struct _fbg_font *font);
 
-    // set the current text color
-    //  fnt : _fbg_font structure
-    //  r, g, b : current text color
+    //! set the current text color
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param r
+      \param g
+      \param b
+      \sa fbg_createFont(), fbg_write()
+    */
     extern void fbg_textColor(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned char b);
 
-    // draw a text
-    //  fbg : pointer returned by fbg_setup
-    //  font : font structure pointer
-    //  text : the text to draw ('\n' and ' ' are treated automatically)
-    //  x, y : text position (upper left coordinate)
-    //  r, g, b : text color
+    //! draw a text
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param fnt _fbg_font structure pointer
+      \param text the text to draw ('\n' and ' ' are treated automatically)
+      \param x
+      \param y
+      \param r
+      \param g
+      \param b
+      \sa fbg_createFont(), fbg_write()
+    */
     extern void fbg_text(struct _fbg *fbg, struct _fbg_font *fnt, char *text, int x, int y, int r, int g, int b);
 
-    // free font
-    //  font : font structure pointer
+    //! free the memory associated with a font
+    /*!
+      \param font _fbg_font structure pointer
+      \sa fbg_createFont()
+    */
     extern void fbg_freeFont(struct _fbg_font *font);
 
-    // draw the framerate of a particular task
-    //  fbg : pointer returned by fbg_setup
-    //  font : font structure pointer
-    //  task : the task id (0 = main thread)
-    //  x, y : text position (upper left coordinate)
-    //  r, g, b : text color
+    //! draw the framerate of a particular parallel task
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param fnt _fbg_font structure pointer
+      \param task the task id
+      \param x
+      \param y
+      \param r
+      \param g
+      \param b
+    */
     extern void fbg_drawFramerate(struct _fbg *fbg, struct _fbg_font *fnt, int task, int x, int y, int r, int g, int b);
 
-    // get the framerate of a particular task
-    //  fbg : pointer returned by fbg_setup
-    //  task : the task id (0 = main thread)
-    // return task framerate
+    //! get the framerate of a particular task
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param task the task id
+      \return task framerate
+    */
     extern int fbg_getFramerate(struct _fbg *fbg, int task);
 
 #ifdef FBG_PARALLEL
-    // create a fbg parallel task (also called 'fragments')
-    //  fbg : pointer returned by fbg_setup
-    //  fragment_start : a function taking a _fbg structure as argument
-    //  fragment : a function taking a _fbg structure as argument and user_data pointer
-    //  fragment_stop : a function taking user_data pointer as argument
-    //  parallel_tasks : the number of parallel tasks to register
+    //! create a FB Graphics parallel task (also called a 'fragment')
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param fragment_start a function taking a _fbg structure as argument
+      \param fragment a function taking a _fbg structure as argument and user_data pointer
+      \param fragment_stop a function taking user_data pointer as argument
+      \param parallel_tasks the number of parallel tasks to register
+      \param queue_size the number of pre-allocated buffer to each tasks, this has an influence on memory and might have an impact on performances
+    */
     extern void fbg_createFragment(struct _fbg *fbg, void *(*fragment_start)(struct _fbg *fbg), void (*fragment)(struct _fbg *fbg, void *user_data), void (*fragment_stop)(struct _fbg *fbg, void *user_data), unsigned int parallel_tasks, unsigned int queue_size);
 #endif
 
-    // ### Helper functions
-
-    // initialize the library with default framebuffer device (/dev/fb0) and no page flipping
+// ### Helper functions
+    //! initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping
+    /*!
+      \sa fbg_init(), fbg_close()
+    */
     #define fbg_init() fbg_setup(NULL, 0)
 
-    // fade to black
-    //  fbg : pointer returned by fbg_setup
-    //  fade_amount : RGB fade amount
+    //! background fade to black with controllable factor
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param fade_amount fade amount
+      \sa fbg_fadeUp(), fbg_fadeDown()
+    */
     #define fbg_fade(fbg, fade_amount) fbg_fade_down(fbg, fade_amount)
 
-    // write text to screen by using the current font and current color
-    //  fbg : pointer returned by fbg_setup
-    //  text : the text to draw ('\n' and ' ' are treated automatically)
-    //  x, y : text location
+    //! draw a text by using the current font and the current color
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param text the text to draw ('\n' and ' ' are treated automatically)
+      \param x
+      \param y
+      \sa fbg_textFont(), fbg_textColor(), fbg_text()
+    */
     #define fbg_write(fbg, text, x, y) fbg_text(fbg, &fbg->current_font, text, x, y, fbg->text_color.r, fbg->text_color.g, fbg->text_color.b)
 
+    //! integer MAX Math function
     #define _FBG_MAX(a,b) ((a) > (b) ? a : b)
+    //! integer MIN Math function
     #define _FBG_MIN(a,b) ((a) < (b) ? a : b)
+    //! integer SIGN function
     #define _FBG_SGN(x) ((x<0)?-1:((x>0)?1:0))
 
 #endif

@@ -1023,14 +1023,31 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
     return img;
 }
 
-void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int w, int h) {
+void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y) {
     char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length));
     unsigned char *img_pointer = img->data;
 
     int i = 0;
-    int w3 = w * 3;
+    int w3 = img->width * 3;
 
-    for (i = 0; i < h; i += 1) {
+    for (i = 0; i < img->height; i += 1) {
+        memcpy(pix_pointer, img_pointer, w3);
+        pix_pointer += fbg->finfo.line_length;
+        img_pointer += w3;
+    }
+}
+
+void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch) {
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length));
+    unsigned char *img_pointer = img->data;
+
+    img_pointer += cx * 3;
+
+    int i = 0;
+    int w3 = (cw - cx) * 3;
+    int h = ch - y;
+
+    for (i = cy; i < h; i += 1) {
         memcpy(pix_pointer, img_pointer, w3);
         pix_pointer += fbg->finfo.line_length;
         img_pointer += img->width * 3;

@@ -123,7 +123,9 @@ int main(int argc, char* argv[]) {
 
         fbg_draw(fbg);
 
-        fbg_image(fbg, texture, 0, 0, fbg->width, fbg->height);
+        // you can also use fbg_image(fbg, texture, 0, 0)
+        // but you must be sure that your image size fit on the display
+        fbg_image(fbg, texture, 0, 0, 0, 0, fbg->width, fbg->height);
 
         fbg_write(fbg, "Quickstart example\nFPS:", 4, 2);
         fbg_write(fbg, fbg->fps_char, 32 + 8, 2 + 8);
@@ -299,9 +301,11 @@ See screenshots below.
 
 ## Documentation
 
-All usable functions and structures are documented in the `fbgraphics.h` file
+All usable functions and structures are documented in the `fbgraphics.h` file with [Doxygen](http://www.stack.nl/~dimitri/doxygen/)
 
-Examples demonstrating all features are also available in the `examples` directory.
+The HTML documentation can be found in the `documentation/html` directory.
+
+Examples demonstrating all features are available in the `examples` directory.
 
 Some effects come from [my Open Processing sketches](https://www.openprocessing.org/user/130883#sketches)
 
