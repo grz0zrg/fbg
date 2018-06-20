@@ -52,8 +52,6 @@ void fbg_ringbufferCleanup(struct lfds711_ringbuffer_state *rs, void *key, void 
 #endif
 
 struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
-    int x = 0, y = 0;
-
     struct _fbg *fbg = (struct _fbg *)calloc(1, sizeof(struct _fbg));
     if (!fbg) {
         fprintf(stderr, "fbg_init: fbg malloc failed!\n");
@@ -707,7 +705,7 @@ void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h) {
         *pix_pointer++ = fbg->fill_color.b;
     }
 
-    for (yy = 0; yy < h; yy += 1) {
+    for (yy = 1; yy < h; yy += 1) {
         fpix_pointer += fbg->finfo.line_length;
 
         memcpy(fpix_pointer, org_pointer, w3);
@@ -731,7 +729,6 @@ void fbg_additiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
 
 void fbg_draw(struct _fbg *fbg, int sync_with_tasks, void (*user_mixing)(struct _fbg *fbg, unsigned char *buffer, int task_id)) {
     int i = 0;
-    int j = 0;
     int ringbuffer_read_status = 0;
     void *key;
 
@@ -771,7 +768,7 @@ void fbg_draw(struct _fbg *fbg) {
     ioctl(fbg->fd, FBIO_WAITFORVSYNC, &dummy);
 #endif
 
-    if (!fbg->page_flipping) {
+    if (fbg->page_flipping == 0) {
         memcpy(fbg->buffer, fbg->disp_buffer, fbg->size);
     }
 }

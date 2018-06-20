@@ -46,7 +46,6 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     int x, y;
     for (y = fbg->task_id - 1; y < fbg->height; y += fbg->parallel_tasks) {
         float perlin_x = user_data->xxm * fbg->height;
-        float perlin_y = user_data->xxm * fbg->height;
 
         int rep = 4;
 
@@ -77,14 +76,6 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     user_data->motion += 0.001;
 }
 
-// we mix the buffers
-void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
-    int j = 0;
-    for (j = 0; j < fbg->size; j += 1) {
-        fbg->back_buffer[j] = (fbg->back_buffer[j] > buffer[j]) ? fbg->back_buffer[j] : buffer[j];
-    }
-}
-
 int main(int argc, char* argv[]) {
     srand(time(NULL));
 
@@ -109,7 +100,7 @@ int main(int argc, char* argv[]) {
 
         //fbg_fadeDown(fbg, 2);
 
-        fbg_draw(fbg, 1, selectiveMixing);
+        fbg_draw(fbg, 1, NULL);
 
         // we just draw texts from this thread
         fbg_write(fbg, "FBGraphics", 4, 2);
