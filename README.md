@@ -53,6 +53,8 @@ fbset -fb /dev/fb0 -g 512 240 512 240 24 -vsync high
 setterm -cursor off > /dev/tty0
 ```
 
+`fbset` should be available in your package manager.
+
 ### Quickstart
 
 The simplest example (no parallelism, without texts and images) :

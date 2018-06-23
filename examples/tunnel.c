@@ -125,9 +125,7 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-#ifdef __unix__
     signal(SIGINT, int_handler);
-#endif
 
     tunnel_texture = fbg_loadPNG(fbg, "tunnel.png");
     struct _fbg_img *bbimg = fbg_loadPNG(fbg, "bbmode1_8x8.png");
@@ -159,15 +157,7 @@ int main(int argc, char* argv[]) {
         fbg_drawFramerate(fbg, NULL, 3, 4+32, 32+16+4+8, 255, 255, 255);
 
         fbg_flip(fbg);
-
-#if defined(_WIN32) || defined(_WIN64)
-	if (_kbhit()) {
-            break;
-	}
-    } while (1);
-#else
     } while (keep_running);
-#endif
 
     fragmentStop(fbg, user_data);
 

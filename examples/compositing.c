@@ -61,9 +61,7 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-#ifdef __unix__
     signal(SIGINT, int_handler);
-#endif
 
     struct _fbg_img *texture = fbg_loadPNG(fbg, "texture.png");
     struct _fbg_img *bbimg = fbg_loadPNG(fbg, "bbmode1_8x8.png");
@@ -92,15 +90,7 @@ int main(int argc, char* argv[]) {
         fbg_drawFramerate(fbg, NULL, 2, 4+32, 32+8+8, 255, 255, 255);
 
         fbg_flip(fbg);
-
-#if defined(_WIN32) || defined(_WIN64)
-	if (_kbhit()) {
-            break;
-	}
-    } while (1);
-#else
     } while (keep_running);
-#endif
 
     fbg_close(fbg);
 
