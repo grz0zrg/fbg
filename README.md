@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
 
         // you can also use fbg_image(fbg, texture, 0, 0)
         // but you must be sure that your image size fit on the display
-        fbg_image(fbg, texture, 0, 0, 0, 0, fbg->width, fbg->height);
+        fbg_imageClip(fbg, texture, 0, 0, 0, 0, fbg->width, fbg->height);
 
         fbg_write(fbg, "Quickstart example\nFPS:", 4, 2);
         fbg_write(fbg, fbg->fps_char, 32 + 8, 2 + 8);
