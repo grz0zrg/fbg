@@ -331,6 +331,8 @@ For parallelism support, `FBG_PARALLEL` need to be defined and you will need the
 
 To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make`.
 
+**Note** : The basic version of the library work on the ARM64 platform but parallel support on ARM64 platform is only supported in the ARM64 branch, you will need the not yet released liblfds720 to compile it.
+
 ## Screenshots
 
 ![Full example screenshot with three threads](/screenshot1.png?raw=true "Full example screenshot with three threads")

@@ -37,7 +37,7 @@
     #include <stdatomic.h>
     #include <pthread.h>
 
-    #include "liblfds711.h"
+    #include "liblfds720.h"
 #endif
 
 // ### Library structures
@@ -171,7 +171,7 @@
     //! Freelist data structure
     /*! Hold pre-allocated data associated with a task */
     struct _fbg_freelist_data {
-        struct lfds711_freelist_element freelist_element;
+        struct lfds720_freelist_n_element freelist_element;
 
         unsigned char *buffer;
     };
@@ -186,12 +186,12 @@
         struct _fbg *fbg;
 
         //! Ringbuffer element
-        struct lfds711_ringbuffer_element *ringbuffer_element;
+        struct lfds720_ringbuffer_n_element *ringbuffer_element;
         //! Ringbuffer state
-        struct lfds711_ringbuffer_state ringbuffer_state;
+        struct lfds720_ringbuffer_n_state ringbuffer_state;
 
         //! Freelist state
-        struct lfds711_freelist_state freelist_state;
+        struct lfds720_freelist_n_state freelist_state;
         //! Pre-allocated tasks data
         struct _fbg_freelist_data *fbg_freelist_data;
 
