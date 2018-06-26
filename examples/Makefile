@@ -19,7 +19,7 @@ OUT5=earth
 OUT6=flags
 OUT7=compositing
 LIBS1=-lm
-LIBS2=-lm -lpthread liblfds711.a
+LIBS2=-lm -lpthread liblfds720.a
 INCS=-I ../src/ -I.
 
 all:
