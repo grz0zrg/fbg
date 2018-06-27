@@ -59,7 +59,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             
             float xxd = xx * flags_texture->width;
             
-            int cl = (int)(xxd + yyd) * 3;
+            int cl = (int)(xxd + yyd) * fbg->components;
             
             int r = flags_texture->data[cl];
             int g = flags_texture->data[cl + 1];

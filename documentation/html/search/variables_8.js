@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['size',['size',['../fbgraphics_8h.html#a84fb220d4804cba22176997898e75b73',1,'_fbg']]]
+  ['page_5fflipping',['page_flipping',['../fbgraphics_8h.html#ad32509bca6ac4fb467476834cb8ce9d2',1,'_fbg']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['text_5fcolor',['text_color',['../fbgraphics_8h.html#a4abb858439598b09790ec6d5d8326bb2',1,'_fbg']]]
+  ['r',['r',['../fbgraphics_8h.html#a3974f2dce77af4058a1ae585f55c5bb8',1,'_fbg_rgb']]]
 ];

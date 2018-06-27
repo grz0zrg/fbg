@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vinfo',['vinfo',['../fbgraphics_8h.html#a22447f0d56680de6ff37587b44f7cf4b',1,'_fbg']]]
+  ['size',['size',['../fbgraphics_8h.html#a84fb220d4804cba22176997898e75b73',1,'_fbg']]]
 ];

@@ -8,7 +8,7 @@
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}}
-\begin{DoxyCompactList}\small\item\em R\+GB color data structure.  \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{More...}}\end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em R\+G\+BA color data structure.  \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{More...}}\end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}
 \begin{DoxyCompactList}\small\item\em Image data structure.  \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{More...}}\end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}}
@@ -69,7 +69,7 @@ void \mbox{\hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\+\_\+
 \begin{DoxyCompactList}\small\item\em draw to the screen \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_aedfec23bc4c51ff5ffb843bb289d448b}{fbg\+\_\+flip}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em flip the buffers \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_aa7b9bb18460a40b19eb4e55006e0834a}{fbg\+\_\+create\+Image}} (unsigned int width, unsigned int height)
+struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned int width, unsigned int height)
 \begin{DoxyCompactList}\small\item\em create an empty image \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+NG}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, const char $\ast$filename)
 \begin{DoxyCompactList}\small\item\em load a P\+NG image from a file \end{DoxyCompactList}\item 
@@ -101,13 +101,19 @@ int \mbox{\hyperlink{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}{fbg\+\_\+g
 \index{\+\_\+fbg\+\_\+rgb@{\+\_\+fbg\+\_\+rgb}}\label{struct__fbg__rgb}
 \Hypertarget{fbgraphics_8h_struct__fbg__rgb}
 \subsubsection{struct \+\_\+fbg\+\_\+rgb}
-R\+GB color data structure. 
+R\+G\+BA color data structure. 
 
-Hold R\+GB components \mbox{[}0,255\mbox{]} 
+Hold R\+G\+BA components \mbox{[}0,255\mbox{]} 
 
 Definition at line 47 of file fbgraphics.\+h.
 
 \begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{fbgraphics_8h_a683be8ec38b9931754fe8501c4df3019}\label{fbgraphics_8h_a683be8ec38b9931754fe8501c4df3019}} 
+unsigned char&
+a&
+\\
+\hline
+
 \mbox{\Hypertarget{fbgraphics_8h_a5eb0caaedd56ed29a1ef1f7941f414d7}\label{fbgraphics_8h_a5eb0caaedd56ed29a1ef1f7941f414d7}} 
 unsigned char&
 b&
@@ -134,7 +140,7 @@ Image data structure.
 
 Hold images informations and data 
 
-Definition at line 55 of file fbgraphics.\+h.
+Definition at line 56 of file fbgraphics.\+h.
 
 \begin{DoxyFields}{Data Fields}
 \mbox{\Hypertarget{fbgraphics_8h_ab996d65bce285a78c8a8f3ac99b40658}\label{fbgraphics_8h_ab996d65bce285a78c8a8f3ac99b40658}} 
@@ -163,7 +169,7 @@ Bitmap font data structure.
 
 Hold bitmap font informations and associated image 
 
-Definition at line 67 of file fbgraphics.\+h.
+Definition at line 68 of file fbgraphics.\+h.
 
 \begin{DoxyFields}{Data Fields}
 \mbox{\Hypertarget{fbgraphics_8h_a0e7995b285b04f41d883165b0e7e387f}\label{fbgraphics_8h_a0e7995b285b04f41d883165b0e7e387f}} 
@@ -210,7 +216,7 @@ FB Graphics context data structure.
 
 Hold all data related to a F\+BG context 
 
-Definition at line 87 of file fbgraphics.\+h.
+Definition at line 88 of file fbgraphics.\+h.
 
 \begin{DoxyFields}{Data Fields}
 \mbox{\Hypertarget{fbgraphics_8h_a907e7fc97965b972c17114c885e53735}\label{fbgraphics_8h_a907e7fc97965b972c17114c885e53735}} 
@@ -229,6 +235,18 @@ Flag indicating a B\+GR framebuffer. \\
 unsigned char $\ast$&
 buffer&
 Memory-\/mapped framebuffer. \\
+\hline
+
+\mbox{\Hypertarget{fbgraphics_8h_a7c2e64d2f40575c8a989c759c30acb0e}\label{fbgraphics_8h_a7c2e64d2f40575c8a989c759c30acb0e}} 
+int&
+comp\_offset&
+Offset to add in case of 32 B\+PP. \\
+\hline
+
+\mbox{\Hypertarget{fbgraphics_8h_a1db77a2ef506723a575644dbc1cfb747}\label{fbgraphics_8h_a1db77a2ef506723a575644dbc1cfb747}} 
+int&
+components&
+Display components amount (3 = 24 B\+PP / 4 = 32 B\+PP) \\
 \hline
 
 \mbox{\Hypertarget{fbgraphics_8h_a72868d703236aaabb7a5031703a6bbd8}\label{fbgraphics_8h_a72868d703236aaabb7a5031703a6bbd8}} 
@@ -297,6 +315,12 @@ height&
 Display height in pixels. \\
 \hline
 
+\mbox{\Hypertarget{fbgraphics_8h_af8a1ee8d7004e6f2193f2a3ed98f8ce8}\label{fbgraphics_8h_af8a1ee8d7004e6f2193f2a3ed98f8ce8}} 
+int&
+line\_length&
+Internal buffers line length. \\
+\hline
+
 \mbox{\Hypertarget{fbgraphics_8h_ad32509bca6ac4fb467476834cb8ce9d2}\label{fbgraphics_8h_ad32509bca6ac4fb467476834cb8ce9d2}} 
 int&
 page\_flipping&
@@ -349,7 +373,7 @@ integer M\+AX Math function
 
 
 
-Definition at line 573 of file fbgraphics.\+h.
+Definition at line 581 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}\label{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+M\+IN@{\+\_\+\+F\+B\+G\+\_\+\+M\+IN}}
@@ -363,7 +387,7 @@ integer M\+IN Math function
 
 
 
-Definition at line 575 of file fbgraphics.\+h.
+Definition at line 583 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}\label{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+S\+GN@{\+\_\+\+F\+B\+G\+\_\+\+S\+GN}}
@@ -377,7 +401,7 @@ integer S\+I\+GN function
 
 
 
-Definition at line 577 of file fbgraphics.\+h.
+Definition at line 585 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}\label{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fade@{fbg\+\_\+fade}}
@@ -401,7 +425,7 @@ background fade to black with controllable factor
 \end{DoxySeeAlso}
 
 
-Definition at line 560 of file fbgraphics.\+h.
+Definition at line 568 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}\label{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+init@{fbg\+\_\+init}}
@@ -418,7 +442,7 @@ initialize a FB Graphics context with \textquotesingle{}/dev/fb0\textquotesingle
 \end{DoxySeeAlso}
 
 
-Definition at line 552 of file fbgraphics.\+h.
+Definition at line 560 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}\label{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+write@{fbg\+\_\+write}}
@@ -447,7 +471,7 @@ draw a text by using the current font and the current color
 \end{DoxySeeAlso}
 
 
-Definition at line 570 of file fbgraphics.\+h.
+Definition at line 578 of file fbgraphics.\+h.
 
 
 
@@ -543,11 +567,11 @@ create a bitmap font from an image
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{fbgraphics_8h_aae823fe76a206cbc1fdd405c13d26830}{fbg\+\_\+free\+Font()}}, \mbox{\hyperlink{fbgraphics_8h_ac1ccfb0069d4567313391dc819ada76b}{fbg\+\_\+text\+Font()}}, \mbox{\hyperlink{fbgraphics_8h_a3233e3de8fc3ad06391641241c77a1ea}{fbg\+\_\+text()}}, \mbox{\hyperlink{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}{fbg\+\_\+write()}}, \mbox{\hyperlink{fbgraphics_8h_a112e427410882007fbcea78b0657c5f1}{fbg\+\_\+draw\+Framerate()}} 
 \end{DoxySeeAlso}
-\mbox{\Hypertarget{fbgraphics_8h_aa7b9bb18460a40b19eb4e55006e0834a}\label{fbgraphics_8h_aa7b9bb18460a40b19eb4e55006e0834a}} 
+\mbox{\Hypertarget{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}\label{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+create\+Image@{fbg\+\_\+create\+Image}}
 \index{fbg\+\_\+create\+Image@{fbg\+\_\+create\+Image}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+create\+Image()}{fbg\_createImage()}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}$\ast$ fbg\+\_\+create\+Image (\begin{DoxyParamCaption}\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}$\ast$ fbg\+\_\+create\+Image (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})}
 
 
 
@@ -555,6 +579,8 @@ create an empty image
 
 
 \begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
 {\em width} & image width \\
 \hline
 {\em height} & image height \\
@@ -771,7 +797,7 @@ free the memory associated with an image
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_aa7b9bb18460a40b19eb4e55006e0834a}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}\label{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+get\+Framerate@{fbg\+\_\+get\+Framerate}}
@@ -866,7 +892,7 @@ draw an image
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_aa7b9bb18460a40b19eb4e55006e0834a}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a3610bf730319af99045283ea66955741}\label{fbgraphics_8h_a3610bf730319af99045283ea66955741}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Clip@{fbg\+\_\+image\+Clip}}
@@ -898,7 +924,7 @@ draw a clipped image
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_aa7b9bb18460a40b19eb4e55006e0834a}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}\label{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Flip@{fbg\+\_\+image\+Flip}}
@@ -916,7 +942,7 @@ flip an image vertically
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_aa7b9bb18460a40b19eb4e55006e0834a}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a46f7354a04a7bfb7467d25394ce38303}\label{fbgraphics_8h_a46f7354a04a7bfb7467d25394ce38303}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+line@{fbg\+\_\+line}}

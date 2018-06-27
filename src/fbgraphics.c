@@ -84,28 +84,60 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
         return NULL;
     }
 
-    fbg->width = fbg->vinfo.xres;
-    fbg->height = fbg->vinfo.yres;
+    fprintf(stdout, "fbg_init: '%s' (%dx%d (%dx%d virtual) %d bpp (%d/%d, %d/%d, %d/%d) (%d smen_len) %d line_length)\n",
+        fb_device,
+        fbg->vinfo.xres, fbg->vinfo.yres,
+        fbg->vinfo.xres_virtual, fbg->vinfo.yres_virtual,
+        fbg->vinfo.bits_per_pixel,
+        fbg->vinfo.red.length,
+        fbg->vinfo.red.offset,
+        fbg->vinfo.green.length,
+        fbg->vinfo.green.offset,
+        fbg->vinfo.blue.length,
+        fbg->vinfo.blue.offset,
+        fbg->finfo.smem_len,
+        fbg->finfo.line_length);
 
-    fbg->width_n_height = fbg->width * fbg->height;
-
-    fbg->size = fbg->vinfo.xres * fbg->vinfo.yres * (fbg->vinfo.bits_per_pixel / 8);
-
-    if (fbg->vinfo.bits_per_pixel != 24) {
-        fprintf(stderr, "fbg_init: '%s' Unsupported format (only 24 bits framebuffer is supported)!\n", fb_device);
+    if (fbg->vinfo.bits_per_pixel != 16 && fbg->vinfo.bits_per_pixel != 24 && fbg->vinfo.bits_per_pixel != 32) {
+        fprintf(stderr, "fbg_init: '%s' Unsupported format (only 16, 24 or 32 bits framebuffer is supported)!\n", fb_device);
 
         close(fbg->fd);
 
         return NULL;
     }
 
-    if (fbg->vinfo.bits_per_pixel == 24 &&
+    if (fbg->vinfo.bits_per_pixel == 16) {
+        fprintf(stdout, "fbg_init: 16 bpp framebuffer detected; page flipping option not supported; all graphics operations will be managed in 24 bits then converted to 16 bpp before drawing.\n");
+
+        fbg->components = 3;
+
+        page_flipping = 0;
+    } else {
+        fbg->components = fbg->vinfo.bits_per_pixel / 8;
+        fbg->comp_offset = fbg->components - 3;
+    }
+
+    fbg->width = fbg->vinfo.xres;
+    fbg->height = fbg->vinfo.yres;
+
+    fbg->line_length = fbg->width * fbg->components;
+
+    fbg->width_n_height = fbg->width * fbg->height;
+
+    fbg->size = fbg->vinfo.xres * fbg->vinfo.yres * fbg->components;
+
+    if ((fbg->vinfo.bits_per_pixel == 24 || fbg->vinfo.bits_per_pixel == 32) &&
         fbg->vinfo.red.length == 8 &&
         fbg->vinfo.red.offset == 16 &&
         fbg->vinfo.green.length == 8 &&
         fbg->vinfo.blue.length == 8 &&
         fbg->vinfo.blue.offset == 0 &&
         fbg->vinfo.green.offset == 8) {
+        fbg->bgr = 1;
+    }
+
+    if (fbg->vinfo.bits_per_pixel == 16 &&
+        fbg->vinfo.red.offset == 11) {
         fbg->bgr = 1;
     }
 
@@ -121,7 +153,7 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
             } else {
                 fbg->page_flipping = 1;
 
-                fprintf(stdout, "fbg_init: '%s' Page flipping enabled!\n", fb_device);
+                fprintf(stdout, "fbg_init: '%s' Page flipping enabled (virtual height was doubled)!\n", fb_device);
 
                 if (ioctl(fbg->fd, FBIOGET_FSCREENINFO, &fbg->finfo) == -1) {
                     fprintf(stderr, "fbg_init: '%s' Cannot obtain framebuffer FBIOGET_FSCREENINFO informations!\n", fb_device);
@@ -138,20 +170,6 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
         }
     }
 
-    fprintf(stdout, "fbg_init: '%s' (%dx%d (%dx%d virtual) %d bpp (%d/%d, %d/%d, %d/%d) (%d smen_len) %d line_length)\n",
-        fb_device,
-        fbg->vinfo.xres, fbg->vinfo.yres,
-        fbg->vinfo.xres_virtual, fbg->vinfo.yres_virtual,
-        fbg->vinfo.bits_per_pixel,
-        fbg->vinfo.red.length,
-        fbg->vinfo.red.offset,
-        fbg->vinfo.green.length,
-        fbg->vinfo.green.offset,
-        fbg->vinfo.blue.length,
-        fbg->vinfo.blue.offset,
-        fbg->finfo.smem_len,
-        fbg->finfo.line_length);
-
     // initialize framebuffer
     fbg->buffer = (unsigned char *)mmap(0, fbg->finfo.smem_len,
         PROT_WRITE,
@@ -163,7 +181,7 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
     // setup page flipping
     if (fbg->page_flipping) {
         fbg->disp_buffer = fbg->buffer;
-        fbg->back_buffer = fbg->buffer + fbg->width * (fbg->vinfo.bits_per_pixel >> 3) * fbg->height;
+        fbg->back_buffer = fbg->buffer + fbg->width * fbg->components * fbg->height;
     } else {
         // setup front & back buffers
         fbg->back_buffer = calloc(1, fbg->size * sizeof(char));
@@ -471,14 +489,18 @@ void fbg_createFragment(struct _fbg *fbg,
         memcpy(&task_fbg->vinfo, &fbg->vinfo, sizeof(struct fb_var_screeninfo));
         memcpy(&task_fbg->finfo, &fbg->finfo, sizeof(struct fb_fix_screeninfo));
 
-        task_fbg->width = task_fbg->vinfo.xres;
-        task_fbg->height = task_fbg->vinfo.yres;
+        task_fbg->components = fbg->components;
+        task_fbg->comp_offset = fbg->comp_offset;
+        task_fbg->line_length = fbg->line_length;
+
+        task_fbg->width = fbg->vinfo.xres;
+        task_fbg->height = fbg->vinfo.yres;
 
         task_fbg->parallel_tasks = fbg->parallel_tasks;
 
         task_fbg->width_n_height = task_fbg->width * task_fbg->height;
 
-        task_fbg->size = task_fbg->vinfo.xres * task_fbg->vinfo.yres * (task_fbg->vinfo.bits_per_pixel / 8);
+        task_fbg->size = task_fbg->vinfo.xres * task_fbg->vinfo.yres * task_fbg->components;
 
         struct _fbg_fragment *frag = (struct _fbg_fragment *)calloc(1, sizeof(struct _fbg_fragment));
         if (!frag) {
@@ -570,42 +592,44 @@ void fbg_fill(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned char 
 }
 
 void fbg_pixel(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b) {
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length + ((x << 1) + x)));
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
 
     *pix_pointer++ = r;
     *pix_pointer++ = g;
     *pix_pointer++ = b;
+    pix_pointer += fbg->comp_offset;
 }
 
 void fbg_fpixel(struct _fbg *fbg, int x, int y) {
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length));
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length));
 
-    memcpy(pix_pointer, &fbg->fill_color, 3);
+    memcpy(pix_pointer, &fbg->fill_color, fbg->components);
 }
 
 void fbg_hline(struct _fbg *fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b) {
     int xx;
 
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length + ((x << 1) + x)));
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
 
     for (xx = 0; xx < w; xx += 1) {
         *pix_pointer++ = r;
         *pix_pointer++ = g;
         *pix_pointer++ = b;
+        pix_pointer += fbg->comp_offset;
     }
 }
 
 void fbg_vline(struct _fbg *fbg, int x, int y, int h, unsigned char r, unsigned char g, unsigned char b) {
     int yy;
 
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length + ((x << 1) + x)));
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
 
     for (yy = 0; yy < h; yy += 1) {
         *pix_pointer++ = r;
         *pix_pointer++ = g;
         *pix_pointer++ = b;
 
-        pix_pointer += fbg->finfo.line_length - 3;
+        pix_pointer += fbg->line_length - 3;
     }
 }
 
@@ -624,11 +648,12 @@ void fbg_line(struct _fbg *fbg, int x1, int y1, int x2, int y2, unsigned char r,
     px = x1;
     py = y1;
 
-    char *pix_pointer = (char *)(fbg->back_buffer + (py * fbg->finfo.line_length + ((px << 1) + px)));
+    char *pix_pointer = (char *)(fbg->back_buffer + (py * fbg->line_length + px * fbg->components));
 
     *pix_pointer++ = r;
     *pix_pointer++ = g;
     *pix_pointer++ = b;
+    pix_pointer += fbg->comp_offset;
 
     if (dxabs >= dyabs) {
         for (i = 0; i < dxabs; i += 1) {
@@ -676,25 +701,26 @@ void fbg_polygon(struct _fbg *fbg, int num_vertices, int *vertices, unsigned cha
 }
 
 void fbg_rect(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b) {
-    int xx = 0, yy = 0, w3 = w * 3;
+    int xx = 0, yy = 0, w3 = w * fbg->components;
 
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length + ((x << 1) + x)));
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
 
     for (yy = 0; yy < h; yy += 1) {
         for (xx = 0; xx < w; xx += 1) {
             *pix_pointer++ = r;
             *pix_pointer++ = g;
             *pix_pointer++ = b;
+            pix_pointer += fbg->comp_offset;
         }
 
-        pix_pointer += (fbg->finfo.line_length - w3);
+        pix_pointer += (fbg->line_length - w3);
     }
 }
 
 void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h) {
-    int xx, yy, w3 = w * 3;
+    int xx, yy, w3 = w * fbg->components;
 
-    char *fpix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length + ((x << 1) + x)));
+    char *fpix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
 
     char *org_pointer = fpix_pointer;
     char *pix_pointer = fpix_pointer;
@@ -703,19 +729,20 @@ void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h) {
         *pix_pointer++ = fbg->fill_color.r;
         *pix_pointer++ = fbg->fill_color.g;
         *pix_pointer++ = fbg->fill_color.b;
+        pix_pointer += fbg->comp_offset;
     }
 
     for (yy = 1; yy < h; yy += 1) {
-        fpix_pointer += fbg->finfo.line_length;
+        fpix_pointer += fbg->line_length;
 
         memcpy(fpix_pointer, org_pointer, w3);
     }
 }
 
 void fbg_getPixel(struct _fbg *fbg, int x, int y, struct _fbg_rgb *color) {
-    int ofs = y * fbg->finfo.line_length + x * 3;
+    int ofs = y * fbg->line_length + x * fbg->components;
 
-    memcpy(color, (char *)(fbg->disp_buffer + ofs), 3);
+    memcpy(color, (char *)(fbg->disp_buffer + ofs), fbg->components);
 }
 
 #ifdef FBG_PARALLEL
@@ -769,7 +796,23 @@ void fbg_draw(struct _fbg *fbg) {
 #endif
 
     if (fbg->page_flipping == 0) {
-        memcpy(fbg->buffer, fbg->disp_buffer, fbg->size);
+        if (fbg->vinfo.bits_per_pixel == 16) {
+            unsigned char *pix_pointer_src = fbg->disp_buffer;
+            unsigned char *pix_pointer_dst = fbg->buffer;
+
+            int i = 0;
+
+            for (i = 0; i < fbg->width_n_height; i += 1) {
+                unsigned int v = ((*pix_pointer_src++ >> 3) & 0x1f);
+                v |= ((*pix_pointer_src++ >> 2) & 0x3f) << 5;
+                v |= ((*pix_pointer_src++ >> 3) & 0x1f) << 11;
+
+                *pix_pointer_dst++ = v;
+                *pix_pointer_dst++ = v >> 8;;
+            }
+        } else {
+            memcpy(fbg->buffer, fbg->disp_buffer, fbg->size);
+        }
     }
 }
 
@@ -809,6 +852,7 @@ void fbg_fadeDown(struct _fbg *fbg, unsigned char rgb_fade_amount) {
         *pix_pointer++;
         *pix_pointer = _FBG_MAX(*pix_pointer - rgb_fade_amount, 0);
         *pix_pointer++;
+        pix_pointer += fbg->comp_offset;
     }
 }
 
@@ -824,6 +868,7 @@ void fbg_fadeUp(struct _fbg *fbg, unsigned char rgb_fade_amount) {
         *pix_pointer++;
         *pix_pointer = _FBG_MIN(*pix_pointer + rgb_fade_amount, 255);
         *pix_pointer++;
+        pix_pointer += fbg->comp_offset;
     }
 }
 
@@ -839,6 +884,7 @@ void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned
         *pix_pointer++;
         *pix_pointer = b;
         *pix_pointer++;
+        pix_pointer += fbg->comp_offset;
     }
 }
 
@@ -934,12 +980,12 @@ void fbg_text(struct _fbg *fbg, struct _fbg_font *fnt, char *text, int x, int y,
 
         for (gy = 0; gy < 8; gy += 1) {
             int ly = gcoordy + gy;
-            int fly = ((ly << 1) + ly) * fnt->bitmap->width;
+            int fly = ly * fnt->bitmap->width;
             int py = y + gy;
 
             for (gx = 0; gx < 8; gx += 1) {
                 int lx = gcoordx + gx;
-                unsigned char fl = fnt->bitmap->data[fly + ((lx << 1) + lx)];
+                unsigned char fl = fnt->bitmap->data[(fly + lx) * fbg->components];
 
                 if (fl) {
                     fbg_pixel(fbg, x + gx + c * fnt->glyph_width, py, r, g, b);
@@ -958,13 +1004,13 @@ void fbg_freeFont(struct _fbg_font *font) {
     free(font);
 }
 
-struct _fbg_img *fbg_createImage(unsigned int width, unsigned int height) {
+struct _fbg_img *fbg_createImage(struct _fbg *fbg, unsigned int width, unsigned int height) {
     struct _fbg_img *img = (struct _fbg_img *)calloc(1, sizeof(struct _fbg_img));
     if (!img) {
         fprintf(stderr, "fbg_createImage : calloc failed!\n");
     }
 
-    img->data = calloc(1, (width * height * 4) * sizeof(char));
+    img->data = calloc(1, (width * height * fbg->components) * sizeof(char));
     if (!img->data) {
         fprintf(stderr, "fbg_createImage (%ix%i): calloc failed!\n", width, height);
 
@@ -983,15 +1029,21 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
     unsigned char *data;
     unsigned int width;
     unsigned int height;
+    unsigned int error;
 
-    unsigned int error = lodepng_decode24_file(&data, &width, &height, filename);
+    if (fbg->components == 3) {
+        error = lodepng_decode24_file(&data, &width, &height, filename);
+    } else {
+        error = lodepng_decode32_file(&data, &width, &height, filename);
+    }
+
     if (error) {
         fprintf(stderr, "fbg_loadPNG %u: %s\n", error, lodepng_error_text(error));
 
         return NULL;
     }
 
-    struct _fbg_img *img = fbg_createImage(width, height);
+    struct _fbg_img *img = fbg_createImage(fbg, width, height);
     if (!img) {
         fprintf(stderr, "fbg_loadPNG : Image '%s' data allocation failed\n", filename);
 
@@ -1010,10 +1062,12 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
                 int b = *pix_pointer2++;
                 *pix_pointer2++;
                 int r = *pix_pointer2++;
+                pix_pointer2 += fbg->comp_offset;
 
                 *pix_pointer++ = r;
                 *pix_pointer++;
                 *pix_pointer++ = b;
+                pix_pointer += fbg->comp_offset;
             }
         }
     }
@@ -1024,33 +1078,33 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
 }
 
 void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y) {
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length));
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length));
     unsigned char *img_pointer = img->data;
 
     int i = 0;
-    int w3 = img->width * 3;
+    int w3 = img->width * fbg->components;
 
     for (i = 0; i < img->height; i += 1) {
         memcpy(pix_pointer, img_pointer, w3);
-        pix_pointer += fbg->finfo.line_length;
+        pix_pointer += fbg->line_length;
         img_pointer += w3;
     }
 }
 
 void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch) {
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->finfo.line_length));
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length));
     unsigned char *img_pointer = img->data;
 
-    img_pointer += cx * 3;
+    img_pointer += cx * fbg->components;
 
     int i = 0;
-    int w3 = (cw - cx) * 3;
+    int w3 = (cw - cx) * fbg->components;
     int h = ch - y;
 
     for (i = cy; i < h; i += 1) {
         memcpy(pix_pointer, img_pointer, w3);
-        pix_pointer += fbg->finfo.line_length;
-        img_pointer += img->width * 3;
+        pix_pointer += fbg->line_length;
+        img_pointer += img->width * fbg->components;
     }
 }
 

@@ -1,7 +1,7 @@
 FBGraphics : Lightweight C graphics library for the Linux framebuffer with parallelism support
 =====
 
-FBGraphics (FBG) is a simple C 24 bpp graphics library for the Linux framebuffer with parallelism support.
+FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library for the Linux framebuffer with parallelism support.
 
 Features :
  * Optional : Full parallelism, execute graphics code on multiple CPU cores **with a single function**
@@ -9,7 +9,7 @@ Features :
  * Bitmap fonts for drawing texts
  * Bare-metal graphics primitive (pixels, rectangles, lines, polygon)
  * Double buffering (with optional page flipping mechanism)
- * 24 bpp only (may change in the future!)
+ * 16, 24 (BGR/RGB), 32 bpp support
  * Easy to do fading and screen-clearing related effects (motion blur etc.)
  * Framerate tracking & display for all cores
  * Lightweight enough to be hackable; adapt to all kinds of needs (and still support parallelism easily)
@@ -32,7 +32,9 @@ Table of Contents
 
 ## About
 
-FBGraphics was made to produce fullscreen pixels effects easily with non-accelerated framebuffer by leveraging multi-core processors, it is a bit like a software GPU (much less complex and featured!), the initial target platform is a Raspberry PI 3B and extend to the NanoPI (and many others embedded devices), the library should just work with many others devices with a Linux framebuffer altough there is at the moment some restrictions on the supported framebuffer format (24 bits).
+FBGraphics was made to produce fullscreen pixels effects easily with non-accelerated framebuffer by leveraging multi-core processors, it is a bit like a software GPU (much less complex and featured!), the initial target platform is a Raspberry PI 3B and extend to the NanoPI (and many others embedded devices), the library should just work with many others devices with a Linux framebuffer.
+
+FBGraphics support 16, 24 (BGR/RGB), 32 bpp framebuffer, 16 bpp mode is handled by converting from 24 bpp to 16 bpp upon drawing, page flipping mechanism is disabled in 16 bpp mode, *24 bpp is the fastest mode*.
 
 FBGraphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing framebuffer graphics right away with or without multi-core support.
 

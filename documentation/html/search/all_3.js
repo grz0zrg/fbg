@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['data',['data',['../fbgraphics_8h.html#ab996d65bce285a78c8a8f3ac99b40658',1,'_fbg_img']]],
-  ['disp_5fbuffer',['disp_buffer',['../fbgraphics_8h.html#aa20614c94c7235bc5bc105b6e71e1be8',1,'_fbg']]]
+  ['comp_5foffset',['comp_offset',['../fbgraphics_8h.html#a7c2e64d2f40575c8a989c759c30acb0e',1,'_fbg']]],
+  ['components',['components',['../fbgraphics_8h.html#a1db77a2ef506723a575644dbc1cfb747',1,'_fbg']]],
+  ['current_5ffont',['current_font',['../fbgraphics_8h.html#a72868d703236aaabb7a5031703a6bbd8',1,'_fbg']]]
 ];

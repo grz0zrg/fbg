@@ -47,7 +47,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
 
     float xoff = fbg->width / 2.0f;
     
-    float sphere_radius = fbg->height / 2;
+    float sphere_radius = fbg->height / 2.5;
     float yoff = fbg->height / 2.0f - sphere_radius;
 
     for (int s = fbg->task_id; s < elems; s += (fbg->parallel_tasks + 1)) {
@@ -90,7 +90,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             float xrepeat = 0.5f;
             int xxd = ((earth_texture->width - 1) - (int)(yc_off * (earth_texture->width * xrepeat) + user_data->xmotion)%earth_texture->width);
         
-            int cl = (int)(xxd + yyd) * 3;
+            int cl = (int)(xxd + yyd) * fbg->components;
             
             int r = (int)((float)earth_texture->data[cl] * bd);
             int g = (int)((float)earth_texture->data[cl + 1] * bd);
@@ -101,7 +101,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             
             int xxd2 = fmaxf(0, ((earth_text_texture->width - 1) - (int)(yc_off * (earth_text_texture->width * txrepeat) + user_data->xmotion)%earth_text_texture->width));
         
-            int cl2 = (int)(xxd2 + yyd2) * 3;
+            int cl2 = (int)(xxd2 + yyd2) * fbg->components;
             
             int r2 = (int)((float)earth_text_texture->data[cl2] * bd);
             int g2 = (int)((float)earth_text_texture->data[cl2 + 1] * bd);
@@ -114,7 +114,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             
             // fourth texture (cycle mask), only use single component since it is black/white
             int xxdc = ((earth_cycle_texture->width - 1) - (int)(yc_off * (earth_cycle_texture->width * xrepeat) + user_data->xmotion * 4)%earth_cycle_texture->width);
-            int clc = (int)(xxdc + yydc) * 3;
+            int clc = (int)(xxdc + yydc) * fbg->components;
             float rc = (float)earth_cycle_texture->data[clc] / 255.0f;
             
             float final_r = r * rc + rn * (1.0f - rc);
@@ -143,7 +143,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             float xrepeat = 0.5;
             int xxd = ((earth_texture->width - 1) - (int)(yc_off * (earth_texture->width * xrepeat) + user_data->xmotion)%earth_texture->width);
         
-            int cl = (int)(xxd + yyd) * 3;
+            int cl = (int)(xxd + yyd) * fbg->components;
             
             int r = (int)((float)earth_texture->data[cl] * bd);
             int g = (int)((float)earth_texture->data[cl + 1] * bd);
@@ -154,7 +154,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             
             int xxd2 = fmaxf(0, ((earth_text_texture->width - 1) - (int)(yc_off * (earth_text_texture->width * txrepeat) + user_data->xmotion)%earth_text_texture->width));
         
-            int cl2 = (int)(xxd2 + yyd2) * 3;
+            int cl2 = (int)(xxd2 + yyd2) * fbg->components;
             
             int r2 = (int)((float)earth_text_texture->data[cl2] * bd);
             int g2 = (int)((float)earth_text_texture->data[cl2 + 1] * bd);
@@ -167,7 +167,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             
             // fourth texture (cycle mask), only use single component since it is black/white
             int xxdc = ((earth_cycle_texture->width - 1) - (int)(yc_off * (earth_cycle_texture->width * xrepeat) + user_data->xmotion * 4)%earth_cycle_texture->width);
-            int clc = (int)(xxdc + yydc) * 3;
+            int clc = (int)(xxdc + yydc) * fbg->components;
             float rc = (float)earth_cycle_texture->data[clc] / 255.0f;
             
             float final_r = r * rc + rn * (1.0f - rc);

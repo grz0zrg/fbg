@@ -97,7 +97,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             // apply colormap / texture
             int yyd = (((int)(dd * tunnel_texture->height))) * tunnel_texture->width;
         
-            int cl = (int)(xxd + yyd) * 3;
+            int cl = (int)(xxd + yyd) * fbg->components;
             
             int r = (int)((float)tunnel_texture->data[cl] * bd);
             int g = (int)((float)tunnel_texture->data[cl + 1] * bd);
