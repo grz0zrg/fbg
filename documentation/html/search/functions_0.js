@@ -4,7 +4,7 @@ var searchData=
   ['fbg_5fclear',['fbg_clear',['../fbgraphics_8h.html#aab50cccf3eceac81bda220a0c09e38e0',1,'fbgraphics.h']]],
   ['fbg_5fclose',['fbg_close',['../fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401',1,'fbgraphics.h']]],
   ['fbg_5fcreatefont',['fbg_createFont',['../fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c',1,'fbgraphics.h']]],
-  ['fbg_5fcreateimage',['fbg_createImage',['../fbgraphics_8h.html#aa7b9bb18460a40b19eb4e55006e0834a',1,'fbgraphics.h']]],
+  ['fbg_5fcreateimage',['fbg_createImage',['../fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16',1,'fbgraphics.h']]],
   ['fbg_5fdraw',['fbg_draw',['../fbgraphics_8h.html#a2dfb2f17bc31e161868e6baf1c391816',1,'fbgraphics.h']]],
   ['fbg_5fdrawframerate',['fbg_drawFramerate',['../fbgraphics_8h.html#a112e427410882007fbcea78b0657c5f1',1,'fbgraphics.h']]],
   ['fbg_5ffadedown',['fbg_fadeDown',['../fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e',1,'fbgraphics.h']]],

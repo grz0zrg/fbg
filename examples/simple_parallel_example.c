@@ -38,7 +38,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     int x = 0, y = 0;
     for (y = fbg->task_id; y < fbg->height; y += (fbg->parallel_tasks + 1)) {
         for (x = 0; x < fbg->width; x += 1) {
-            int i = (x + y * fbg->width) * 3;
+            int i = (x + y * fbg->width) * fbg->components;
             fbg->back_buffer[i] = fbg->task_id * 85; // note : BGR format
             fbg->back_buffer[i + 1] = 0;
             fbg->back_buffer[i + 2] = 0;

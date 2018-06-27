@@ -42,12 +42,13 @@
 
 // ### Library structures
 
-    //! RGB color data structure
-    /*! Hold RGB components [0,255] */
+    //! RGBA color data structure
+    /*! Hold RGBA components [0,255]*/
     struct _fbg_rgb {
         unsigned char r;
         unsigned char g;
         unsigned char b;
+        unsigned char a;
     };
 
     //! Image data structure
@@ -122,6 +123,12 @@
         int height;
         //! Display lenght in pixels (width * height)
         int width_n_height;
+        //! Display components amount (3 = 24 BPP / 4 = 32 BPP)
+        int components;
+        //! Offset to add in case of 32 BPP
+        int comp_offset;
+        //! Internal buffers line length
+        int line_length;
 
         //! Current FPS
 #ifdef FBG_PARALLEL
@@ -405,12 +412,13 @@
 
     //! create an empty image
     /*!
+      \param fbg pointer to a FBG context / data structure
       \param width image width
       \param height image height
       \return _fbg_img data structure pointer
       \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont()
     */
-    extern struct _fbg_img *fbg_createImage(unsigned int width, unsigned int height);
+    extern struct _fbg_img *fbg_createImage(struct _fbg *fbg, unsigned int width, unsigned int height);
 
     //! load a PNG image from a file
     /*!

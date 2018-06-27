@@ -59,14 +59,12 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             int yy = fminf(fmaxf(y + user_data->pr * p, 0), fbg->height - 1);
             int xx = x;
 
-            int ytl = (((yy * rep - (int)(user_data->motion * 4)) % texture->height) * 3) * texture->width;
-            int xtl = ytl + (((x * rep + (int)(user_data->motion * 4)) % texture->width) * 3);
+            int ytl = (((yy * rep - (int)(user_data->motion * 4)) % texture->height) * fbg->components) * texture->width;
+            int xtl = ytl + (((x * rep + (int)(user_data->motion * 4)) % texture->width) * fbg->components);
 
             r = texture->data[xtl] * (1. - p);
             g = texture->data[xtl + 1] * (1. - p);
             b = texture->data[xtl + 2] * (1. - p);
-
-            p *= 3;
 
             fbg_pixel(fbg, xx, yy, r, g, b);
         }
