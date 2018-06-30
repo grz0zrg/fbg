@@ -32,6 +32,7 @@
     #include <time.h>
     #include <sys/time.h>
     #include <stdint.h>
+    #include <math.h>
 
 #ifdef FBG_PARALLEL
     #include <stdatomic.h>
@@ -425,7 +426,7 @@
       \param fbg pointer to a FBG context / data structure
       \param filename PNG image filename
       \return _fbg_img data structure pointer
-      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont()
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_imageEx(), fbg_imageScale()
     */
     extern struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename);
 
@@ -435,7 +436,7 @@
       \param img image structure pointer
       \param x image X position (upper left coordinate)
       \param y image Y position (upper left coordinate)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale()
     */
     extern void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y);
 
@@ -447,9 +448,9 @@
       \param y image Y position (upper left coordinate)
       \param cx The X coordinate where to start clipping
       \param cy The Y coordinate where to start clipping
-      \param cw The width of the clipped image
-      \param ch The height of the clipped image
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_freeImage(), fbg_image(), fbg_imageFlip()
+      \param cw The width of the clipped image (from cx)
+      \param ch The height of the clipped image (from cy)
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale()
     */
     extern void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch);
 
@@ -459,6 +460,22 @@
       \sa fbg_createImage(), fbg_loadPNG()
     */
     extern void fbg_imageFlip(struct _fbg_img *img);
+
+    //! draw an image with support for clipping and scaling
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param img image structure pointer
+      \param x image X position (upper left coordinate)
+      \param y image Y position (upper left coordinate)
+      \param sx The X scale factor
+      \param sy The Y scale factor
+      \param cx The X coordinate where to start clipping
+      \param cy The Y coordinate where to start clipping
+      \param cw The width of the clipped image (from cx)
+      \param ch The height of the clipped image (from cy)
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageScale()
+    */
+    extern void fbg_imageEx(struct _fbg *fbg, struct _fbg_img *img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch);
 
     //! free the memory associated with an image
     /*!
@@ -576,6 +593,18 @@
       \sa fbg_textFont(), fbg_textColor(), fbg_text()
     */
     #define fbg_write(fbg, text, x, y) fbg_text(fbg, &fbg->current_font, text, x, y, fbg->text_color.r, fbg->text_color.g, fbg->text_color.b)
+
+    //! draw a scaled image
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param img image structure pointer
+      \param x image X position (upper left coordinate)
+      \param y image Y position (upper left coordinate)
+      \param sx The X scale factor
+      \param sy The Y scale factor
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx()
+    */
+    #define fbg_imageScale(fbg, img, x, y, sx, sy) fbg_imageEx(fbg, img, x, y, sx, sy, 0, 0, img->width, img->height)
 
     //! integer MAX Math function
     #define _FBG_MAX(a,b) ((a) > (b) ? a : b)

@@ -1078,7 +1078,7 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
 }
 
 void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y) {
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length));
+    unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (y * fbg->line_length));
     unsigned char *img_pointer = img->data;
 
     int i = 0;
@@ -1092,16 +1092,16 @@ void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y) {
 }
 
 void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch) {
-    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length));
-    unsigned char *img_pointer = img->data;
+    unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
+    unsigned char *img_pointer = (unsigned char *)(img->data + (cy * img->width * fbg->components));
 
     img_pointer += cx * fbg->components;
 
     int i = 0;
-    int w3 = (cw - cx) * fbg->components;
-    int h = ch - y;
+    int w3 = _FBG_MIN((cw - cx) * fbg->components, (fbg->width - x) * fbg->components);
+    int h = ch - cy;
 
-    for (i = cy; i < h; i += 1) {
+    for (i = 0; i < h; i += 1) {
         memcpy(pix_pointer, img_pointer, w3);
         pix_pointer += fbg->line_length;
         img_pointer += img->width * fbg->components;
@@ -1120,6 +1120,42 @@ void fbg_imageFlip(struct _fbg_img *img) {
         for (j = 0; j < img->width; j += 1) {
             img->data[y + j] = img->data[fy + j];
         }
+    }
+}
+
+void fbg_imageEx(struct _fbg *fbg, struct _fbg_img *img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch) {
+    float x_ratio_inv = 1.0f / sx;
+    float y_ratio_inv = 1.0f / sy;
+
+    int px, py;
+    int cx2 = (float)cx * sx;
+    int cy2 = (float)cy * sy;
+    int w2 = (float)(cw + cx) * sx;
+    int h2 = (float)(ch + cy) * sy;
+    int i, j;
+
+    int d = w2 - cx2;
+
+    if (d >= (fbg->width - x)) {
+        w2 -= (d - (fbg->width - x));
+    }
+
+    unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
+
+    for (i = cy2; i < h2; i += 1) {
+        py = floorf(x_ratio_inv * (float)i);
+
+        for (j = cx2; j < w2; j += 1) {
+            px = floorf(y_ratio_inv * (float)j);
+            
+            unsigned char *img_pointer = (unsigned char *)(img->data + ((px + py * img->width) * fbg->components));
+
+            memcpy(pix_pointer, img_pointer, fbg->components);
+
+            pix_pointer += fbg->components;
+        }
+
+        pix_pointer += fbg->line_length - (w2 - cx2) * fbg->components;
     }
 }
 
