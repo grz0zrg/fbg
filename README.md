@@ -331,7 +331,7 @@ For parallelism support, `FBG_PARALLEL` need to be defined and you will need the
 
 To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make`.
 
-**Note** : ARM64 platform (NanoPI etc.) is supported in the ARM64 branch, it require liblfds720 which is not yet available publicly, it will be merged with the master branch once liblfds720 is released.
+**Note** : ARM64 platform (NanoPI etc.) is supported in the ARM64 branch with some new features such as bitmap scaling + cropping and some fixes, it require liblfds720 which is not yet available publicly, it will be merged with the master branch once liblfds720 is released.
 
 ## Screenshots
 
