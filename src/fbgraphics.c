@@ -338,11 +338,11 @@ void fbg_drawFramerate(struct _fbg *fbg, struct _fbg_font *fnt, int task, int x,
 }
 
 int fbg_getFramerate(struct _fbg *fbg, int task) {
+#ifdef FBG_PARALLEL
     if (task > fbg->parallel_tasks) {
         return -1;
     }
 
-#ifdef FBG_PARALLEL
     if (task > 0) {
         task -= 1;
 
@@ -355,6 +355,7 @@ int fbg_getFramerate(struct _fbg *fbg, int task) {
     return fbg->fps;
 }
 
+#ifdef FBG_PARALLEL
 int fbg_fragmentState(struct _fbg_fragment *fbg_fragment) {
     return (*fbg_fragment->state);
 }
