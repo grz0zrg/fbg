@@ -953,6 +953,17 @@ void fbg_textColor(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned 
     fbg->text_color.b = b;
 }
 
+void fbg_textColorKey(struct _fbg *fbg, unsigned char v) {
+    fbg->text_colorkey = v;
+}
+
+void fbg_textBackground(struct _fbg *fbg, int r, int g, int b, int a) {
+    fbg->text_background.r = r;
+    fbg->text_background.g = g;
+    fbg->text_background.b = b;
+    fbg->text_alpha = a;
+}
+
 void fbg_text(struct _fbg *fbg, struct _fbg_font *fnt, char *text, int x, int y, int r, int g, int b) {
     int i = 0, c = 0, gx, gy;
 
@@ -990,7 +1001,11 @@ void fbg_text(struct _fbg *fbg, struct _fbg_font *fnt, char *text, int x, int y,
                 int lx = gcoordx + gx;
                 unsigned char fl = fnt->bitmap->data[(fly + lx) * fbg->components];
 
-                if (fl) {
+                if (fl == fbg->text_colorkey) {
+                    if (!fbg->text_alpha) {
+                        fbg_pixel(fbg, x + gx + c * fnt->glyph_width, py, fbg->text_background.r, fbg->text_background.g, fbg->text_background.b);
+                    }
+                } else {
                     fbg_pixel(fbg, x + gx + c * fnt->glyph_width, py, r, g, b);
                 }
             }
