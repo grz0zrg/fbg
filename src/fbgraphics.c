@@ -306,11 +306,13 @@ void fbg_computeFramerate(struct _fbg *fbg, int to_string) {
     fbg->frame += 1;
 }
 
-#ifdef FBG_PARALLEL
+
 void fbg_drawFramerate(struct _fbg *fbg, struct _fbg_font *fnt, int task, int x, int y, int r, int g, int b) {
+#ifdef FBG_PARALLEL
     if (task > fbg->parallel_tasks) {
         return;
     }
+#endif
 
     if (!fnt) {
         fnt = &fbg->current_font;
