@@ -114,6 +114,18 @@
         /*! Default to white. */
         struct _fbg_rgb text_color;
 
+        //! Current text background color (based on colorkey value)
+        /*! Default to black. */
+        struct _fbg_rgb text_background;
+
+        //! Current text color key
+        /*! Default to black. */
+        unsigned char text_colorkey;
+
+        //! Text background alpha value (binary)
+        /*! Default to transparent. */
+        int text_alpha;
+
         //! Current font
         /*! No fonts is loaded by default and the first loaded font will be assigned automatically as the current font. */
         struct _fbg_font current_font;
@@ -510,9 +522,28 @@
       \param r
       \param g
       \param b
-      \sa fbg_createFont(), fbg_write()
+      \sa fbg_createFont(), fbg_write(), fbg_textColorKey(), fbg_textBackground()
     */
     extern void fbg_textColor(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned char b);
+
+    //! set the current text background color (based on colorkey value!)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param r
+      \param g
+      \param b
+      \param a binary alpha value, 0 = transparent background, 1 = background
+      \sa fbg_createFont(), fbg_write(), fbg_textColorKey(), fbg_textColor()
+    */
+    extern void fbg_textBackground(struct _fbg *fbg, int r, int g, int b, int a);
+
+    //! set the current text color key
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param v grayscale value
+      \sa fbg_createFont(), fbg_write(), fbg_textColor()
+    */
+    extern void fbg_textColorKey(struct _fbg *fbg, unsigned char v);
 
     //! draw a text
     /*!
@@ -524,7 +555,7 @@
       \param r
       \param g
       \param b
-      \sa fbg_createFont(), fbg_write()
+      \sa fbg_createFont(), fbg_write(), fbg_textColorkey(), fbg_textBackground()
     */
     extern void fbg_text(struct _fbg *fbg, struct _fbg_font *fnt, char *text, int x, int y, int r, int g, int b);
 
@@ -590,7 +621,7 @@
       \param text the text to draw ('\n' and ' ' are treated automatically)
       \param x
       \param y
-      \sa fbg_textFont(), fbg_textColor(), fbg_text()
+      \sa fbg_textFont(), fbg_textColor(), fbg_text(), fbg_textColorkey(), fbg_textBackground()
     */
     #define fbg_write(fbg, text, x, y) fbg_text(fbg, &fbg->current_font, text, x, y, fbg->text_color.r, fbg->text_color.g, fbg->text_color.b)
 

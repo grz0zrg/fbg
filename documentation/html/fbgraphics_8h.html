@@ -231,6 +231,12 @@ Functions</h2></td></tr>
 <tr class="memitem:acae7a4ff39407371a52ebf9ae4c260c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1">fbg_textColor</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:acae7a4ff39407371a52ebf9ae4c260c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the current text color  <a href="#acae7a4ff39407371a52ebf9ae4c260c1">More...</a><br /></td></tr>
 <tr class="separator:acae7a4ff39407371a52ebf9ae4c260c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e82acd949a5c12a1fa494fb4c028ff1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1">fbg_textBackground</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int r, int g, int b, int a)</td></tr>
+<tr class="memdesc:a2e82acd949a5c12a1fa494fb4c028ff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the current text background color (based on colorkey value!)  <a href="#a2e82acd949a5c12a1fa494fb4c028ff1">More...</a><br /></td></tr>
+<tr class="separator:a2e82acd949a5c12a1fa494fb4c028ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7165bceebbbe11332256d1bd4e179489"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a7165bceebbbe11332256d1bd4e179489">fbg_textColorKey</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char v)</td></tr>
+<tr class="memdesc:a7165bceebbbe11332256d1bd4e179489"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the current text color key  <a href="#a7165bceebbbe11332256d1bd4e179489">More...</a><br /></td></tr>
+<tr class="separator:a7165bceebbbe11332256d1bd4e179489"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3233e3de8fc3ad06391641241c77a1ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea">fbg_text</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *fnt, char *text, int x, int y, int r, int g, int b)</td></tr>
 <tr class="memdesc:a3233e3de8fc3ad06391641241c77a1ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a text  <a href="#a3233e3de8fc3ad06391641241c77a1ea">More...</a><br /></td></tr>
 <tr class="separator:a3233e3de8fc3ad06391641241c77a1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -521,11 +527,32 @@ size</td>
 <td class="fielddoc">
 Framebuffer real data length (with BPP) </td></tr>
 <tr><td class="fieldtype">
+<a id="a870987786121c51135f20b630d731abd"></a>int</td>
+<td class="fieldname">
+text_alpha</td>
+<td class="fielddoc">
+Text background alpha value (binary) <p class="">Default to transparent. </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="afd34a8de5a853e915bd101f11d44cf67"></a>struct <a class="el" href="fbgraphics_8h.html#struct__fbg__rgb">_fbg_rgb</a></td>
+<td class="fieldname">
+text_background</td>
+<td class="fielddoc">
+Current text background color (based on colorkey value) <p class="">Default to black. </p>
+</td></tr>
+<tr><td class="fieldtype">
 <a id="a4abb858439598b09790ec6d5d8326bb2"></a>struct <a class="el" href="fbgraphics_8h.html#struct__fbg__rgb">_fbg_rgb</a></td>
 <td class="fieldname">
 text_color</td>
 <td class="fielddoc">
 Current text color. <p class="">Default to white. </p>
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a06e65293cf0b48e70d76d63f5de453e6"></a>unsigned char</td>
+<td class="fieldname">
+text_colorkey</td>
+<td class="fielddoc">
+Current text color key. <p class="">Default to black. </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a22447f0d56680de6ff37587b44f7cf4b"></a>struct fb_var_screeninfo</td>
@@ -578,7 +605,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer MAX Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00610">610</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00641">641</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -610,7 +637,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer MIN Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00612">612</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00643">643</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -632,7 +659,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer SIGN function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00614">614</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00645">645</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -672,7 +699,7 @@ Display lenght in pixels (width * height) </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a19d56a111248b7f7d52f4bc6392d3743" title="background fade to white with controllable factor ">fbg_fadeUp()</a>, <a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e" title="background fade to black with controllable factor ">fbg_fadeDown()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00585">585</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00616">616</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -740,7 +767,7 @@ Display lenght in pixels (width * height) </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00607">607</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00638">638</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -762,7 +789,7 @@ Display lenght in pixels (width * height) </td></tr>
 <p>initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00577">577</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00608">608</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -815,9 +842,9 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#ac1ccfb0069d4567313391dc819ada76b" title="set the current font ">fbg_textFont()</a>, <a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1" title="set the current text color ">fbg_textColor()</a>, <a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea" title="draw a text ">fbg_text()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#ac1ccfb0069d4567313391dc819ada76b" title="set the current font ">fbg_textFont()</a>, <a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1" title="set the current text color ">fbg_textColor()</a>, <a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea" title="draw a text ">fbg_text()</a>, fbg_textColorkey(), <a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1" title="set the current text background color (based on colorkey value!) ">fbg_textBackground()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00595">595</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00626">626</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -2323,7 +2350,66 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a45d1d295d53d80013ca6d55487c02fa0" title="draw a text by using the current font and the current color ">fbg_write()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a45d1d295d53d80013ca6d55487c02fa0" title="draw a text by using the current font and the current color ">fbg_write()</a>, fbg_textColorkey(), <a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1" title="set the current text background color (based on colorkey value!) ">fbg_textBackground()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2e82acd949a5c12a1fa494fb4c028ff1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e82acd949a5c12a1fa494fb4c028ff1">&#9670;&nbsp;</a></span>fbg_textBackground()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fbg_textBackground </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramname"><em>fbg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>set the current text background color (based on colorkey value!) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
+    <tr><td class="paramname">r</td><td></td></tr>
+    <tr><td class="paramname">g</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+    <tr><td class="paramname">a</td><td>binary alpha value, 0 = transparent background, 1 = background </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a45d1d295d53d80013ca6d55487c02fa0" title="draw a text by using the current font and the current color ">fbg_write()</a>, <a class="el" href="fbgraphics_8h.html#a7165bceebbbe11332256d1bd4e179489" title="set the current text color key ">fbg_textColorKey()</a>, <a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1" title="set the current text color ">fbg_textColor()</a> </dd></dl>
 
 </div>
 </div>
@@ -2375,7 +2461,45 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a45d1d295d53d80013ca6d55487c02fa0" title="draw a text by using the current font and the current color ">fbg_write()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a45d1d295d53d80013ca6d55487c02fa0" title="draw a text by using the current font and the current color ">fbg_write()</a>, <a class="el" href="fbgraphics_8h.html#a7165bceebbbe11332256d1bd4e179489" title="set the current text color key ">fbg_textColorKey()</a>, <a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1" title="set the current text background color (based on colorkey value!) ">fbg_textBackground()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7165bceebbbe11332256d1bd4e179489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7165bceebbbe11332256d1bd4e179489">&#9670;&nbsp;</a></span>fbg_textColorKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fbg_textColorKey </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramname"><em>fbg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>set the current text color key </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
+    <tr><td class="paramname">v</td><td>grayscale value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a45d1d295d53d80013ca6d55487c02fa0" title="draw a text by using the current font and the current color ">fbg_write()</a>, <a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1" title="set the current text color ">fbg_textColor()</a> </dd></dl>
 
 </div>
 </div>
