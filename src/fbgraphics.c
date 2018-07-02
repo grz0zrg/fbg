@@ -603,6 +603,18 @@ void fbg_pixel(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g,
     pix_pointer += fbg->comp_offset;
 }
 
+void fbg_pixela(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
+
+    *pix_pointer = ((a * r + (255 - a) * (*pix_pointer)) >> 8);
+    pix_pointer += 1;
+    *pix_pointer = ((a * g + (255 - a) * (*pix_pointer)) >> 8);;
+    pix_pointer += 1;
+    *pix_pointer = ((a * b + (255 - a) * (*pix_pointer)) >> 8);;
+    pix_pointer += 1;
+    pix_pointer += fbg->comp_offset;
+}
+
 void fbg_fpixel(struct _fbg *fbg, int x, int y) {
     char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length));
 
@@ -1002,9 +1014,7 @@ void fbg_text(struct _fbg *fbg, struct _fbg_font *fnt, char *text, int x, int y,
                 unsigned char fl = fnt->bitmap->data[(fly + lx) * fbg->components];
 
                 if (fl == fbg->text_colorkey) {
-                    if (!fbg->text_alpha) {
-                        fbg_pixel(fbg, x + gx + c * fnt->glyph_width, py, fbg->text_background.r, fbg->text_background.g, fbg->text_background.b);
-                    }
+                    fbg_pixela(fbg, x + gx + c * fnt->glyph_width, py, fbg->text_background.r, fbg->text_background.g, fbg->text_background.b, fbg->text_alpha);
                 } else {
                     fbg_pixel(fbg, x + gx + c * fnt->glyph_width, py, r, g, b);
                 }
