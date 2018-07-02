@@ -992,12 +992,12 @@ void fbg_text(struct _fbg *fbg, struct _fbg_font *fnt, char *text, int x, int y,
         int gcoordx = fnt->glyph_coord_x[font_glyph];
         int gcoordy = fnt->glyph_coord_y[font_glyph];
 
-        for (gy = 0; gy < 8; gy += 1) {
+        for (gy = 0; gy < fnt->glyph_height; gy += 1) {
             int ly = gcoordy + gy;
             int fly = ly * fnt->bitmap->width;
             int py = y + gy;
 
-            for (gx = 0; gx < 8; gx += 1) {
+            for (gx = 0; gx < fnt->glyph_width; gx += 1) {
                 int lx = gcoordx + gx;
                 unsigned char fl = fnt->bitmap->data[(fly + lx) * fbg->components];
 
