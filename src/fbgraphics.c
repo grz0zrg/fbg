@@ -715,6 +715,26 @@ void fbg_polygon(struct _fbg *fbg, int num_vertices, int *vertices, unsigned cha
          r, g, b);
 }
 
+void fbg_recta(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+    int xx = 0, yy = 0, w3 = w * fbg->components;
+
+    char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
+
+    for (yy = 0; yy < h; yy += 1) {
+        for (xx = 0; xx < w; xx += 1) {
+            *pix_pointer = ((a * r + (255 - a) * (*pix_pointer)) >> 8);
+            pix_pointer += 1;
+            *pix_pointer = ((a * g + (255 - a) * (*pix_pointer)) >> 8);
+            pix_pointer += 1;
+            *pix_pointer = ((a * b + (255 - a) * (*pix_pointer)) >> 8);
+            pix_pointer += 1;
+            pix_pointer += fbg->comp_offset;
+        }
+
+        pix_pointer += (fbg->line_length - w3);
+    }
+}
+
 void fbg_rect(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b) {
     int xx = 0, yy = 0, w3 = w * fbg->components;
 

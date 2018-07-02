@@ -28,6 +28,7 @@ var searchData=
   ['fbg_5fpixela',['fbg_pixela',['../fbgraphics_8h.html#a08c6a08afcb5bd07793801554b8f0bfe',1,'fbgraphics.h']]],
   ['fbg_5fpolygon',['fbg_polygon',['../fbgraphics_8h.html#a2a5a2ef48f5b26794473c51082fb75ab',1,'fbgraphics.h']]],
   ['fbg_5frect',['fbg_rect',['../fbgraphics_8h.html#ad208d61ec4f50a5fd13f2cc8dd2ee0e5',1,'fbgraphics.h']]],
+  ['fbg_5frecta',['fbg_recta',['../fbgraphics_8h.html#a83a99e5c8d44e2acf52cad38519ececf',1,'fbgraphics.h']]],
   ['fbg_5fsetup',['fbg_setup',['../fbgraphics_8h.html#aea89f0f15615a00ee4a390d6848ec54c',1,'fbgraphics.h']]],
   ['fbg_5ftext',['fbg_text',['../fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea',1,'fbgraphics.h']]],
   ['fbg_5ftextbackground',['fbg_textBackground',['../fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1',1,'fbgraphics.h']]],
