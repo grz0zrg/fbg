@@ -1007,6 +1007,8 @@ void fbg_text(struct _fbg *fbg, struct _fbg_font *fnt, char *text, int x, int y,
         char glyph = text[i];
 
         if (glyph == ' ') {
+            fbg_recta(fbg, x + c * fnt->glyph_width, y, fnt->glyph_width, fnt->glyph_height, fbg->text_background.r, fbg->text_background.g, fbg->text_background.b, fbg->text_alpha);
+            
             c += 1;
 
             continue;
