@@ -58,6 +58,8 @@ void \mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+
 \begin{DoxyCompactList}\small\item\em fast pixel drawing which use the fill color set by \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}} \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a rectangle \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fbgraphics_8h_a83a99e5c8d44e2acf52cad38519ececf}{fbg\+\_\+recta}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+\begin{DoxyCompactList}\small\item\em draw a rectangle with alpha transparency \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}{fbg\+\_\+frect}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h)
 \begin{DoxyCompactList}\small\item\em fast rectangle drawing which use the fill color set by \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}} \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a0558e4513da1d844526d54afea4d1531}{fbg\+\_\+hline}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b)
@@ -347,7 +349,7 @@ Framebuffer real data length (with B\+PP) \\
 \mbox{\Hypertarget{fbgraphics_8h_a870987786121c51135f20b630d731abd}\label{fbgraphics_8h_a870987786121c51135f20b630d731abd}} 
 int&
 text\_alpha&
-Text background alpha value (binary) Default to transparent. \\
+Text background alpha value. Default to transparent. \\
 \hline
 
 \mbox{\Hypertarget{fbgraphics_8h_afd34a8de5a853e915bd101f11d44cf67}\label{fbgraphics_8h_afd34a8de5a853e915bd101f11d44cf67}} 
@@ -402,7 +404,7 @@ integer M\+AX Math function
 
 
 
-Definition at line 654 of file fbgraphics.\+h.
+Definition at line 669 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}\label{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+M\+IN@{\+\_\+\+F\+B\+G\+\_\+\+M\+IN}}
@@ -416,7 +418,7 @@ integer M\+IN Math function
 
 
 
-Definition at line 656 of file fbgraphics.\+h.
+Definition at line 671 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}\label{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+S\+GN@{\+\_\+\+F\+B\+G\+\_\+\+S\+GN}}
@@ -430,7 +432,7 @@ integer S\+I\+GN function
 
 
 
-Definition at line 658 of file fbgraphics.\+h.
+Definition at line 673 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}\label{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fade@{fbg\+\_\+fade}}
@@ -454,7 +456,7 @@ background fade to black with controllable factor
 \end{DoxySeeAlso}
 
 
-Definition at line 629 of file fbgraphics.\+h.
+Definition at line 644 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}\label{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Scale@{fbg\+\_\+image\+Scale}}
@@ -486,7 +488,7 @@ draw a scaled image
 \end{DoxySeeAlso}
 
 
-Definition at line 651 of file fbgraphics.\+h.
+Definition at line 666 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}\label{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+init@{fbg\+\_\+init}}
@@ -503,7 +505,7 @@ initialize a FB Graphics context with \textquotesingle{}/dev/fb0\textquotesingle
 \end{DoxySeeAlso}
 
 
-Definition at line 621 of file fbgraphics.\+h.
+Definition at line 636 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}\label{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+write@{fbg\+\_\+write}}
@@ -532,7 +534,7 @@ draw a text by using the current font and the current color
 \end{DoxySeeAlso}
 
 
-Definition at line 639 of file fbgraphics.\+h.
+Definition at line 654 of file fbgraphics.\+h.
 
 
 
@@ -822,7 +824,7 @@ fast rectangle drawing which use the fill color set by \mbox{\hyperlink{fbgraphi
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill}}, \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect()}} 
+\mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill}}, \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect()}}, \mbox{\hyperlink{fbgraphics_8h_a83a99e5c8d44e2acf52cad38519ececf}{fbg\+\_\+recta()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_aae823fe76a206cbc1fdd405c13d26830}\label{fbgraphics_8h_aae823fe76a206cbc1fdd405c13d26830}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+free\+Font@{fbg\+\_\+free\+Font}}
@@ -1209,7 +1211,41 @@ draw a rectangle
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}{fbg\+\_\+frect()}} 
+\mbox{\hyperlink{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}{fbg\+\_\+frect()}}, \mbox{\hyperlink{fbgraphics_8h_a83a99e5c8d44e2acf52cad38519ececf}{fbg\+\_\+recta()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_a83a99e5c8d44e2acf52cad38519ececf}\label{fbgraphics_8h_a83a99e5c8d44e2acf52cad38519ececf}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+recta@{fbg\+\_\+recta}}
+\index{fbg\+\_\+recta@{fbg\+\_\+recta}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+recta()}{fbg\_recta()}}
+{\footnotesize\ttfamily void fbg\+\_\+recta (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b,  }\item[{unsigned char}]{a }\end{DoxyParamCaption})}
+
+
+
+draw a rectangle with alpha transparency 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em x} & rectangle X position (upper left coordinate) \\
+\hline
+{\em y} & rectangle Y position (upper left coordinate) \\
+\hline
+{\em w} & rectangle width \\
+\hline
+{\em h} & rectangle height \\
+\hline
+{\em r} & \\
+\hline
+{\em g} & \\
+\hline
+{\em b} & \\
+\hline
+{\em a} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}{fbg\+\_\+frect()}}, \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}\label{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+setup@{fbg\+\_\+setup}}
@@ -1287,7 +1323,7 @@ set the current text background color (based on colorkey value!)
 \hline
 {\em b} & \\
 \hline
-{\em a} & binary alpha value, 0 = transparent background, 1 = background \\
+{\em a} & 0 = transparent background (based on colorkey), 255 = full text background \\
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}

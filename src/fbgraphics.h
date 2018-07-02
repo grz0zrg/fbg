@@ -338,9 +338,24 @@
       \param r
       \param g
       \param b
-      \sa fbg_frect()
+      \sa fbg_frect(), fbg_recta()
     */
     extern void fbg_rect(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b);
+
+    //! draw a rectangle with alpha transparency
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x rectangle X position (upper left coordinate)
+      \param y rectangle Y position (upper left coordinate)
+      \param w rectangle width
+      \param h rectangle height
+      \param r
+      \param g
+      \param b
+      \param a
+      \sa fbg_frect(), fbg_rect()
+    */
+    extern void fbg_recta(struct _fbg *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
     //! fast rectangle drawing which use the fill color set by fbg_fill()
     /*!
@@ -349,7 +364,7 @@
       \param y rectangle Y position (upper left coordinate)
       \param w rectangle width
       \param h rectangle height
-      \sa fbg_fill, fbg_rect()
+      \sa fbg_fill, fbg_rect(), fbg_recta()
     */
     extern void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h);
 

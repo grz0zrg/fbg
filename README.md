@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-Note : Functions like `fbg_clear` or `fbg_fpixel` are fast functions, there is slower equivalent (but more parametrable) such as `fbg_background`
+**Note** : Functions like `fbg_clear` or `fbg_fpixel` are fast functions, there is slower equivalent (but more parametrable) such as `fbg_background` or `fbg_pixel`, some functions variant also support transparency such as ``fbg_pixela` or `fbg_recta`.
 
 ### Parallelism
 
