@@ -122,7 +122,7 @@
         /*! Default to black. */
         unsigned char text_colorkey;
 
-        //! Text background alpha value (binary)
+        //! Text background alpha value
         /*! Default to transparent. */
         int text_alpha;
 
@@ -302,16 +302,29 @@
       \param r
       \param g
       \param b
-      \sa fbg_fpixel()
+      \sa fbg_fpixel(), fbg_pixela()
     */
     extern void fbg_pixel(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b);
+
+    //! draw a pixel with alpha component (alpha blending)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param x pixel X position (upper left coordinate)
+      \param y pixel Y position (upper left coordinate)
+      \param r
+      \param g
+      \param b
+      \param a
+      \sa fbg_fpixel(), fbg_pixel()
+    */
+    extern void fbg_pixela(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
     //! fast pixel drawing which use the fill color set by fbg_fill()
     /*!
       \param fbg pointer to a FBG context / data structure
       \param x pixel X position (upper left coordinate)
       \param y pixel Y position (upper left coordinate)
-      \sa fbg_pixel(), fbg_fill()
+      \sa fbg_pixel(), fbg_fill(), fbg_pixela()
     */
     extern void fbg_fpixel(struct _fbg *fbg, int x, int y);
 
@@ -532,7 +545,7 @@
       \param r
       \param g
       \param b
-      \param a binary alpha value, 0 = transparent background, 1 = background
+      \param a 0 = transparent background (based on colorkey), 255 = full text background
       \sa fbg_createFont(), fbg_write(), fbg_textColorKey(), fbg_textColor()
     */
     extern void fbg_textBackground(struct _fbg *fbg, int r, int g, int b, int a);

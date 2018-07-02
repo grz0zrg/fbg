@@ -52,6 +52,8 @@ void \mbox{\hyperlink{fbgraphics_8h_a416971e772c114423b6c037f81d6f5ea}{fbg\+\_\+
 \begin{DoxyCompactList}\small\item\em get the R\+GB value of a pixel \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\+\_\+pixel}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a pixel \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}{fbg\+\_\+pixela}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+\begin{DoxyCompactList}\small\item\em draw a pixel with alpha component (alpha blending) \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+fpixel}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y)
 \begin{DoxyCompactList}\small\item\em fast pixel drawing which use the fill color set by \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}} \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)
@@ -400,7 +402,7 @@ integer M\+AX Math function
 
 
 
-Definition at line 641 of file fbgraphics.\+h.
+Definition at line 654 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}\label{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+M\+IN@{\+\_\+\+F\+B\+G\+\_\+\+M\+IN}}
@@ -414,7 +416,7 @@ integer M\+IN Math function
 
 
 
-Definition at line 643 of file fbgraphics.\+h.
+Definition at line 656 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}\label{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+S\+GN@{\+\_\+\+F\+B\+G\+\_\+\+S\+GN}}
@@ -428,7 +430,7 @@ integer S\+I\+GN function
 
 
 
-Definition at line 645 of file fbgraphics.\+h.
+Definition at line 658 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}\label{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fade@{fbg\+\_\+fade}}
@@ -452,7 +454,7 @@ background fade to black with controllable factor
 \end{DoxySeeAlso}
 
 
-Definition at line 616 of file fbgraphics.\+h.
+Definition at line 629 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}\label{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Scale@{fbg\+\_\+image\+Scale}}
@@ -484,7 +486,7 @@ draw a scaled image
 \end{DoxySeeAlso}
 
 
-Definition at line 638 of file fbgraphics.\+h.
+Definition at line 651 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}\label{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+init@{fbg\+\_\+init}}
@@ -501,7 +503,7 @@ initialize a FB Graphics context with \textquotesingle{}/dev/fb0\textquotesingle
 \end{DoxySeeAlso}
 
 
-Definition at line 608 of file fbgraphics.\+h.
+Definition at line 621 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}\label{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+write@{fbg\+\_\+write}}
@@ -530,7 +532,7 @@ draw a text by using the current font and the current color
 \end{DoxySeeAlso}
 
 
-Definition at line 626 of file fbgraphics.\+h.
+Definition at line 639 of file fbgraphics.\+h.
 
 
 
@@ -794,7 +796,7 @@ fast pixel drawing which use the fill color set by \mbox{\hyperlink{fbgraphics_8
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\+\_\+pixel()}}, \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}} 
+\mbox{\hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\+\_\+pixel()}}, \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}}, \mbox{\hyperlink{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}{fbg\+\_\+pixela()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}\label{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+frect@{fbg\+\_\+frect}}
@@ -1120,7 +1122,37 @@ draw a pixel
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+fpixel()}} 
+\mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+fpixel()}}, \mbox{\hyperlink{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}{fbg\+\_\+pixela()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}\label{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+pixela@{fbg\+\_\+pixela}}
+\index{fbg\+\_\+pixela@{fbg\+\_\+pixela}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+pixela()}{fbg\_pixela()}}
+{\footnotesize\ttfamily void fbg\+\_\+pixela (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b,  }\item[{unsigned char}]{a }\end{DoxyParamCaption})}
+
+
+
+draw a pixel with alpha component (alpha blending) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em x} & pixel X position (upper left coordinate) \\
+\hline
+{\em y} & pixel Y position (upper left coordinate) \\
+\hline
+{\em r} & \\
+\hline
+{\em g} & \\
+\hline
+{\em b} & \\
+\hline
+{\em a} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+fpixel()}}, \mbox{\hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\+\_\+pixel()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a2a5a2ef48f5b26794473c51082fb75ab}\label{fbgraphics_8h_a2a5a2ef48f5b26794473c51082fb75ab}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+polygon@{fbg\+\_\+polygon}}
