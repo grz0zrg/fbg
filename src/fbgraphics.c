@@ -1141,6 +1141,33 @@ void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y) {
     }
 }
 
+void fbg_imageColorkey(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cr, int cg, int cb) {
+    unsigned char *img_pointer = img->data;
+
+    int i = 0, j = 0;
+    
+    for (i = 0; i < img->height; i += 1) {
+        unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (i * fbg->line_length));
+        for (j = 0; j < img->width; j += 1) {
+            int ir = *img_pointer++,
+                ig = *img_pointer++,
+                ib = *img_pointer++;
+
+            img_pointer += fbg->comp_offset;
+
+            if (ir == cr && ig == cg && ib == cb) {
+                pix_pointer += fbg->components;
+                continue;
+            }
+
+            *pix_pointer++ = ir;
+            *pix_pointer++ = ig;
+            *pix_pointer++ = ib;
+            pix_pointer += fbg->comp_offset;
+        }
+    }
+}
+
 void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch) {
     unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
     unsigned char *img_pointer = (unsigned char *)(img->data + (cy * img->width * fbg->components));
@@ -1213,4 +1240,14 @@ void fbg_freeImage(struct _fbg_img *img) {
     free(img->data);
 
     free(img);
+}
+
+void fbg_drawInto(struct _fbg *fbg, unsigned char *buffer) {
+    if (buffer == NULL) {
+        fbg->back_buffer = fbg->temp_buffer;
+        fbg->temp_buffer = NULL;
+    } else {
+        fbg->temp_buffer = fbg->back_buffer;
+        fbg->back_buffer = buffer;
+    }
 }

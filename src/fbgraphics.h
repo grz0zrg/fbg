@@ -105,6 +105,8 @@
         //! Back buffer
         /*! All FB Graphics functions draw into this buffer. */
         unsigned char *back_buffer;
+        //! Temporary buffer
+        unsigned char *temp_buffer;
 
         //! Current fill color
         /*! Default to black. */
@@ -466,7 +468,7 @@
       \param fbg pointer to a FBG context / data structure
       \param filename PNG image filename
       \return _fbg_img data structure pointer
-      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_imageEx(), fbg_imageScale()
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename);
 
@@ -476,9 +478,22 @@
       \param img image structure pointer
       \param x image X position (upper left coordinate)
       \param y image Y position (upper left coordinate)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y);
+
+    //! draw an image with colorkey support (image colorkey value will be ignored)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param img image structure pointer
+      \param x image X position (upper left coordinate)
+      \param y image Y position (upper left coordinate)
+      \param cr colorkey red component
+      \param cg colorkey green component
+      \param cb colorkey blue component
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_image()
+    */
+    extern void fbg_imageColorkey(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cr, int cg, int cb);
 
     //! draw a clipped image
     /*!
@@ -490,7 +505,7 @@
       \param cy The Y coordinate where to start clipping
       \param cw The width of the clipped image (from cx)
       \param ch The height of the clipped image (from cy)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch);
 
@@ -513,7 +528,7 @@
       \param cy The Y coordinate where to start clipping
       \param cw The width of the clipped image (from cx)
       \param ch The height of the clipped image (from cy)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageScale()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_imageEx(struct _fbg *fbg, struct _fbg_img *img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch);
 
@@ -614,6 +629,13 @@
       \return task framerate
     */
     extern int fbg_getFramerate(struct _fbg *fbg, int task);
+
+    //! set an offscreen target for all subsequent fbg context draw calls, it is important to reset back to display target once done by calling fbg_drawInto(NULL)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param buffer a buffer to render to, it should be the format of the display, target is the display if NULL
+    */
+    extern void fbg_drawInto(struct _fbg *fbg, unsigned char *buffer);
 
 #ifdef FBG_PARALLEL
     //! create a FB Graphics parallel task (also called a 'fragment')

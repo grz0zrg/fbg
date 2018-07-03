@@ -11,6 +11,7 @@ Features :
  * Double buffering (with optional page flipping mechanism)
  * 16, 24 (BGR/RGB), 32 bpp support
  * Easy to do fading and screen-clearing related effects (motion blur etc.)
+ * Drawing calls can be used to render in a specified target buffer such as fbg_image etc.
  * Framerate tracking & display for all cores
  * Lightweight enough to be hackable; adapt to all kinds of needs (and still support parallelism easily)
 

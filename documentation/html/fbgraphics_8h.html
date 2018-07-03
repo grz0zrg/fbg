@@ -216,6 +216,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a600d896c04feec33d001662ca23e50ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad">fbg_image</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y)</td></tr>
 <tr class="memdesc:a600d896c04feec33d001662ca23e50ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw an image  <a href="#a600d896c04feec33d001662ca23e50ad">More...</a><br /></td></tr>
 <tr class="separator:a600d896c04feec33d001662ca23e50ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba2088b60304afa9ee7ce1b39bff114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114">fbg_imageColorkey</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y, int cr, int cg, int cb)</td></tr>
+<tr class="memdesc:a8ba2088b60304afa9ee7ce1b39bff114"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw an image with colorkey support (image colorkey value will be ignored)  <a href="#a8ba2088b60304afa9ee7ce1b39bff114">More...</a><br /></td></tr>
+<tr class="separator:a8ba2088b60304afa9ee7ce1b39bff114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3610bf730319af99045283ea66955741"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741">fbg_imageClip</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y, int cx, int cy, int cw, int ch)</td></tr>
 <tr class="memdesc:a3610bf730319af99045283ea66955741"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a clipped image  <a href="#a3610bf730319af99045283ea66955741">More...</a><br /></td></tr>
 <tr class="separator:a3610bf730319af99045283ea66955741"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,6 +258,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8125b5b37979f803c4640d9864fadbab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a8125b5b37979f803c4640d9864fadbab">fbg_getFramerate</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int task)</td></tr>
 <tr class="memdesc:a8125b5b37979f803c4640d9864fadbab"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the framerate of a particular task  <a href="#a8125b5b37979f803c4640d9864fadbab">More...</a><br /></td></tr>
 <tr class="separator:a8125b5b37979f803c4640d9864fadbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adda2a3ebc3a63cc275c78c61e62ce437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#adda2a3ebc3a63cc275c78c61e62ce437">fbg_drawInto</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char *buffer)</td></tr>
+<tr class="memdesc:adda2a3ebc3a63cc275c78c61e62ce437"><td class="mdescLeft">&#160;</td><td class="mdescRight">set an offscreen target for all subsequent fbg context draw calls, it is important to reset back to display target once done by calling fbg_drawInto(NULL)  <a href="#adda2a3ebc3a63cc275c78c61e62ce437">More...</a><br /></td></tr>
+<tr class="separator:adda2a3ebc3a63cc275c78c61e62ce437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="struct__fbg__rgb" id="struct__fbg__rgb"></a>
@@ -533,6 +539,12 @@ size</td>
 <td class="fielddoc">
 Framebuffer real data length (with BPP) </td></tr>
 <tr><td class="fieldtype">
+<a id="a0463af9bf583afe770b822c1fbb9a24d"></a>unsigned char *</td>
+<td class="fieldname">
+temp_buffer</td>
+<td class="fielddoc">
+Temporary buffer. </td></tr>
+<tr><td class="fieldtype">
 <a id="a870987786121c51135f20b630d731abd"></a>int</td>
 <td class="fieldname">
 text_alpha</td>
@@ -611,7 +623,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer MAX Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00669">669</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00691">691</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -643,7 +655,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer MIN Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00671">671</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00693">693</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -665,7 +677,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer SIGN function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00673">673</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00695">695</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -705,7 +717,7 @@ Display lenght in pixels (width * height) </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a19d56a111248b7f7d52f4bc6392d3743" title="background fade to white with controllable factor ">fbg_fadeUp()</a>, <a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e" title="background fade to black with controllable factor ">fbg_fadeDown()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00644">644</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00666">666</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -773,7 +785,7 @@ Display lenght in pixels (width * height) </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00666">666</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00688">688</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -795,7 +807,7 @@ Display lenght in pixels (width * height) </td></tr>
 <p>initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00636">636</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00658">658</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -850,7 +862,7 @@ Display lenght in pixels (width * height) </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#ac1ccfb0069d4567313391dc819ada76b" title="set the current font ">fbg_textFont()</a>, <a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1" title="set the current text color ">fbg_textColor()</a>, <a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea" title="draw a text ">fbg_text()</a>, fbg_textColorkey(), <a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1" title="set the current text background color (based on colorkey value!) ">fbg_textBackground()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00654">654</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00676">676</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -1177,6 +1189,43 @@ Display lenght in pixels (width * height) </td></tr>
     <tr><td class="paramname">r</td><td></td></tr>
     <tr><td class="paramname">g</td><td></td></tr>
     <tr><td class="paramname">b</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="adda2a3ebc3a63cc275c78c61e62ce437"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adda2a3ebc3a63cc275c78c61e62ce437">&#9670;&nbsp;</a></span>fbg_drawInto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fbg_drawInto </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramname"><em>fbg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned char *&#160;</td>
+          <td class="paramname"><em>buffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>set an offscreen target for all subsequent fbg context draw calls, it is important to reset back to display target once done by calling fbg_drawInto(NULL) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
+    <tr><td class="paramname">buffer</td><td>a buffer to render to, it should be the format of the display, target is the display if NULL </td></tr>
   </table>
   </dd>
 </dl>
@@ -1705,7 +1754,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
 
 </div>
 </div>
@@ -1785,7 +1834,80 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8ba2088b60304afa9ee7ce1b39bff114"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ba2088b60304afa9ee7ce1b39bff114">&#9670;&nbsp;</a></span>fbg_imageColorkey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fbg_imageColorkey </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramname"><em>fbg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *&#160;</td>
+          <td class="paramname"><em>img</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>draw an image with colorkey support (image colorkey value will be ignored) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
+    <tr><td class="paramname">img</td><td>image structure pointer </td></tr>
+    <tr><td class="paramname">x</td><td>image X position (upper left coordinate) </td></tr>
+    <tr><td class="paramname">y</td><td>image Y position (upper left coordinate) </td></tr>
+    <tr><td class="paramname">cr</td><td>colorkey red component </td></tr>
+    <tr><td class="paramname">cg</td><td>colorkey green component </td></tr>
+    <tr><td class="paramname">cb</td><td>colorkey blue component </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a> </dd></dl>
 
 </div>
 </div>
@@ -1879,7 +2001,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
 
 </div>
 </div>
@@ -2025,7 +2147,7 @@ Display lenght in pixels (width * height) </td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="fbgraphics_8h.html#struct__fbg__img" title="Image data structure. ">_fbg_img</a> data structure pointer </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
 
 </div>
 </div>
