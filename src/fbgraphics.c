@@ -35,6 +35,7 @@
 #include <linux/kd.h>
 
 #include "lodepng/lodepng.h"
+#include "nanojpeg/nanojpeg.c"
 
 #include "fbgraphics.h"
 
@@ -51,10 +52,78 @@ void fbg_ringbufferCleanup(struct lfds720_ringbuffer_n_state *rs, void *key, voi
 }
 #endif
 
+struct _fbg *fbg_customSetup(
+        int width, int height,
+        void *user_context,
+        void (*user_draw)(struct _fbg *fbg),
+        void (*user_free)(struct _fbg *fbg)) {
+    struct _fbg *fbg = (struct _fbg *)calloc(1, sizeof(struct _fbg));
+    if (!fbg) {
+        fprintf(stderr, "fbg_customSetup: fbg calloc failed!\n");
+
+        return NULL;
+    }
+
+    fbg->user_draw = user_draw;
+    fbg->user_free = user_free;
+
+    fbg->width = width;
+    fbg->height = height;
+
+    fbg->components = 3;
+    fbg->comp_offset = 0;
+
+    fbg->line_length = fbg->width * fbg->components;
+
+    fbg->width_n_height = fbg->width * fbg->height;
+
+    fbg->vinfo.xres = fbg->width;
+    fbg->vinfo.yres = fbg->height;
+
+    fbg->size = fbg->vinfo.xres * fbg->vinfo.yres * fbg->components;
+
+    fbg->user_context = user_context;
+
+    fbg->back_buffer = calloc(1, fbg->size * sizeof(char));
+    if (!fbg->back_buffer) {
+        fprintf(stderr, "fbg_customSetup: back_buffer calloc failed!\n");
+
+        user_free(fbg);
+
+        free(fbg);
+
+        return NULL;
+    }
+
+    fbg->disp_buffer = calloc(1, fbg->size * sizeof(char));
+    if (!fbg->disp_buffer) {
+        fprintf(stderr, "fbg_customSetup: disp_buffer calloc failed!\n");
+
+        user_free(fbg);
+
+        free(fbg->back_buffer);
+        free(fbg);
+
+        return NULL;
+    }
+
+    gettimeofday(&fbg->fps_start, NULL);
+
+    fbg_textColor(fbg, 255, 255, 255);
+
+#ifdef FBG_PARALLEL
+    fbg->state = 1;
+    fbg->frame = 0;
+    fbg->fps = 0;
+#endif
+
+    return fbg;
+}
+
 struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
     struct _fbg *fbg = (struct _fbg *)calloc(1, sizeof(struct _fbg));
     if (!fbg) {
-        fprintf(stderr, "fbg_init: fbg malloc failed!\n");
+        fprintf(stderr, "fbg_init: fbg calloc failed!\n");
         return NULL;
     }
 
@@ -65,6 +134,7 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
 
     if (fbg->fd == -1) {
         fprintf(stderr, "fbg_init: Cannot open '%s'!\n", fb_device);
+
         return NULL;
     }
 
@@ -283,7 +353,6 @@ void fbg_close(struct _fbg *fbg) {
     free(fbg);
 }
 
-
 void fbg_computeFramerate(struct _fbg *fbg, int to_string) {
     gettimeofday(&fbg->fps_stop, NULL);
 
@@ -485,7 +554,7 @@ void fbg_createFragment(struct _fbg *fbg,
         // create a task fbg structure for each threads
         struct _fbg *task_fbg = (struct _fbg *)calloc(1, sizeof(struct _fbg));
         if (!task_fbg) {
-            fprintf(stderr, "fbg_createFragment: task_fbg malloc failed!\n");
+            fprintf(stderr, "fbg_createFragment: task_fbg calloc failed!\n");
             continue;
         }
 
@@ -507,7 +576,7 @@ void fbg_createFragment(struct _fbg *fbg,
 
         struct _fbg_fragment *frag = (struct _fbg_fragment *)calloc(1, sizeof(struct _fbg_fragment));
         if (!frag) {
-            fprintf(stderr, "fbg_createFragment: frag malloc failed!\n");
+            fprintf(stderr, "fbg_createFragment: frag calloc failed!\n");
 
             free(task_fbg);
 
@@ -777,7 +846,7 @@ void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h) {
 void fbg_getPixel(struct _fbg *fbg, int x, int y, struct _fbg_rgb *color) {
     int ofs = y * fbg->line_length + x * fbg->components;
 
-    memcpy(color, (char *)(fbg->disp_buffer + ofs), fbg->components);
+    memcpy(color, (char *)(fbg->back_buffer + ofs), fbg->components);
 }
 
 #ifdef FBG_PARALLEL
@@ -830,7 +899,9 @@ void fbg_draw(struct _fbg *fbg) {
     ioctl(fbg->fd, FBIO_WAITFORVSYNC, &dummy);
 #endif
 
-    if (fbg->page_flipping == 0) {
+    if (fbg->user_draw) {
+        fbg->user_draw(fbg);
+    } else if (fbg->page_flipping == 0) {
         if (fbg->vinfo.bits_per_pixel == 16) {
             unsigned char *pix_pointer_src = fbg->disp_buffer;
             unsigned char *pix_pointer_dst = fbg->buffer;
@@ -1075,6 +1146,98 @@ struct _fbg_img *fbg_createImage(struct _fbg *fbg, unsigned int width, unsigned 
     return img;
 }
 
+struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename) {
+    unsigned char *data;
+    unsigned int width;
+    unsigned int height;
+
+    size_t size;
+
+    FILE *f = fopen(filename, "rb");
+
+    if (!f) {
+        fprintf(stderr, "fbg_loadJPEG '%s' : fopen failed.\n", filename);
+
+        return NULL;
+    }
+
+    fseek(f, 0, SEEK_END);
+    size = (int)ftell(f);
+    data = (unsigned char*) malloc(size);
+
+    if (!data) {
+        fprintf(stderr, "fbg_loadJPEG '%s' : malloc failed.\n", filename);
+
+        fclose(f);
+
+        return NULL;
+    }
+
+    fseek(f, 0, SEEK_SET);
+    size = (int)fread(data, 1, size, f);
+    fclose(f);
+
+    njInit();
+
+    nj_result_t nj_err = njDecode(data, size);
+    if (nj_err != NJ_OK) {
+        free(data);
+
+        fprintf(stderr, "fbg_loadJPEG '%s' : njDecode failed with error code '%i'.\n", filename, nj_err);
+
+        return NULL;
+    }
+
+    width = njGetWidth();
+    height = njGetHeight();
+
+    free(data);
+
+    struct _fbg_img *img = fbg_createImage(fbg, width, height);
+    if (!img) {
+        fprintf(stderr, "fbg_loadJPEG '%s' : Image data allocation failed\n", filename);
+
+        njDone();
+
+        return NULL;
+    }
+
+    data = njGetImage();
+
+    unsigned char *pix_pointer = data;
+    unsigned char *pix_pointer2 = data;
+
+    if (fbg->bgr) {
+        int y, x;
+        for (y = 0; y < height; y += 1) {
+            for (x = 0; x < width; x += 1) {
+                int b = *pix_pointer2++;
+                *pix_pointer2++;
+                int r = *pix_pointer2++;
+
+                *pix_pointer++ = r;
+                *pix_pointer++;
+                *pix_pointer++ = b;
+            }
+        }
+    }
+
+    pix_pointer = data;
+    pix_pointer2 = img->data;
+
+    int i;
+    for (i = 0; i < njGetImageSize(); i += 1) {
+        *pix_pointer2++ = *pix_pointer++;
+        *pix_pointer2++ = *pix_pointer++;
+        *pix_pointer2++ = *pix_pointer++;
+        pix_pointer2 += fbg->comp_offset;
+    }
+
+    njDone();
+
+    return img;
+}
+
 struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
     unsigned char *data;
     unsigned int width;
@@ -1122,7 +1285,9 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
         }
     }
 
-    img->data = data;
+    memcpy(img->data, data, width * height * fbg->components);
+
+    free(data);
 
     return img;
 }

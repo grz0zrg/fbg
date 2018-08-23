@@ -1,21 +1,28 @@
-FBGraphics : Lightweight C graphics library for the Linux framebuffer with parallelism support
+FBGraphics : Lightweight C graphics library with custom rendering backend and parallelism support
 =====
 
-FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library for the Linux framebuffer with parallelism support.
+FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library with parallelism support and custom rendering backend support.
+
+The library come bundled with a Linux framebuffer rendering backend and an external OpenGL backend (through GLFW).
 
 Features :
+
+ * Easy custom rendering backend support
+ * Cross-platform with the GLFW backend (some examples may need to be adapted to the target OS)
+ * Bundled framebuffer rendering backend support (optional)
+    * Double buffering (with optional page flipping mechanism)
+    * 16, 24 (BGR/RGB), 32 bpp support
+ * OpenGL rendering backend through GLFW
  * Optional : Full parallelism, execute graphics code on multiple CPU cores **with a single function**
- * Displaying and loading PNG images (provided by [LodePNG](https://lodev.org/lodepng/))
+ * PNG/JPEG images loading (provided by [LodePNG](https://lodev.org/lodepng/) and [NanoJPEG](http://keyj.emphy.de/nanojpeg/))
  * Bitmap fonts for drawing texts
  * Bare-metal graphics primitive (pixels, rectangles, lines, polygon)
- * Double buffering (with optional page flipping mechanism)
- * 16, 24 (BGR/RGB), 32 bpp support
  * Easy to do fading and screen-clearing related effects (motion blur etc.)
- * Drawing calls can be used to render in a specified target buffer such as fbg_image etc.
+ * Drawing calls can be used to render into a specified target buffer such as fbg_image etc.
  * Framerate tracking & display for all cores
  * Lightweight enough to be hackable; adapt to all kinds of needs (and still support parallelism easily)
 
-The library is relatively generic,  most functions (including parallel ones) only manipulate buffers, it should be easy to extract some parts and adapt it to other means, you may want to check `fbg_setup` `fbg_draw` `fbg_flip`and `fbg_close` for that.
+The library is generic,  most functions (including parallel ones) only manipulate buffers and you can build a custom rendering backend pretty easily with few functions call, see the `custom_backend` folder.
 
 Table of Contents
 =================
@@ -33,23 +40,29 @@ Table of Contents
 
 ## About
 
-FBGraphics was made to produce fullscreen pixels effects easily with non-accelerated framebuffer by leveraging multi-core processors, it is a bit like a software GPU (much less complex and featured!), the initial target platform is a Raspberry PI 3B and extend to the NanoPI (and many others embedded devices), the library should just work with many others devices with a Linux framebuffer.
+FBGraphics was built to produce fullscreen pixels effects easily (think of Processing-like creative coding etc.) with non-accelerated framebuffer by leveraging multi-core processors, it is a bit like a software GPU but much less complex and featured, the initial target platform was a Raspberry PI 3B, it extended to the NanoPI (and many other devices).
 
-FBGraphics support 16, 24 (BGR/RGB), 32 bpp framebuffer, 16 bpp mode is handled by converting from 24 bpp to 16 bpp upon drawing, page flipping mechanism is disabled in 16 bpp mode, *24 bpp is the fastest mode*.
+FBGraphics was also extended to support any numbers of custom rendering backend; all graphics calls manipulate internal buffers and a simple interface allow to draw the result the way you want to.
 
-FBGraphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing framebuffer graphics right away with or without multi-core support.
+An OpenGL rendering backend which use the [GLFW library](http://www.glfw.org/) was created to demonstrate the custom backend feature, it allow to draw the non-accelerated FB Graphics buffer into an OpenGL context through a texture and thus allow to interwine 3D or 2D graphics produced with standard OpenGL calls with CPU-only graphics produced by FBGraphics draw calls.
+
+FBGraphics was built so that it is possible to create any number of rendering context using different backend running at the same time while exploiting multi-core processors... the content of any rendering context can be transfered into other context through images when calling `fbg_drawInto`
+
+FBGraphics framebuffer settings support 16, 24 (BGR/RGB), 32 bpp, 16 bpp mode is handled by converting from 24 bpp to 16 bpp upon drawing, page flipping mechanism is disabled in 16 bpp mode, *24 bpp is the fastest mode*.
+
+FBGraphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing computer graphics right away with or without multi-core support.
 
 If you want to use the parallelism features with more advanced graphics primitives, take a look at great libraries such as [libgd](http://libgd.github.io/) or [Adafruit GFX library](https://github.com/adafruit/Adafruit-GFX-Library) which should be easy to integrate.
 
-FBGraphics is fast but should be used with caution, no bounds checking happen on most primitives.
+FBGraphics is fast but should be used with caution, bounds checking is not implemented on most primitives.
 
 Multi-core support is optional and is only enabled when `FBG_PARALLEL` C definition is present.
 
-The library support a mechanism known as page flipping, it allow fast double buffering by doubling the framebuffer virtual area, it is disabled by default because it is actually slower on some devices. You can enable it with a `fbg_setup` call.
+FBGraphics framebuffer backend support a mechanism known as page flipping, it allow fast double buffering by doubling the framebuffer virtual area, it is disabled by default because it is actually slower on some devices. You can enable it with a `fbg_setup` call.
 
 VSync is automatically enabled if supported.
 
-**Note** : This library does not let you setup the framebuffer, it expect the framebuffer to be configured prior launch with a command such as :
+**Note** : FBGraphics framebuffer backend does not let you setup the framebuffer, it expect the framebuffer to be configured prior launch with a command such as :
 
 ```
 fbset -fb /dev/fb0 -g 512 240 512 240 24 -vsync high
@@ -58,7 +71,7 @@ setterm -cursor off > /dev/tty0
 
 `fbset` should be available in your package manager.
 
-### Quickstart
+### Framebuffer Quickstart
 
 The simplest example (no parallelism, without texts and images) :
 
@@ -322,7 +335,7 @@ All examples make use of the framebuffer device `/dev/fb0` and can be built by t
 
 All examples were tested on a Raspberry PI 3B with framebuffer settings : 320x240 24 bpp
 
-For the default build (no parallelism), FBGraphics come with a header file `fbgraphics.h` and a C file `fbgraphics.c` to be included / compiled with your program, you will also need to compile the `lodepng.c` library, see the examples directory for examples of Makefile.
+For the default build (no parallelism), FBGraphics come with a header file `fbgraphics.h` and a C file `fbgraphics.c` to be included / compiled with your program, you will also need to compile the `lodepng.c` library and `nanojpeg.c` library, see the examples directory for examples of Makefile.
 
 For parallelism support, `FBG_PARALLEL` need to be defined and you will need the [liblfds](http://liblfds.org/) library :
 
