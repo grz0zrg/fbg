@@ -342,13 +342,18 @@ void fbg_close(struct _fbg *fbg) {
     fbg_freeTasks(fbg);
 #endif
 
-    if (!fbg->page_flipping) {
+    if (!fbg->page_flipping && fbg->user_context == NULL) {
         free(fbg->back_buffer);
         free(fbg->disp_buffer);
     }
 
-    munmap(fbg->buffer, fbg->finfo.smem_len);
-    close(fbg->fd);
+    if (fbg->user_context != NULL) {
+        free(fbg->back_buffer);
+        free(fbg->disp_buffer);
+    } else {
+        munmap(fbg->buffer, fbg->finfo.smem_len);
+        close(fbg->fd);
+    }
 
     free(fbg);
 }
