@@ -55,7 +55,7 @@
     //! Image data structure
     /*! Hold images informations and data */
     struct _fbg_img {
-        //! 24 bpp RGB image data
+        //! RGB image data (bpp depend on framebuffer settings)
         unsigned char *data;
 
         //! Image width in pixels
@@ -168,6 +168,13 @@
         //! Flag indicating that page flipping is enabled
         int page_flipping;
 
+        //! User-defined draw function
+        void (*user_draw)(struct _fbg *fbg);
+        //! User-defined free function
+        void (*user_free)(struct _fbg *fbg);
+        //! User-defined context structure
+        void *user_context;
+
 #ifdef FBG_PARALLEL
         //! Total number of actual parallel tasks
         unsigned int parallel_tasks;
@@ -237,19 +244,31 @@
 
 // ### Library functions
 
-    //! initialize a FB Graphics context
+    //! initialize a FB Graphics context (framebuffer)
     /*!
       \param fb_device framebuffer device (example : /dev/fb0)
       \param page_flipping wether to use page flipping mechanism for double buffering (slow on some devices)
       \return _fbg structure pointer to pass to any FBG library functions
-      \sa fbg_close(), fbg_init()
+      \sa fbg_close(), fbg_init(), fbg_customSetup()
     */
     extern struct _fbg *fbg_setup(char *fb_device, int page_flipping);
+
+    //! initialize a FB Graphics context with a custom rendering backend
+    /*!
+      \param width render width
+      \param height render height
+      \param user_context user rendering data storage (things like window context etc.)
+      \param user_draw function to call upon fbg_draw()
+      \param user_free function to call upon fbg_close()
+      \return _fbg structure pointer to pass to any FBG library functions
+      \sa fbg_close(), fbg_init(), fbg_setup()
+    */
+    extern struct _fbg *fbg_customSetup(int width, int height, void *user_context, void (*user_draw)(struct _fbg *fbg), void (*user_free)(struct _fbg *fbg));
 
     //! free up the memory associated with a FB Graphics context and close the framebuffer device
     /*!
       \param fbg pointer to a FBG context / data structure
-      \sa fbg_setup(), fbg_init()
+      \sa fbg_setup(), fbg_init(), fbg_customSetup()
     */
     extern void fbg_close(struct _fbg *fbg);
 
@@ -463,14 +482,23 @@
     */
     extern struct _fbg_img *fbg_createImage(struct _fbg *fbg, unsigned int width, unsigned int height);
 
-    //! load a PNG image from a file
+    //! load a PNG image from a file (lodePNG library)
     /*!
       \param fbg pointer to a FBG context / data structure
       \param filename PNG image filename
       \return _fbg_img data structure pointer
-      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadJPEG(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename);
+
+    //! load a JPEG image from a file (NanoJPEG library)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param filename JPEG image filename
+      \return _fbg_img data structure pointer
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadPNG(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+    */
+    extern struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename);
 
     //! draw an image
     /*!
@@ -478,7 +506,7 @@
       \param img image structure pointer
       \param x image X position (upper left coordinate)
       \param y image Y position (upper left coordinate)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y);
 
@@ -491,7 +519,7 @@
       \param cr colorkey red component
       \param cg colorkey green component
       \param cb colorkey blue component
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_image()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_image()
     */
     extern void fbg_imageColorkey(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cr, int cg, int cb);
 
@@ -505,14 +533,14 @@
       \param cy The Y coordinate where to start clipping
       \param cw The width of the clipped image (from cx)
       \param ch The height of the clipped image (from cy)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch);
 
     //! flip an image vertically
     /*!
       \param img image structure pointer
-      \sa fbg_createImage(), fbg_loadPNG()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG()
     */
     extern void fbg_imageFlip(struct _fbg_img *img);
 
@@ -528,14 +556,14 @@
       \param cy The Y coordinate where to start clipping
       \param cw The width of the clipped image (from cx)
       \param ch The height of the clipped image (from cy)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_imageEx(struct _fbg *fbg, struct _fbg_img *img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch);
 
     //! free the memory associated with an image
     /*!
       \param img image structure pointer
-      \sa fbg_createImage(), fbg_loadPNG()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG()
     */
     extern void fbg_freeImage(struct _fbg_img *img);
 
@@ -653,7 +681,7 @@
 // ### Helper functions
     //! initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping
     /*!
-      \sa fbg_init(), fbg_close()
+      \sa fbg_init(), fbg_customSetup(), fbg_close()
     */
     #define fbg_init() fbg_setup(NULL, 0)
 
@@ -683,7 +711,7 @@
       \param y image Y position (upper left coordinate)
       \param sx The X scale factor
       \param sy The Y scale factor
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx()
     */
     #define fbg_imageScale(fbg, img, x, y, sx, sy) fbg_imageEx(fbg, img, x, y, sx, sy, 0, 0, img->width, img->height)
 

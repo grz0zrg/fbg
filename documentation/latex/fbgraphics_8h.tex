@@ -14,8 +14,8 @@ struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}
 \begin{DoxyCompactList}\small\item\em Image data structure.  \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{More...}}\end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}}
 \begin{DoxyCompactList}\small\item\em Bitmap font data structure.  \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{More...}}\end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}}
-\begin{DoxyCompactList}\small\item\em FB Graphics context data structure.  \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{More...}}\end{DoxyCompactList}\end{DoxyCompactItemize}
+struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}}
+\begin{DoxyCompactList}\small\item\em FB Graphics context data structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -36,81 +36,85 @@ struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}{fbg\+\_\+setup}} (char $\ast$fb\+\_\+device, int page\+\_\+flipping)
-\begin{DoxyCompactList}\small\item\em initialize a FB Graphics context \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg)
+struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}{fbg\+\_\+setup}} (char $\ast$fb\+\_\+device, int page\+\_\+flipping)
+\begin{DoxyCompactList}\small\item\em initialize a FB Graphics context (framebuffer) \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_aba1acfb1926907e41ccadbfceec0333d}{fbg\+\_\+custom\+Setup}} (int width, int height, void $\ast$user\+\_\+context, void($\ast$user\+\_\+draw)(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg), void($\ast$user\+\_\+free)(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg))
+\begin{DoxyCompactList}\small\item\em initialize a FB Graphics context with a custom rendering backend \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em free up the memory associated with a FB Graphics context and close the framebuffer device \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_ab18823ca0e95ca51c5d6c69a48af8d0e}{fbg\+\_\+fade\+Down}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char rgb\+\_\+fade\+\_\+amount)
+void \mbox{\hyperlink{fbgraphics_8h_ab18823ca0e95ca51c5d6c69a48af8d0e}{fbg\+\_\+fade\+Down}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char rgb\+\_\+fade\+\_\+amount)
 \begin{DoxyCompactList}\small\item\em background fade to black with controllable factor \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a19d56a111248b7f7d52f4bc6392d3743}{fbg\+\_\+fade\+Up}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char rgb\+\_\+fade\+\_\+amount)
+void \mbox{\hyperlink{fbgraphics_8h_a19d56a111248b7f7d52f4bc6392d3743}{fbg\+\_\+fade\+Up}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char rgb\+\_\+fade\+\_\+amount)
 \begin{DoxyCompactList}\small\item\em background fade to white with controllable factor \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_aab50cccf3eceac81bda220a0c09e38e0}{fbg\+\_\+clear}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char brightness)
+void \mbox{\hyperlink{fbgraphics_8h_aab50cccf3eceac81bda220a0c09e38e0}{fbg\+\_\+clear}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char brightness)
 \begin{DoxyCompactList}\small\item\em fast grayscale background clearing \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em set the filling color for fast drawing operations \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a416971e772c114423b6c037f81d6f5ea}{fbg\+\_\+get\+Pixel}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} $\ast$color)
+void \mbox{\hyperlink{fbgraphics_8h_a416971e772c114423b6c037f81d6f5ea}{fbg\+\_\+get\+Pixel}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} $\ast$color)
 \begin{DoxyCompactList}\small\item\em get the R\+GB value of a pixel \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\+\_\+pixel}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\+\_\+pixel}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a pixel \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}{fbg\+\_\+pixela}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void \mbox{\hyperlink{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}{fbg\+\_\+pixela}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 \begin{DoxyCompactList}\small\item\em draw a pixel with alpha component (alpha blending) \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+fpixel}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y)
+void \mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+fpixel}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y)
 \begin{DoxyCompactList}\small\item\em fast pixel drawing which use the fill color set by \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}} \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a rectangle \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a83a99e5c8d44e2acf52cad38519ececf}{fbg\+\_\+recta}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void \mbox{\hyperlink{fbgraphics_8h_a83a99e5c8d44e2acf52cad38519ececf}{fbg\+\_\+recta}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 \begin{DoxyCompactList}\small\item\em draw a rectangle with alpha transparency \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}{fbg\+\_\+frect}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h)
+void \mbox{\hyperlink{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}{fbg\+\_\+frect}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h)
 \begin{DoxyCompactList}\small\item\em fast rectangle drawing which use the fill color set by \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}} \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a0558e4513da1d844526d54afea4d1531}{fbg\+\_\+hline}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_a0558e4513da1d844526d54afea4d1531}{fbg\+\_\+hline}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a horizontal line \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a3c4fb5fa694646ec66b50a32eaf38557}{fbg\+\_\+vline}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int h, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_a3c4fb5fa694646ec66b50a32eaf38557}{fbg\+\_\+vline}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int h, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a vertical line \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a46f7354a04a7bfb7467d25394ce38303}{fbg\+\_\+line}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x1, int y1, int x2, int y2, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_a46f7354a04a7bfb7467d25394ce38303}{fbg\+\_\+line}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x1, int y1, int x2, int y2, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a line from two points (Bresenham algorithm) \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a2a5a2ef48f5b26794473c51082fb75ab}{fbg\+\_\+polygon}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int num\+\_\+vertices, int $\ast$vertices, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_a2a5a2ef48f5b26794473c51082fb75ab}{fbg\+\_\+polygon}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int num\+\_\+vertices, int $\ast$vertices, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a polygon \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a1622b4cd13f223d161cd234ea1fe6125}{fbg\+\_\+background}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_a1622b4cd13f223d161cd234ea1fe6125}{fbg\+\_\+background}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em clear the background with a color \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\+\_\+draw}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg)
+void \mbox{\hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\+\_\+draw}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em draw to the screen \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_aedfec23bc4c51ff5ffb843bb289d448b}{fbg\+\_\+flip}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg)
+void \mbox{\hyperlink{fbgraphics_8h_aedfec23bc4c51ff5ffb843bb289d448b}{fbg\+\_\+flip}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em flip the buffers \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned int width, unsigned int height)
+struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned int width, unsigned int height)
 \begin{DoxyCompactList}\small\item\em create an empty image \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+NG}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, const char $\ast$filename)
-\begin{DoxyCompactList}\small\item\em load a P\+NG image from a file \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int x, int y)
+struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+NG}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em load a P\+NG image from a file (lode\+P\+NG library) \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+EG}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em load a J\+P\+EG image from a file (Nano\+J\+P\+EG library) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int x, int y)
 \begin{DoxyCompactList}\small\item\em draw an image \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int x, int y, int cr, int cg, int cb)
+void \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int x, int y, int cr, int cg, int cb)
 \begin{DoxyCompactList}\small\item\em draw an image with colorkey support (image colorkey value will be ignored) \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int x, int y, int cx, int cy, int cw, int ch)
+void \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int x, int y, int cx, int cy, int cw, int ch)
 \begin{DoxyCompactList}\small\item\em draw a clipped image \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img)
 \begin{DoxyCompactList}\small\item\em flip an image vertically \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch)
+void \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch)
 \begin{DoxyCompactList}\small\item\em draw an image with support for clipping and scaling \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img)
 \begin{DoxyCompactList}\small\item\em free the memory associated with an image \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}{fbg\+\_\+create\+Font}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int glyph\+\_\+width, int glyph\+\_\+height, unsigned char first\+\_\+char)
+struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$ \mbox{\hyperlink{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}{fbg\+\_\+create\+Font}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$img, int glyph\+\_\+width, int glyph\+\_\+height, unsigned char first\+\_\+char)
 \begin{DoxyCompactList}\small\item\em create a bitmap font from an image \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_ac1ccfb0069d4567313391dc819ada76b}{fbg\+\_\+text\+Font}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$font)
+void \mbox{\hyperlink{fbgraphics_8h_ac1ccfb0069d4567313391dc819ada76b}{fbg\+\_\+text\+Font}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$font)
 \begin{DoxyCompactList}\small\item\em set the current font \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_acae7a4ff39407371a52ebf9ae4c260c1}{fbg\+\_\+text\+Color}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char r, unsigned char g, unsigned char b)
+void \mbox{\hyperlink{fbgraphics_8h_acae7a4ff39407371a52ebf9ae4c260c1}{fbg\+\_\+text\+Color}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em set the current text color \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a2e82acd949a5c12a1fa494fb4c028ff1}{fbg\+\_\+text\+Background}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int r, int g, int b, int a)
+void \mbox{\hyperlink{fbgraphics_8h_a2e82acd949a5c12a1fa494fb4c028ff1}{fbg\+\_\+text\+Background}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int r, int g, int b, int a)
 \begin{DoxyCompactList}\small\item\em set the current text background color (based on colorkey value!) \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a7165bceebbbe11332256d1bd4e179489}{fbg\+\_\+text\+Color\+Key}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char v)
+void \mbox{\hyperlink{fbgraphics_8h_a7165bceebbbe11332256d1bd4e179489}{fbg\+\_\+text\+Color\+Key}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char v)
 \begin{DoxyCompactList}\small\item\em set the current text color key \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a3233e3de8fc3ad06391641241c77a1ea}{fbg\+\_\+text}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$fnt, char $\ast$text, int x, int y, int r, int g, int b)
+void \mbox{\hyperlink{fbgraphics_8h_a3233e3de8fc3ad06391641241c77a1ea}{fbg\+\_\+text}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$fnt, char $\ast$text, int x, int y, int r, int g, int b)
 \begin{DoxyCompactList}\small\item\em draw a text \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_aae823fe76a206cbc1fdd405c13d26830}{fbg\+\_\+free\+Font}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$font)
 \begin{DoxyCompactList}\small\item\em free the memory associated with a font \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_a112e427410882007fbcea78b0657c5f1}{fbg\+\_\+draw\+Framerate}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$fnt, int task, int x, int y, int r, int g, int b)
+void \mbox{\hyperlink{fbgraphics_8h_a112e427410882007fbcea78b0657c5f1}{fbg\+\_\+draw\+Framerate}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$fnt, int task, int x, int y, int r, int g, int b)
 \begin{DoxyCompactList}\small\item\em draw the framerate of a particular parallel task \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}{fbg\+\_\+get\+Framerate}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, int task)
+int \mbox{\hyperlink{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}{fbg\+\_\+get\+Framerate}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int task)
 \begin{DoxyCompactList}\small\item\em get the framerate of a particular task \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{fbgraphics_8h_adda2a3ebc3a63cc275c78c61e62ce437}{fbg\+\_\+draw\+Into}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char $\ast$buffer)
+void \mbox{\hyperlink{fbgraphics_8h_adda2a3ebc3a63cc275c78c61e62ce437}{fbg\+\_\+draw\+Into}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char $\ast$buffer)
 \begin{DoxyCompactList}\small\item\em set an offscreen target for all subsequent fbg context draw calls, it is important to reset back to display target once done by calling fbg\+\_\+draw\+Into(\+N\+U\+L\+L) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -163,7 +167,7 @@ Definition at line 57 of file fbgraphics.\+h.
 \mbox{\Hypertarget{fbgraphics_8h_ab996d65bce285a78c8a8f3ac99b40658}\label{fbgraphics_8h_ab996d65bce285a78c8a8f3ac99b40658}} 
 unsigned char $\ast$&
 data&
-24 bpp R\+GB image data \\
+R\+GB image data (bpp depend on framebuffer settings) \\
 \hline
 
 \mbox{\Hypertarget{fbgraphics_8h_ac6293cb3d118f0ccdde38c13cbefa9db}\label{fbgraphics_8h_ac6293cb3d118f0ccdde38c13cbefa9db}} 
@@ -226,179 +230,6 @@ Width of a glyph. \\
 \hline
 
 \end{DoxyFields}
-\index{\+\_\+fbg@{\+\_\+fbg}}\label{struct__fbg}
-\Hypertarget{fbgraphics_8h_struct__fbg}
-\subsubsection{struct \+\_\+fbg}
-FB Graphics context data structure. 
-
-Hold all data related to a F\+BG context 
-
-Definition at line 89 of file fbgraphics.\+h.
-
-\begin{DoxyFields}{Data Fields}
-\mbox{\Hypertarget{fbgraphics_8h_a907e7fc97965b972c17114c885e53735}\label{fbgraphics_8h_a907e7fc97965b972c17114c885e53735}} 
-unsigned char $\ast$&
-back\_buffer&
-Back buffer. All FB Graphics functions draw into this buffer. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a5844c5bf4789117cbc0c972ff160b338}\label{fbgraphics_8h_a5844c5bf4789117cbc0c972ff160b338}} 
-int&
-bgr&
-Flag indicating a B\+GR framebuffer. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_abd19f36337c99f866e03eb88f6c2a9d5}\label{fbgraphics_8h_abd19f36337c99f866e03eb88f6c2a9d5}} 
-unsigned char $\ast$&
-buffer&
-Memory-\/mapped framebuffer. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a7c2e64d2f40575c8a989c759c30acb0e}\label{fbgraphics_8h_a7c2e64d2f40575c8a989c759c30acb0e}} 
-int&
-comp\_offset&
-Offset to add in case of 32 B\+PP. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a1db77a2ef506723a575644dbc1cfb747}\label{fbgraphics_8h_a1db77a2ef506723a575644dbc1cfb747}} 
-int&
-components&
-Display components amount (3 = 24 B\+PP / 4 = 32 B\+PP) \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a72868d703236aaabb7a5031703a6bbd8}\label{fbgraphics_8h_a72868d703236aaabb7a5031703a6bbd8}} 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\_fbg\_font}}&
-current\_font&
-Current font. No fonts is loaded by default and the first loaded font will be assigned automatically as the current font. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_aa20614c94c7235bc5bc105b6e71e1be8}\label{fbgraphics_8h_aa20614c94c7235bc5bc105b6e71e1be8}} 
-unsigned char $\ast$&
-disp\_buffer&
-Front / display buffer. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_acfa58132f44f89e832ae7f73f5583b7e}\label{fbgraphics_8h_acfa58132f44f89e832ae7f73f5583b7e}} 
-int&
-fd&
-Framebuffer device file descriptor. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_ad3cac82bd9448a4020a4e08621f5269a}\label{fbgraphics_8h_ad3cac82bd9448a4020a4e08621f5269a}} 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\_fbg\_rgb}}&
-fill\_color&
-Current fill color. Default to black. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a954dd14a4129eed7ebe09f31bd025861}\label{fbgraphics_8h_a954dd14a4129eed7ebe09f31bd025861}} 
-struct fb\_fix\_screeninfo&
-finfo&
-Framebuffer device fix. informations. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a64b16363bc48d1e19141df2e242930a9}\label{fbgraphics_8h_a64b16363bc48d1e19141df2e242930a9}} 
-int16\_t&
-fps&
-Current F\+PS. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_af447e6ed58d893989c8dad075807a79b}\label{fbgraphics_8h_af447e6ed58d893989c8dad075807a79b}} 
-char&
-fps\_char\mbox{[}10\mbox{]}&
-Current F\+PS as a string. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a07d7bb827a7595c956fe22c2d65bba33}\label{fbgraphics_8h_a07d7bb827a7595c956fe22c2d65bba33}} 
-struct timeval&
-fps\_start&
-First frame time for the current second. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_ade17a45bbc82bef326857c2837cdf66c}\label{fbgraphics_8h_ade17a45bbc82bef326857c2837cdf66c}} 
-struct timeval&
-fps\_stop&
-Last frame time for the current second. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_aa3ef83f919d12e680f8c64006b441454}\label{fbgraphics_8h_aa3ef83f919d12e680f8c64006b441454}} 
-int&
-frame&
-Frame counter for the current second. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a3a3bd409e71d020fa77f69a541d832f8}\label{fbgraphics_8h_a3a3bd409e71d020fa77f69a541d832f8}} 
-int&
-height&
-Display height in pixels. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_af8a1ee8d7004e6f2193f2a3ed98f8ce8}\label{fbgraphics_8h_af8a1ee8d7004e6f2193f2a3ed98f8ce8}} 
-int&
-line\_length&
-Internal buffers line length. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_ad32509bca6ac4fb467476834cb8ce9d2}\label{fbgraphics_8h_ad32509bca6ac4fb467476834cb8ce9d2}} 
-int&
-page\_flipping&
-Flag indicating that page flipping is enabled. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a84fb220d4804cba22176997898e75b73}\label{fbgraphics_8h_a84fb220d4804cba22176997898e75b73}} 
-int&
-size&
-Framebuffer real data length (with B\+PP) \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a0463af9bf583afe770b822c1fbb9a24d}\label{fbgraphics_8h_a0463af9bf583afe770b822c1fbb9a24d}} 
-unsigned char $\ast$&
-temp\_buffer&
-Temporary buffer. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a870987786121c51135f20b630d731abd}\label{fbgraphics_8h_a870987786121c51135f20b630d731abd}} 
-int&
-text\_alpha&
-Text background alpha value. Default to transparent. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_afd34a8de5a853e915bd101f11d44cf67}\label{fbgraphics_8h_afd34a8de5a853e915bd101f11d44cf67}} 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\_fbg\_rgb}}&
-text\_background&
-Current text background color (based on colorkey value) Default to black. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a4abb858439598b09790ec6d5d8326bb2}\label{fbgraphics_8h_a4abb858439598b09790ec6d5d8326bb2}} 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\_fbg\_rgb}}&
-text\_color&
-Current text color. Default to white. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a06e65293cf0b48e70d76d63f5de453e6}\label{fbgraphics_8h_a06e65293cf0b48e70d76d63f5de453e6}} 
-unsigned char&
-text\_colorkey&
-Current text color key. Default to black. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a22447f0d56680de6ff37587b44f7cf4b}\label{fbgraphics_8h_a22447f0d56680de6ff37587b44f7cf4b}} 
-struct fb\_var\_screeninfo&
-vinfo&
-Framebuffer device var. informations. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a1d3c76643e4ee424f4d17e27991d5e2e}\label{fbgraphics_8h_a1d3c76643e4ee424f4d17e27991d5e2e}} 
-int&
-width&
-Display width in pixels. \\
-\hline
-
-\mbox{\Hypertarget{fbgraphics_8h_a1ab3f10e8c3483d7286db9850511d46d}\label{fbgraphics_8h_a1ab3f10e8c3483d7286db9850511d46d}} 
-int&
-width\_n\_height&
-Display lenght in pixels (width $\ast$ height) \\
-\hline
-
-\end{DoxyFields}
 
 
 \subsection{Macro Definition Documentation}
@@ -414,7 +245,7 @@ integer M\+AX Math function
 
 
 
-Definition at line 691 of file fbgraphics.\+h.
+Definition at line 719 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}\label{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+M\+IN@{\+\_\+\+F\+B\+G\+\_\+\+M\+IN}}
@@ -428,7 +259,7 @@ integer M\+IN Math function
 
 
 
-Definition at line 693 of file fbgraphics.\+h.
+Definition at line 721 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}\label{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+S\+GN@{\+\_\+\+F\+B\+G\+\_\+\+S\+GN}}
@@ -442,7 +273,7 @@ integer S\+I\+GN function
 
 
 
-Definition at line 695 of file fbgraphics.\+h.
+Definition at line 723 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}\label{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fade@{fbg\+\_\+fade}}
@@ -466,7 +297,7 @@ background fade to black with controllable factor
 \end{DoxySeeAlso}
 
 
-Definition at line 666 of file fbgraphics.\+h.
+Definition at line 694 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}\label{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Scale@{fbg\+\_\+image\+Scale}}
@@ -494,11 +325,11 @@ draw a scaled image
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}} 
 \end{DoxySeeAlso}
 
 
-Definition at line 688 of file fbgraphics.\+h.
+Definition at line 716 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}\label{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+init@{fbg\+\_\+init}}
@@ -511,11 +342,11 @@ Definition at line 688 of file fbgraphics.\+h.
 initialize a FB Graphics context with \textquotesingle{}/dev/fb0\textquotesingle{} as framebuffer device and no page flipping 
 
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}{fbg\+\_\+init()}}, \mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close()}} 
+\mbox{\hyperlink{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}{fbg\+\_\+init()}}, \mbox{\hyperlink{fbgraphics_8h_aba1acfb1926907e41ccadbfceec0333d}{fbg\+\_\+custom\+Setup()}}, \mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close()}} 
 \end{DoxySeeAlso}
 
 
-Definition at line 658 of file fbgraphics.\+h.
+Definition at line 686 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}\label{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+write@{fbg\+\_\+write}}
@@ -544,7 +375,7 @@ draw a text by using the current font and the current color
 \end{DoxySeeAlso}
 
 
-Definition at line 676 of file fbgraphics.\+h.
+Definition at line 704 of file fbgraphics.\+h.
 
 
 
@@ -553,7 +384,7 @@ Definition at line 676 of file fbgraphics.\+h.
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+background@{fbg\+\_\+background}}
 \index{fbg\+\_\+background@{fbg\+\_\+background}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+background()}{fbg\_background()}}
-{\footnotesize\ttfamily void fbg\+\_\+background (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+background (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -577,7 +408,7 @@ clear the background with a color
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+clear@{fbg\+\_\+clear}}
 \index{fbg\+\_\+clear@{fbg\+\_\+clear}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+clear()}{fbg\_clear()}}
-{\footnotesize\ttfamily void fbg\+\_\+clear (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{brightness }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+clear (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{brightness }\end{DoxyParamCaption})}
 
 
 
@@ -597,7 +428,7 @@ fast grayscale background clearing
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+close@{fbg\+\_\+close}}
 \index{fbg\+\_\+close@{fbg\+\_\+close}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+close()}{fbg\_close()}}
-{\footnotesize\ttfamily void fbg\+\_\+close (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+close (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg }\end{DoxyParamCaption})}
 
 
 
@@ -609,13 +440,13 @@ free up the memory associated with a FB Graphics context and close the framebuff
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}{fbg\+\_\+setup()}}, \mbox{\hyperlink{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}{fbg\+\_\+init()}} 
+\mbox{\hyperlink{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}{fbg\+\_\+setup()}}, \mbox{\hyperlink{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}{fbg\+\_\+init()}}, \mbox{\hyperlink{fbgraphics_8h_aba1acfb1926907e41ccadbfceec0333d}{fbg\+\_\+custom\+Setup()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}\label{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+create\+Font@{fbg\+\_\+create\+Font}}
 \index{fbg\+\_\+create\+Font@{fbg\+\_\+create\+Font}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+create\+Font()}{fbg\_createFont()}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}}$\ast$ fbg\+\_\+create\+Font (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{glyph\+\_\+width,  }\item[{int}]{glyph\+\_\+height,  }\item[{unsigned char}]{first\+\_\+char }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}}$\ast$ fbg\+\_\+create\+Font (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{glyph\+\_\+width,  }\item[{int}]{glyph\+\_\+height,  }\item[{unsigned char}]{first\+\_\+char }\end{DoxyParamCaption})}
 
 
 
@@ -644,7 +475,7 @@ create a bitmap font from an image
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+create\+Image@{fbg\+\_\+create\+Image}}
 \index{fbg\+\_\+create\+Image@{fbg\+\_\+create\+Image}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+create\+Image()}{fbg\_createImage()}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}$\ast$ fbg\+\_\+create\+Image (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}$\ast$ fbg\+\_\+create\+Image (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})}
 
 
 
@@ -665,11 +496,40 @@ create an empty image
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}{fbg\+\_\+create\+Font()}} 
 \end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_aba1acfb1926907e41ccadbfceec0333d}\label{fbgraphics_8h_aba1acfb1926907e41ccadbfceec0333d}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+custom\+Setup@{fbg\+\_\+custom\+Setup}}
+\index{fbg\+\_\+custom\+Setup@{fbg\+\_\+custom\+Setup}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+custom\+Setup()}{fbg\_customSetup()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}}$\ast$ fbg\+\_\+custom\+Setup (\begin{DoxyParamCaption}\item[{int}]{width,  }\item[{int}]{height,  }\item[{void $\ast$}]{user\+\_\+context,  }\item[{void($\ast$)(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)}]{user\+\_\+draw,  }\item[{void($\ast$)(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)}]{user\+\_\+free }\end{DoxyParamCaption})}
+
+
+
+initialize a FB Graphics context with a custom rendering backend 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & render width \\
+\hline
+{\em height} & render height \\
+\hline
+{\em user\+\_\+context} & user rendering data storage (things like window context etc.) \\
+\hline
+{\em user\+\_\+draw} & function to call upon \mbox{\hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\+\_\+draw()}} \\
+\hline
+{\em user\+\_\+free} & function to call upon \mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close()}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} structure pointer to pass to any F\+BG library functions 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close()}}, \mbox{\hyperlink{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}{fbg\+\_\+init()}}, \mbox{\hyperlink{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}{fbg\+\_\+setup()}} 
+\end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}\label{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+draw@{fbg\+\_\+draw}}
 \index{fbg\+\_\+draw@{fbg\+\_\+draw}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+draw()}{fbg\_draw()}}
-{\footnotesize\ttfamily void fbg\+\_\+draw (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+draw (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg }\end{DoxyParamCaption})}
 
 
 
@@ -684,7 +544,7 @@ draw to the screen
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+draw\+Framerate@{fbg\+\_\+draw\+Framerate}}
 \index{fbg\+\_\+draw\+Framerate@{fbg\+\_\+draw\+Framerate}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+draw\+Framerate()}{fbg\_drawFramerate()}}
-{\footnotesize\ttfamily void fbg\+\_\+draw\+Framerate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$}]{fnt,  }\item[{int}]{task,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{r,  }\item[{int}]{g,  }\item[{int}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+draw\+Framerate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$}]{fnt,  }\item[{int}]{task,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{r,  }\item[{int}]{g,  }\item[{int}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -713,7 +573,7 @@ draw the framerate of a particular parallel task
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+draw\+Into@{fbg\+\_\+draw\+Into}}
 \index{fbg\+\_\+draw\+Into@{fbg\+\_\+draw\+Into}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+draw\+Into()}{fbg\_drawInto()}}
-{\footnotesize\ttfamily void fbg\+\_\+draw\+Into (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char $\ast$}]{buffer }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+draw\+Into (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char $\ast$}]{buffer }\end{DoxyParamCaption})}
 
 
 
@@ -730,7 +590,7 @@ set an offscreen target for all subsequent fbg context draw calls, it is importa
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fade\+Down@{fbg\+\_\+fade\+Down}}
 \index{fbg\+\_\+fade\+Down@{fbg\+\_\+fade\+Down}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+fade\+Down()}{fbg\_fadeDown()}}
-{\footnotesize\ttfamily void fbg\+\_\+fade\+Down (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{rgb\+\_\+fade\+\_\+amount }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+fade\+Down (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{rgb\+\_\+fade\+\_\+amount }\end{DoxyParamCaption})}
 
 
 
@@ -750,7 +610,7 @@ background fade to black with controllable factor
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fade\+Up@{fbg\+\_\+fade\+Up}}
 \index{fbg\+\_\+fade\+Up@{fbg\+\_\+fade\+Up}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+fade\+Up()}{fbg\_fadeUp()}}
-{\footnotesize\ttfamily void fbg\+\_\+fade\+Up (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{rgb\+\_\+fade\+\_\+amount }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+fade\+Up (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{rgb\+\_\+fade\+\_\+amount }\end{DoxyParamCaption})}
 
 
 
@@ -770,7 +630,7 @@ background fade to white with controllable factor
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fill@{fbg\+\_\+fill}}
 \index{fbg\+\_\+fill@{fbg\+\_\+fill}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+fill()}{fbg\_fill()}}
-{\footnotesize\ttfamily void fbg\+\_\+fill (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+fill (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -794,7 +654,7 @@ set the filling color for fast drawing operations
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+flip@{fbg\+\_\+flip}}
 \index{fbg\+\_\+flip@{fbg\+\_\+flip}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+flip()}{fbg\_flip()}}
-{\footnotesize\ttfamily void fbg\+\_\+flip (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+flip (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg }\end{DoxyParamCaption})}
 
 
 
@@ -809,7 +669,7 @@ flip the buffers
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fpixel@{fbg\+\_\+fpixel}}
 \index{fbg\+\_\+fpixel@{fbg\+\_\+fpixel}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+fpixel()}{fbg\_fpixel()}}
-{\footnotesize\ttfamily void fbg\+\_\+fpixel (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+fpixel (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
 
 
 
@@ -831,7 +691,7 @@ fast pixel drawing which use the fill color set by \mbox{\hyperlink{fbgraphics_8
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+frect@{fbg\+\_\+frect}}
 \index{fbg\+\_\+frect@{fbg\+\_\+frect}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+frect()}{fbg\_frect()}}
-{\footnotesize\ttfamily void fbg\+\_\+frect (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+frect (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h }\end{DoxyParamCaption})}
 
 
 
@@ -887,13 +747,13 @@ free the memory associated with an image
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}\label{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+get\+Framerate@{fbg\+\_\+get\+Framerate}}
 \index{fbg\+\_\+get\+Framerate@{fbg\+\_\+get\+Framerate}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+get\+Framerate()}{fbg\_getFramerate()}}
-{\footnotesize\ttfamily int fbg\+\_\+get\+Framerate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{task }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int fbg\+\_\+get\+Framerate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{task }\end{DoxyParamCaption})}
 
 
 
@@ -913,7 +773,7 @@ task framerate
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+get\+Pixel@{fbg\+\_\+get\+Pixel}}
 \index{fbg\+\_\+get\+Pixel@{fbg\+\_\+get\+Pixel}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+get\+Pixel()}{fbg\_getPixel()}}
-{\footnotesize\ttfamily void fbg\+\_\+get\+Pixel (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} $\ast$}]{color }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+get\+Pixel (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} $\ast$}]{color }\end{DoxyParamCaption})}
 
 
 
@@ -934,7 +794,7 @@ get the R\+GB value of a pixel
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+hline@{fbg\+\_\+hline}}
 \index{fbg\+\_\+hline@{fbg\+\_\+hline}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+hline()}{fbg\_hline()}}
-{\footnotesize\ttfamily void fbg\+\_\+hline (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+hline (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -964,7 +824,7 @@ draw a horizontal line
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image@{fbg\+\_\+image}}
 \index{fbg\+\_\+image@{fbg\+\_\+image}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+image()}{fbg\_image()}}
-{\footnotesize\ttfamily void fbg\+\_\+image (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+image (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
 
 
 
@@ -982,13 +842,13 @@ draw an image
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a3610bf730319af99045283ea66955741}\label{fbgraphics_8h_a3610bf730319af99045283ea66955741}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Clip@{fbg\+\_\+image\+Clip}}
 \index{fbg\+\_\+image\+Clip@{fbg\+\_\+image\+Clip}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+image\+Clip()}{fbg\_imageClip()}}
-{\footnotesize\ttfamily void fbg\+\_\+image\+Clip (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{cx,  }\item[{int}]{cy,  }\item[{int}]{cw,  }\item[{int}]{ch }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+image\+Clip (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{cx,  }\item[{int}]{cy,  }\item[{int}]{cw,  }\item[{int}]{ch }\end{DoxyParamCaption})}
 
 
 
@@ -1014,13 +874,13 @@ draw a clipped image
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}\label{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Colorkey@{fbg\+\_\+image\+Colorkey}}
 \index{fbg\+\_\+image\+Colorkey@{fbg\+\_\+image\+Colorkey}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+image\+Colorkey()}{fbg\_imageColorkey()}}
-{\footnotesize\ttfamily void fbg\+\_\+image\+Colorkey (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{cr,  }\item[{int}]{cg,  }\item[{int}]{cb }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+image\+Colorkey (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{cr,  }\item[{int}]{cg,  }\item[{int}]{cb }\end{DoxyParamCaption})}
 
 
 
@@ -1044,13 +904,13 @@ draw an image with colorkey support (image colorkey value will be ignored)
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}\label{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Ex@{fbg\+\_\+image\+Ex}}
 \index{fbg\+\_\+image\+Ex@{fbg\+\_\+image\+Ex}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+image\+Ex()}{fbg\_imageEx()}}
-{\footnotesize\ttfamily void fbg\+\_\+image\+Ex (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{float}]{sx,  }\item[{float}]{sy,  }\item[{int}]{cx,  }\item[{int}]{cy,  }\item[{int}]{cw,  }\item[{int}]{ch }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+image\+Ex (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} $\ast$}]{img,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{float}]{sx,  }\item[{float}]{sy,  }\item[{int}]{cx,  }\item[{int}]{cy,  }\item[{int}]{cw,  }\item[{int}]{ch }\end{DoxyParamCaption})}
 
 
 
@@ -1080,7 +940,7 @@ draw an image with support for clipping and scaling
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}\label{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Flip@{fbg\+\_\+image\+Flip}}
@@ -1098,13 +958,13 @@ flip an image vertically
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}} 
+\mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a46f7354a04a7bfb7467d25394ce38303}\label{fbgraphics_8h_a46f7354a04a7bfb7467d25394ce38303}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+line@{fbg\+\_\+line}}
 \index{fbg\+\_\+line@{fbg\+\_\+line}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+line()}{fbg\_line()}}
-{\footnotesize\ttfamily void fbg\+\_\+line (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x1,  }\item[{int}]{y1,  }\item[{int}]{x2,  }\item[{int}]{y2,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+line (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x1,  }\item[{int}]{y1,  }\item[{int}]{x2,  }\item[{int}]{y2,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -1132,15 +992,38 @@ draw a line from two points (Bresenham algorithm)
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{fbgraphics_8h_a0558e4513da1d844526d54afea4d1531}{fbg\+\_\+hline()}}, \mbox{\hyperlink{fbgraphics_8h_a3c4fb5fa694646ec66b50a32eaf38557}{fbg\+\_\+vline()}}, \mbox{\hyperlink{fbgraphics_8h_a2a5a2ef48f5b26794473c51082fb75ab}{fbg\+\_\+polygon()}} 
 \end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}\label{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+load\+J\+P\+EG@{fbg\+\_\+load\+J\+P\+EG}}
+\index{fbg\+\_\+load\+J\+P\+EG@{fbg\+\_\+load\+J\+P\+EG}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+load\+J\+P\+E\+G()}{fbg\_loadJPEG()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}$\ast$ fbg\+\_\+load\+J\+P\+EG (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+load a J\+P\+EG image from a file (Nano\+J\+P\+EG library) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em filename} & J\+P\+EG image filename \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} data structure pointer 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}{fbg\+\_\+create\+Font()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
+\end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}\label{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+load\+P\+NG@{fbg\+\_\+load\+P\+NG}}
 \index{fbg\+\_\+load\+P\+NG@{fbg\+\_\+load\+P\+NG}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+load\+P\+N\+G()}{fbg\_loadPNG()}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}$\ast$ fbg\+\_\+load\+P\+NG (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}}$\ast$ fbg\+\_\+load\+P\+NG (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
 
 
 
-load a P\+NG image from a file 
+load a P\+NG image from a file (lode\+P\+NG library) 
 
 
 \begin{DoxyParams}{Parameters}
@@ -1153,13 +1036,13 @@ load a P\+NG image from a file
 \mbox{\hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img}} data structure pointer 
 \end{DoxyReturn}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}{fbg\+\_\+create\+Font()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
+\mbox{\hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\+\_\+free\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}{fbg\+\_\+image()}}, \mbox{\hyperlink{fbgraphics_8h_a728d5bc6d1ee11e127db8722fe3cbc18}{fbg\+\_\+image\+Flip()}}, \mbox{\hyperlink{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}{fbg\+\_\+create\+Font()}}, \mbox{\hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\+\_\+image\+Clip()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad0c3a773dcab62f514726b03e54ad692}{fbg\+\_\+image\+Ex()}}, \mbox{\hyperlink{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}{fbg\+\_\+image\+Scale()}}, \mbox{\hyperlink{fbgraphics_8h_a8ba2088b60304afa9ee7ce1b39bff114}{fbg\+\_\+image\+Colorkey()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}\label{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+pixel@{fbg\+\_\+pixel}}
 \index{fbg\+\_\+pixel@{fbg\+\_\+pixel}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+pixel()}{fbg\_pixel()}}
-{\footnotesize\ttfamily void fbg\+\_\+pixel (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+pixel (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -1187,7 +1070,7 @@ draw a pixel
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+pixela@{fbg\+\_\+pixela}}
 \index{fbg\+\_\+pixela@{fbg\+\_\+pixela}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+pixela()}{fbg\_pixela()}}
-{\footnotesize\ttfamily void fbg\+\_\+pixela (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b,  }\item[{unsigned char}]{a }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+pixela (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b,  }\item[{unsigned char}]{a }\end{DoxyParamCaption})}
 
 
 
@@ -1217,7 +1100,7 @@ draw a pixel with alpha component (alpha blending)
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+polygon@{fbg\+\_\+polygon}}
 \index{fbg\+\_\+polygon@{fbg\+\_\+polygon}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+polygon()}{fbg\_polygon()}}
-{\footnotesize\ttfamily void fbg\+\_\+polygon (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{num\+\_\+vertices,  }\item[{int $\ast$}]{vertices,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+polygon (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{num\+\_\+vertices,  }\item[{int $\ast$}]{vertices,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -1242,7 +1125,7 @@ draw a polygon
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+rect@{fbg\+\_\+rect}}
 \index{fbg\+\_\+rect@{fbg\+\_\+rect}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+rect()}{fbg\_rect()}}
-{\footnotesize\ttfamily void fbg\+\_\+rect (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+rect (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -1274,7 +1157,7 @@ draw a rectangle
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+recta@{fbg\+\_\+recta}}
 \index{fbg\+\_\+recta@{fbg\+\_\+recta}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+recta()}{fbg\_recta()}}
-{\footnotesize\ttfamily void fbg\+\_\+recta (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b,  }\item[{unsigned char}]{a }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+recta (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b,  }\item[{unsigned char}]{a }\end{DoxyParamCaption})}
 
 
 
@@ -1308,11 +1191,11 @@ draw a rectangle with alpha transparency
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+setup@{fbg\+\_\+setup}}
 \index{fbg\+\_\+setup@{fbg\+\_\+setup}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+setup()}{fbg\_setup()}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}}$\ast$ fbg\+\_\+setup (\begin{DoxyParamCaption}\item[{char $\ast$}]{fb\+\_\+device,  }\item[{int}]{page\+\_\+flipping }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}}$\ast$ fbg\+\_\+setup (\begin{DoxyParamCaption}\item[{char $\ast$}]{fb\+\_\+device,  }\item[{int}]{page\+\_\+flipping }\end{DoxyParamCaption})}
 
 
 
-initialize a FB Graphics context 
+initialize a FB Graphics context (framebuffer) 
 
 
 \begin{DoxyParams}{Parameters}
@@ -1322,16 +1205,16 @@ initialize a FB Graphics context
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-\mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} structure pointer to pass to any F\+BG library functions 
+\mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} structure pointer to pass to any F\+BG library functions 
 \end{DoxyReturn}
 \begin{DoxySeeAlso}{See also}
-\mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close()}}, \mbox{\hyperlink{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}{fbg\+\_\+init()}} 
+\mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close()}}, \mbox{\hyperlink{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}{fbg\+\_\+init()}}, \mbox{\hyperlink{fbgraphics_8h_aba1acfb1926907e41ccadbfceec0333d}{fbg\+\_\+custom\+Setup()}} 
 \end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a3233e3de8fc3ad06391641241c77a1ea}\label{fbgraphics_8h_a3233e3de8fc3ad06391641241c77a1ea}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+text@{fbg\+\_\+text}}
 \index{fbg\+\_\+text@{fbg\+\_\+text}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+text()}{fbg\_text()}}
-{\footnotesize\ttfamily void fbg\+\_\+text (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$}]{fnt,  }\item[{char $\ast$}]{text,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{r,  }\item[{int}]{g,  }\item[{int}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+text (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$}]{fnt,  }\item[{char $\ast$}]{text,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{r,  }\item[{int}]{g,  }\item[{int}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -1364,7 +1247,7 @@ draw a text
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+text\+Background@{fbg\+\_\+text\+Background}}
 \index{fbg\+\_\+text\+Background@{fbg\+\_\+text\+Background}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+text\+Background()}{fbg\_textBackground()}}
-{\footnotesize\ttfamily void fbg\+\_\+text\+Background (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{r,  }\item[{int}]{g,  }\item[{int}]{b,  }\item[{int}]{a }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+text\+Background (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{r,  }\item[{int}]{g,  }\item[{int}]{b,  }\item[{int}]{a }\end{DoxyParamCaption})}
 
 
 
@@ -1390,7 +1273,7 @@ set the current text background color (based on colorkey value!)
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+text\+Color@{fbg\+\_\+text\+Color}}
 \index{fbg\+\_\+text\+Color@{fbg\+\_\+text\+Color}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+text\+Color()}{fbg\_textColor()}}
-{\footnotesize\ttfamily void fbg\+\_\+text\+Color (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+text\+Color (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 
@@ -1414,7 +1297,7 @@ set the current text color
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+text\+Color\+Key@{fbg\+\_\+text\+Color\+Key}}
 \index{fbg\+\_\+text\+Color\+Key@{fbg\+\_\+text\+Color\+Key}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+text\+Color\+Key()}{fbg\_textColorKey()}}
-{\footnotesize\ttfamily void fbg\+\_\+text\+Color\+Key (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{v }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+text\+Color\+Key (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{unsigned char}]{v }\end{DoxyParamCaption})}
 
 
 
@@ -1434,7 +1317,7 @@ set the current text color key
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+text\+Font@{fbg\+\_\+text\+Font}}
 \index{fbg\+\_\+text\+Font@{fbg\+\_\+text\+Font}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+text\+Font()}{fbg\_textFont()}}
-{\footnotesize\ttfamily void fbg\+\_\+text\+Font (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$}]{font }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+text\+Font (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} $\ast$}]{font }\end{DoxyParamCaption})}
 
 
 
@@ -1454,7 +1337,7 @@ set the current font
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+vline@{fbg\+\_\+vline}}
 \index{fbg\+\_\+vline@{fbg\+\_\+vline}!fbgraphics.\+h@{fbgraphics.\+h}}
 \subsubsection{\texorpdfstring{fbg\+\_\+vline()}{fbg\_vline()}}
-{\footnotesize\ttfamily void fbg\+\_\+vline (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{h,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void fbg\+\_\+vline (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{h,  }\item[{unsigned char}]{r,  }\item[{unsigned char}]{g,  }\item[{unsigned char}]{b }\end{DoxyParamCaption})}
 
 
 

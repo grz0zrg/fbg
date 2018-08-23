@@ -3,7 +3,7 @@ STANDARD_FLAGS=-std=c11 -pedantic -D_GNU_SOURCE -D_POSIX_SOURCE -Wno-unused-valu
 DEBUG_FLAGS=-DDEBUG -g -Wall
 RELEASE_FLAGS=-O2 -Wall
 DEFP=-DFBG_PARALLEL
-SRC_LIBS=../src/lodepng/lodepng.c ../src/fbgraphics.c
+SRC_LIBS=../src/lodepng/lodepng.c ../../src/nanojpeg/nanojpeg.c ../src/fbgraphics.c
 SRC1=$(SRC_LIBS) quickstart.c
 SRC2=$(SRC_LIBS) simple_parallel_example.c
 SRC3=$(SRC_LIBS) perlin.c full_example.c

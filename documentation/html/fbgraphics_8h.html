@@ -28,7 +28,7 @@
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">FB Graphics
    </div>
-   <div id="projectbrief">FBGraphics (FBG) : Simple 24 bpp C graphics library for the Linux framebuffer with parallelism support.</div>
+   <div id="projectbrief">FBGraphics (FBG) : Simple C 16, 24, 32 bpp generic graphics library with parallelism support and custom backend.</div>
   </td>
  </tr>
  </tbody>
@@ -117,9 +117,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:struct__fbg__font"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a></td></tr>
 <tr class="memdesc:struct__fbg__font"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitmap font data structure.  <a href="fbgraphics_8h.html#struct__fbg__font">More...</a><br /></td></tr>
 <tr class="separator:struct__fbg__font"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:struct__fbg"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a></td></tr>
-<tr class="memdesc:struct__fbg"><td class="mdescLeft">&#160;</td><td class="mdescRight">FB Graphics context data structure.  <a href="fbgraphics_8h.html#struct__fbg">More...</a><br /></td></tr>
-<tr class="separator:struct__fbg"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html">_fbg</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">FB Graphics context data structure.  <a href="struct__fbg.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -147,118 +147,124 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aea89f0f15615a00ee4a390d6848ec54c"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aea89f0f15615a00ee4a390d6848ec54c">fbg_setup</a> (char *fb_device, int page_flipping)</td></tr>
-<tr class="memdesc:aea89f0f15615a00ee4a390d6848ec54c"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialize a FB Graphics context  <a href="#aea89f0f15615a00ee4a390d6848ec54c">More...</a><br /></td></tr>
+<tr class="memitem:aea89f0f15615a00ee4a390d6848ec54c"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aea89f0f15615a00ee4a390d6848ec54c">fbg_setup</a> (char *fb_device, int page_flipping)</td></tr>
+<tr class="memdesc:aea89f0f15615a00ee4a390d6848ec54c"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialize a FB Graphics context (framebuffer)  <a href="#aea89f0f15615a00ee4a390d6848ec54c">More...</a><br /></td></tr>
 <tr class="separator:aea89f0f15615a00ee4a390d6848ec54c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390cd3fb535cbad76856700a035ed401"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401">fbg_close</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg)</td></tr>
+<tr class="memitem:aba1acfb1926907e41ccadbfceec0333d"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aba1acfb1926907e41ccadbfceec0333d">fbg_customSetup</a> (int width, int height, void *user_context, void(*user_draw)(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg), void(*user_free)(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg))</td></tr>
+<tr class="memdesc:aba1acfb1926907e41ccadbfceec0333d"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialize a FB Graphics context with a custom rendering backend  <a href="#aba1acfb1926907e41ccadbfceec0333d">More...</a><br /></td></tr>
+<tr class="separator:aba1acfb1926907e41ccadbfceec0333d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a390cd3fb535cbad76856700a035ed401"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401">fbg_close</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)</td></tr>
 <tr class="memdesc:a390cd3fb535cbad76856700a035ed401"><td class="mdescLeft">&#160;</td><td class="mdescRight">free up the memory associated with a FB Graphics context and close the framebuffer device  <a href="#a390cd3fb535cbad76856700a035ed401">More...</a><br /></td></tr>
 <tr class="separator:a390cd3fb535cbad76856700a035ed401"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab18823ca0e95ca51c5d6c69a48af8d0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e">fbg_fadeDown</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char rgb_fade_amount)</td></tr>
+<tr class="memitem:ab18823ca0e95ca51c5d6c69a48af8d0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e">fbg_fadeDown</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char rgb_fade_amount)</td></tr>
 <tr class="memdesc:ab18823ca0e95ca51c5d6c69a48af8d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">background fade to black with controllable factor  <a href="#ab18823ca0e95ca51c5d6c69a48af8d0e">More...</a><br /></td></tr>
 <tr class="separator:ab18823ca0e95ca51c5d6c69a48af8d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19d56a111248b7f7d52f4bc6392d3743"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a19d56a111248b7f7d52f4bc6392d3743">fbg_fadeUp</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char rgb_fade_amount)</td></tr>
+<tr class="memitem:a19d56a111248b7f7d52f4bc6392d3743"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a19d56a111248b7f7d52f4bc6392d3743">fbg_fadeUp</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char rgb_fade_amount)</td></tr>
 <tr class="memdesc:a19d56a111248b7f7d52f4bc6392d3743"><td class="mdescLeft">&#160;</td><td class="mdescRight">background fade to white with controllable factor  <a href="#a19d56a111248b7f7d52f4bc6392d3743">More...</a><br /></td></tr>
 <tr class="separator:a19d56a111248b7f7d52f4bc6392d3743"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab50cccf3eceac81bda220a0c09e38e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aab50cccf3eceac81bda220a0c09e38e0">fbg_clear</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char brightness)</td></tr>
+<tr class="memitem:aab50cccf3eceac81bda220a0c09e38e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aab50cccf3eceac81bda220a0c09e38e0">fbg_clear</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char brightness)</td></tr>
 <tr class="memdesc:aab50cccf3eceac81bda220a0c09e38e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">fast grayscale background clearing  <a href="#aab50cccf3eceac81bda220a0c09e38e0">More...</a><br /></td></tr>
 <tr class="separator:aab50cccf3eceac81bda220a0c09e38e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a224b9ae07cc8fcd8c497b1d5f7007b66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a224b9ae07cc8fcd8c497b1d5f7007b66">fbg_fill</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:a224b9ae07cc8fcd8c497b1d5f7007b66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a224b9ae07cc8fcd8c497b1d5f7007b66">fbg_fill</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:a224b9ae07cc8fcd8c497b1d5f7007b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the filling color for fast drawing operations  <a href="#a224b9ae07cc8fcd8c497b1d5f7007b66">More...</a><br /></td></tr>
 <tr class="separator:a224b9ae07cc8fcd8c497b1d5f7007b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a416971e772c114423b6c037f81d6f5ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a416971e772c114423b6c037f81d6f5ea">fbg_getPixel</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__rgb">_fbg_rgb</a> *color)</td></tr>
+<tr class="memitem:a416971e772c114423b6c037f81d6f5ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a416971e772c114423b6c037f81d6f5ea">fbg_getPixel</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__rgb">_fbg_rgb</a> *color)</td></tr>
 <tr class="memdesc:a416971e772c114423b6c037f81d6f5ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the RGB value of a pixel  <a href="#a416971e772c114423b6c037f81d6f5ea">More...</a><br /></td></tr>
 <tr class="separator:a416971e772c114423b6c037f81d6f5ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d81b1ddf54b0d4da0f30e36d7e2f3bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a7d81b1ddf54b0d4da0f30e36d7e2f3bb">fbg_pixel</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:a7d81b1ddf54b0d4da0f30e36d7e2f3bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a7d81b1ddf54b0d4da0f30e36d7e2f3bb">fbg_pixel</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:a7d81b1ddf54b0d4da0f30e36d7e2f3bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a pixel  <a href="#a7d81b1ddf54b0d4da0f30e36d7e2f3bb">More...</a><br /></td></tr>
 <tr class="separator:a7d81b1ddf54b0d4da0f30e36d7e2f3bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08c6a08afcb5bd07793801554b8f0bfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a08c6a08afcb5bd07793801554b8f0bfe">fbg_pixela</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)</td></tr>
+<tr class="memitem:a08c6a08afcb5bd07793801554b8f0bfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a08c6a08afcb5bd07793801554b8f0bfe">fbg_pixela</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)</td></tr>
 <tr class="memdesc:a08c6a08afcb5bd07793801554b8f0bfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a pixel with alpha component (alpha blending)  <a href="#a08c6a08afcb5bd07793801554b8f0bfe">More...</a><br /></td></tr>
 <tr class="separator:a08c6a08afcb5bd07793801554b8f0bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f656e76477d51b8faf039dd5baea65c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a5f656e76477d51b8faf039dd5baea65c">fbg_fpixel</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y)</td></tr>
+<tr class="memitem:a5f656e76477d51b8faf039dd5baea65c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a5f656e76477d51b8faf039dd5baea65c">fbg_fpixel</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y)</td></tr>
 <tr class="memdesc:a5f656e76477d51b8faf039dd5baea65c"><td class="mdescLeft">&#160;</td><td class="mdescRight">fast pixel drawing which use the fill color set by <a class="el" href="fbgraphics_8h.html#a224b9ae07cc8fcd8c497b1d5f7007b66" title="set the filling color for fast drawing operations ">fbg_fill()</a>  <a href="#a5f656e76477d51b8faf039dd5baea65c">More...</a><br /></td></tr>
 <tr class="separator:a5f656e76477d51b8faf039dd5baea65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad208d61ec4f50a5fd13f2cc8dd2ee0e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ad208d61ec4f50a5fd13f2cc8dd2ee0e5">fbg_rect</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:ad208d61ec4f50a5fd13f2cc8dd2ee0e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ad208d61ec4f50a5fd13f2cc8dd2ee0e5">fbg_rect</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:ad208d61ec4f50a5fd13f2cc8dd2ee0e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a rectangle  <a href="#ad208d61ec4f50a5fd13f2cc8dd2ee0e5">More...</a><br /></td></tr>
 <tr class="separator:ad208d61ec4f50a5fd13f2cc8dd2ee0e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83a99e5c8d44e2acf52cad38519ececf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a83a99e5c8d44e2acf52cad38519ececf">fbg_recta</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b, unsigned char a)</td></tr>
+<tr class="memitem:a83a99e5c8d44e2acf52cad38519ececf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a83a99e5c8d44e2acf52cad38519ececf">fbg_recta</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b, unsigned char a)</td></tr>
 <tr class="memdesc:a83a99e5c8d44e2acf52cad38519ececf"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a rectangle with alpha transparency  <a href="#a83a99e5c8d44e2acf52cad38519ececf">More...</a><br /></td></tr>
 <tr class="separator:a83a99e5c8d44e2acf52cad38519ececf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a543755814e43b77b0beebea7a08457db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a543755814e43b77b0beebea7a08457db">fbg_frect</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y, int w, int h)</td></tr>
+<tr class="memitem:a543755814e43b77b0beebea7a08457db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a543755814e43b77b0beebea7a08457db">fbg_frect</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, int w, int h)</td></tr>
 <tr class="memdesc:a543755814e43b77b0beebea7a08457db"><td class="mdescLeft">&#160;</td><td class="mdescRight">fast rectangle drawing which use the fill color set by <a class="el" href="fbgraphics_8h.html#a224b9ae07cc8fcd8c497b1d5f7007b66" title="set the filling color for fast drawing operations ">fbg_fill()</a>  <a href="#a543755814e43b77b0beebea7a08457db">More...</a><br /></td></tr>
 <tr class="separator:a543755814e43b77b0beebea7a08457db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0558e4513da1d844526d54afea4d1531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a0558e4513da1d844526d54afea4d1531">fbg_hline</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:a0558e4513da1d844526d54afea4d1531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a0558e4513da1d844526d54afea4d1531">fbg_hline</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:a0558e4513da1d844526d54afea4d1531"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a horizontal line  <a href="#a0558e4513da1d844526d54afea4d1531">More...</a><br /></td></tr>
 <tr class="separator:a0558e4513da1d844526d54afea4d1531"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c4fb5fa694646ec66b50a32eaf38557"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3c4fb5fa694646ec66b50a32eaf38557">fbg_vline</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x, int y, int h, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:a3c4fb5fa694646ec66b50a32eaf38557"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3c4fb5fa694646ec66b50a32eaf38557">fbg_vline</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, int h, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:a3c4fb5fa694646ec66b50a32eaf38557"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a vertical line  <a href="#a3c4fb5fa694646ec66b50a32eaf38557">More...</a><br /></td></tr>
 <tr class="separator:a3c4fb5fa694646ec66b50a32eaf38557"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46f7354a04a7bfb7467d25394ce38303"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a46f7354a04a7bfb7467d25394ce38303">fbg_line</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int x1, int y1, int x2, int y2, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:a46f7354a04a7bfb7467d25394ce38303"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a46f7354a04a7bfb7467d25394ce38303">fbg_line</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x1, int y1, int x2, int y2, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:a46f7354a04a7bfb7467d25394ce38303"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a line from two points (Bresenham algorithm)  <a href="#a46f7354a04a7bfb7467d25394ce38303">More...</a><br /></td></tr>
 <tr class="separator:a46f7354a04a7bfb7467d25394ce38303"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a5a2ef48f5b26794473c51082fb75ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2a5a2ef48f5b26794473c51082fb75ab">fbg_polygon</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int num_vertices, int *vertices, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:a2a5a2ef48f5b26794473c51082fb75ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2a5a2ef48f5b26794473c51082fb75ab">fbg_polygon</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int num_vertices, int *vertices, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:a2a5a2ef48f5b26794473c51082fb75ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a polygon  <a href="#a2a5a2ef48f5b26794473c51082fb75ab">More...</a><br /></td></tr>
 <tr class="separator:a2a5a2ef48f5b26794473c51082fb75ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1622b4cd13f223d161cd234ea1fe6125"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a1622b4cd13f223d161cd234ea1fe6125">fbg_background</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:a1622b4cd13f223d161cd234ea1fe6125"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a1622b4cd13f223d161cd234ea1fe6125">fbg_background</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:a1622b4cd13f223d161cd234ea1fe6125"><td class="mdescLeft">&#160;</td><td class="mdescRight">clear the background with a color  <a href="#a1622b4cd13f223d161cd234ea1fe6125">More...</a><br /></td></tr>
 <tr class="separator:a1622b4cd13f223d161cd234ea1fe6125"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dfb2f17bc31e161868e6baf1c391816"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2dfb2f17bc31e161868e6baf1c391816">fbg_draw</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg)</td></tr>
+<tr class="memitem:a2dfb2f17bc31e161868e6baf1c391816"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2dfb2f17bc31e161868e6baf1c391816">fbg_draw</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)</td></tr>
 <tr class="memdesc:a2dfb2f17bc31e161868e6baf1c391816"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw to the screen  <a href="#a2dfb2f17bc31e161868e6baf1c391816">More...</a><br /></td></tr>
 <tr class="separator:a2dfb2f17bc31e161868e6baf1c391816"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedfec23bc4c51ff5ffb843bb289d448b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aedfec23bc4c51ff5ffb843bb289d448b">fbg_flip</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg)</td></tr>
+<tr class="memitem:aedfec23bc4c51ff5ffb843bb289d448b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aedfec23bc4c51ff5ffb843bb289d448b">fbg_flip</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)</td></tr>
 <tr class="memdesc:aedfec23bc4c51ff5ffb843bb289d448b"><td class="mdescLeft">&#160;</td><td class="mdescRight">flip the buffers  <a href="#aedfec23bc4c51ff5ffb843bb289d448b">More...</a><br /></td></tr>
 <tr class="separator:aedfec23bc4c51ff5ffb843bb289d448b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e3ebfcc75e055a24f1a0f5765936d16"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16">fbg_createImage</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned int width, unsigned int height)</td></tr>
+<tr class="memitem:a1e3ebfcc75e055a24f1a0f5765936d16"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16">fbg_createImage</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int width, unsigned int height)</td></tr>
 <tr class="memdesc:a1e3ebfcc75e055a24f1a0f5765936d16"><td class="mdescLeft">&#160;</td><td class="mdescRight">create an empty image  <a href="#a1e3ebfcc75e055a24f1a0f5765936d16">More...</a><br /></td></tr>
 <tr class="separator:a1e3ebfcc75e055a24f1a0f5765936d16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4be92c5b1376fb7f06de1529b0a43f7f"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f">fbg_loadPNG</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, const char *filename)</td></tr>
-<tr class="memdesc:a4be92c5b1376fb7f06de1529b0a43f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">load a PNG image from a file  <a href="#a4be92c5b1376fb7f06de1529b0a43f7f">More...</a><br /></td></tr>
+<tr class="memitem:a4be92c5b1376fb7f06de1529b0a43f7f"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f">fbg_loadPNG</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, const char *filename)</td></tr>
+<tr class="memdesc:a4be92c5b1376fb7f06de1529b0a43f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">load a PNG image from a file (lodePNG library)  <a href="#a4be92c5b1376fb7f06de1529b0a43f7f">More...</a><br /></td></tr>
 <tr class="separator:a4be92c5b1376fb7f06de1529b0a43f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a600d896c04feec33d001662ca23e50ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad">fbg_image</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y)</td></tr>
+<tr class="memitem:ad05affc24eed0b9f906d6926b8f02fec"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec">fbg_loadJPEG</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, const char *filename)</td></tr>
+<tr class="memdesc:ad05affc24eed0b9f906d6926b8f02fec"><td class="mdescLeft">&#160;</td><td class="mdescRight">load a JPEG image from a file (NanoJPEG library)  <a href="#ad05affc24eed0b9f906d6926b8f02fec">More...</a><br /></td></tr>
+<tr class="separator:ad05affc24eed0b9f906d6926b8f02fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a600d896c04feec33d001662ca23e50ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad">fbg_image</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y)</td></tr>
 <tr class="memdesc:a600d896c04feec33d001662ca23e50ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw an image  <a href="#a600d896c04feec33d001662ca23e50ad">More...</a><br /></td></tr>
 <tr class="separator:a600d896c04feec33d001662ca23e50ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ba2088b60304afa9ee7ce1b39bff114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114">fbg_imageColorkey</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y, int cr, int cg, int cb)</td></tr>
+<tr class="memitem:a8ba2088b60304afa9ee7ce1b39bff114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114">fbg_imageColorkey</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y, int cr, int cg, int cb)</td></tr>
 <tr class="memdesc:a8ba2088b60304afa9ee7ce1b39bff114"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw an image with colorkey support (image colorkey value will be ignored)  <a href="#a8ba2088b60304afa9ee7ce1b39bff114">More...</a><br /></td></tr>
 <tr class="separator:a8ba2088b60304afa9ee7ce1b39bff114"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3610bf730319af99045283ea66955741"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741">fbg_imageClip</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y, int cx, int cy, int cw, int ch)</td></tr>
+<tr class="memitem:a3610bf730319af99045283ea66955741"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741">fbg_imageClip</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y, int cx, int cy, int cw, int ch)</td></tr>
 <tr class="memdesc:a3610bf730319af99045283ea66955741"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a clipped image  <a href="#a3610bf730319af99045283ea66955741">More...</a><br /></td></tr>
 <tr class="separator:a3610bf730319af99045283ea66955741"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a728d5bc6d1ee11e127db8722fe3cbc18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18">fbg_imageFlip</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img)</td></tr>
 <tr class="memdesc:a728d5bc6d1ee11e127db8722fe3cbc18"><td class="mdescLeft">&#160;</td><td class="mdescRight">flip an image vertically  <a href="#a728d5bc6d1ee11e127db8722fe3cbc18">More...</a><br /></td></tr>
 <tr class="separator:a728d5bc6d1ee11e127db8722fe3cbc18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0c3a773dcab62f514726b03e54ad692"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692">fbg_imageEx</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch)</td></tr>
+<tr class="memitem:ad0c3a773dcab62f514726b03e54ad692"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692">fbg_imageEx</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch)</td></tr>
 <tr class="memdesc:ad0c3a773dcab62f514726b03e54ad692"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw an image with support for clipping and scaling  <a href="#ad0c3a773dcab62f514726b03e54ad692">More...</a><br /></td></tr>
 <tr class="separator:ad0c3a773dcab62f514726b03e54ad692"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a737482b6170ea3273d6679fdca63a27c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c">fbg_freeImage</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img)</td></tr>
 <tr class="memdesc:a737482b6170ea3273d6679fdca63a27c"><td class="mdescLeft">&#160;</td><td class="mdescRight">free the memory associated with an image  <a href="#a737482b6170ea3273d6679fdca63a27c">More...</a><br /></td></tr>
 <tr class="separator:a737482b6170ea3273d6679fdca63a27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdcb72ae08437471569c4880fb43f20c"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c">fbg_createFont</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int glyph_width, int glyph_height, unsigned char first_char)</td></tr>
+<tr class="memitem:afdcb72ae08437471569c4880fb43f20c"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c">fbg_createFont</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a> *img, int glyph_width, int glyph_height, unsigned char first_char)</td></tr>
 <tr class="memdesc:afdcb72ae08437471569c4880fb43f20c"><td class="mdescLeft">&#160;</td><td class="mdescRight">create a bitmap font from an image  <a href="#afdcb72ae08437471569c4880fb43f20c">More...</a><br /></td></tr>
 <tr class="separator:afdcb72ae08437471569c4880fb43f20c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1ccfb0069d4567313391dc819ada76b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ac1ccfb0069d4567313391dc819ada76b">fbg_textFont</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *font)</td></tr>
+<tr class="memitem:ac1ccfb0069d4567313391dc819ada76b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ac1ccfb0069d4567313391dc819ada76b">fbg_textFont</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *font)</td></tr>
 <tr class="memdesc:ac1ccfb0069d4567313391dc819ada76b"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the current font  <a href="#ac1ccfb0069d4567313391dc819ada76b">More...</a><br /></td></tr>
 <tr class="separator:ac1ccfb0069d4567313391dc819ada76b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acae7a4ff39407371a52ebf9ae4c260c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1">fbg_textColor</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char r, unsigned char g, unsigned char b)</td></tr>
+<tr class="memitem:acae7a4ff39407371a52ebf9ae4c260c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1">fbg_textColor</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:acae7a4ff39407371a52ebf9ae4c260c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the current text color  <a href="#acae7a4ff39407371a52ebf9ae4c260c1">More...</a><br /></td></tr>
 <tr class="separator:acae7a4ff39407371a52ebf9ae4c260c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e82acd949a5c12a1fa494fb4c028ff1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1">fbg_textBackground</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int r, int g, int b, int a)</td></tr>
+<tr class="memitem:a2e82acd949a5c12a1fa494fb4c028ff1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1">fbg_textBackground</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int r, int g, int b, int a)</td></tr>
 <tr class="memdesc:a2e82acd949a5c12a1fa494fb4c028ff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the current text background color (based on colorkey value!)  <a href="#a2e82acd949a5c12a1fa494fb4c028ff1">More...</a><br /></td></tr>
 <tr class="separator:a2e82acd949a5c12a1fa494fb4c028ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7165bceebbbe11332256d1bd4e179489"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a7165bceebbbe11332256d1bd4e179489">fbg_textColorKey</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char v)</td></tr>
+<tr class="memitem:a7165bceebbbe11332256d1bd4e179489"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a7165bceebbbe11332256d1bd4e179489">fbg_textColorKey</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char v)</td></tr>
 <tr class="memdesc:a7165bceebbbe11332256d1bd4e179489"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the current text color key  <a href="#a7165bceebbbe11332256d1bd4e179489">More...</a><br /></td></tr>
 <tr class="separator:a7165bceebbbe11332256d1bd4e179489"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3233e3de8fc3ad06391641241c77a1ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea">fbg_text</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *fnt, char *text, int x, int y, int r, int g, int b)</td></tr>
+<tr class="memitem:a3233e3de8fc3ad06391641241c77a1ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea">fbg_text</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *fnt, char *text, int x, int y, int r, int g, int b)</td></tr>
 <tr class="memdesc:a3233e3de8fc3ad06391641241c77a1ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a text  <a href="#a3233e3de8fc3ad06391641241c77a1ea">More...</a><br /></td></tr>
 <tr class="separator:a3233e3de8fc3ad06391641241c77a1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae823fe76a206cbc1fdd405c13d26830"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aae823fe76a206cbc1fdd405c13d26830">fbg_freeFont</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *font)</td></tr>
 <tr class="memdesc:aae823fe76a206cbc1fdd405c13d26830"><td class="mdescLeft">&#160;</td><td class="mdescRight">free the memory associated with a font  <a href="#aae823fe76a206cbc1fdd405c13d26830">More...</a><br /></td></tr>
 <tr class="separator:aae823fe76a206cbc1fdd405c13d26830"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112e427410882007fbcea78b0657c5f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a112e427410882007fbcea78b0657c5f1">fbg_drawFramerate</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *fnt, int task, int x, int y, int r, int g, int b)</td></tr>
+<tr class="memitem:a112e427410882007fbcea78b0657c5f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a112e427410882007fbcea78b0657c5f1">fbg_drawFramerate</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a> *fnt, int task, int x, int y, int r, int g, int b)</td></tr>
 <tr class="memdesc:a112e427410882007fbcea78b0657c5f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw the framerate of a particular parallel task  <a href="#a112e427410882007fbcea78b0657c5f1">More...</a><br /></td></tr>
 <tr class="separator:a112e427410882007fbcea78b0657c5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8125b5b37979f803c4640d9864fadbab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a8125b5b37979f803c4640d9864fadbab">fbg_getFramerate</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, int task)</td></tr>
+<tr class="memitem:a8125b5b37979f803c4640d9864fadbab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a8125b5b37979f803c4640d9864fadbab">fbg_getFramerate</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int task)</td></tr>
 <tr class="memdesc:a8125b5b37979f803c4640d9864fadbab"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the framerate of a particular task  <a href="#a8125b5b37979f803c4640d9864fadbab">More...</a><br /></td></tr>
 <tr class="separator:a8125b5b37979f803c4640d9864fadbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adda2a3ebc3a63cc275c78c61e62ce437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#adda2a3ebc3a63cc275c78c61e62ce437">fbg_drawInto</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *fbg, unsigned char *buffer)</td></tr>
+<tr class="memitem:adda2a3ebc3a63cc275c78c61e62ce437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#adda2a3ebc3a63cc275c78c61e62ce437">fbg_drawInto</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char *buffer)</td></tr>
 <tr class="memdesc:adda2a3ebc3a63cc275c78c61e62ce437"><td class="mdescLeft">&#160;</td><td class="mdescRight">set an offscreen target for all subsequent fbg context draw calls, it is important to reset back to display target once done by calling fbg_drawInto(NULL)  <a href="#adda2a3ebc3a63cc275c78c61e62ce437">More...</a><br /></td></tr>
 <tr class="separator:adda2a3ebc3a63cc275c78c61e62ce437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -330,7 +336,7 @@ r</td>
 <td class="fieldname">
 data</td>
 <td class="fielddoc">
-24 bpp RGB image data </td></tr>
+RGB image data (bpp depend on framebuffer settings) </td></tr>
 <tr><td class="fieldtype">
 <a id="ac6293cb3d118f0ccdde38c13cbefa9db"></a>unsigned int</td>
 <td class="fieldname">
@@ -404,196 +410,6 @@ Width of a glyph. </td></tr>
 
 </div>
 </div>
-<a name="struct__fbg" id="struct__fbg"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#struct__fbg">&#9670;&nbsp;</a></span>_fbg</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct _fbg</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="textblock"><p class="">FB Graphics context data structure. </p>
-<p class="">Hold all data related to a FBG context </p>
-
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00089">89</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
-</div><table class="fieldtable">
-<tr><th colspan="3">Data Fields</th></tr>
-<tr><td class="fieldtype">
-<a id="a907e7fc97965b972c17114c885e53735"></a>unsigned char *</td>
-<td class="fieldname">
-back_buffer</td>
-<td class="fielddoc">
-Back buffer. <p class="">All FB Graphics functions draw into this buffer. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a5844c5bf4789117cbc0c972ff160b338"></a>int</td>
-<td class="fieldname">
-bgr</td>
-<td class="fielddoc">
-Flag indicating a BGR framebuffer. </td></tr>
-<tr><td class="fieldtype">
-<a id="abd19f36337c99f866e03eb88f6c2a9d5"></a>unsigned char *</td>
-<td class="fieldname">
-buffer</td>
-<td class="fielddoc">
-Memory-mapped framebuffer. </td></tr>
-<tr><td class="fieldtype">
-<a id="a7c2e64d2f40575c8a989c759c30acb0e"></a>int</td>
-<td class="fieldname">
-comp_offset</td>
-<td class="fielddoc">
-Offset to add in case of 32 BPP. </td></tr>
-<tr><td class="fieldtype">
-<a id="a1db77a2ef506723a575644dbc1cfb747"></a>int</td>
-<td class="fieldname">
-components</td>
-<td class="fielddoc">
-Display components amount (3 = 24 BPP / 4 = 32 BPP) </td></tr>
-<tr><td class="fieldtype">
-<a id="a72868d703236aaabb7a5031703a6bbd8"></a>struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a></td>
-<td class="fieldname">
-current_font</td>
-<td class="fielddoc">
-Current font. <p class="">No fonts is loaded by default and the first loaded font will be assigned automatically as the current font. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="aa20614c94c7235bc5bc105b6e71e1be8"></a>unsigned char *</td>
-<td class="fieldname">
-disp_buffer</td>
-<td class="fielddoc">
-Front / display buffer. </td></tr>
-<tr><td class="fieldtype">
-<a id="acfa58132f44f89e832ae7f73f5583b7e"></a>int</td>
-<td class="fieldname">
-fd</td>
-<td class="fielddoc">
-Framebuffer device file descriptor. </td></tr>
-<tr><td class="fieldtype">
-<a id="ad3cac82bd9448a4020a4e08621f5269a"></a>struct <a class="el" href="fbgraphics_8h.html#struct__fbg__rgb">_fbg_rgb</a></td>
-<td class="fieldname">
-fill_color</td>
-<td class="fielddoc">
-Current fill color. <p class="">Default to black. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a954dd14a4129eed7ebe09f31bd025861"></a>struct fb_fix_screeninfo</td>
-<td class="fieldname">
-finfo</td>
-<td class="fielddoc">
-Framebuffer device fix. informations. </td></tr>
-<tr><td class="fieldtype">
-<a id="a64b16363bc48d1e19141df2e242930a9"></a>int16_t</td>
-<td class="fieldname">
-fps</td>
-<td class="fielddoc">
-Current FPS. </td></tr>
-<tr><td class="fieldtype">
-<a id="af447e6ed58d893989c8dad075807a79b"></a>char</td>
-<td class="fieldname">
-fps_char[10]</td>
-<td class="fielddoc">
-Current FPS as a string. </td></tr>
-<tr><td class="fieldtype">
-<a id="a07d7bb827a7595c956fe22c2d65bba33"></a>struct timeval</td>
-<td class="fieldname">
-fps_start</td>
-<td class="fielddoc">
-First frame time for the current second. </td></tr>
-<tr><td class="fieldtype">
-<a id="ade17a45bbc82bef326857c2837cdf66c"></a>struct timeval</td>
-<td class="fieldname">
-fps_stop</td>
-<td class="fielddoc">
-Last frame time for the current second. </td></tr>
-<tr><td class="fieldtype">
-<a id="aa3ef83f919d12e680f8c64006b441454"></a>int</td>
-<td class="fieldname">
-frame</td>
-<td class="fielddoc">
-Frame counter for the current second. </td></tr>
-<tr><td class="fieldtype">
-<a id="a3a3bd409e71d020fa77f69a541d832f8"></a>int</td>
-<td class="fieldname">
-height</td>
-<td class="fielddoc">
-Display height in pixels. </td></tr>
-<tr><td class="fieldtype">
-<a id="af8a1ee8d7004e6f2193f2a3ed98f8ce8"></a>int</td>
-<td class="fieldname">
-line_length</td>
-<td class="fielddoc">
-Internal buffers line length. </td></tr>
-<tr><td class="fieldtype">
-<a id="ad32509bca6ac4fb467476834cb8ce9d2"></a>int</td>
-<td class="fieldname">
-page_flipping</td>
-<td class="fielddoc">
-Flag indicating that page flipping is enabled. </td></tr>
-<tr><td class="fieldtype">
-<a id="a84fb220d4804cba22176997898e75b73"></a>int</td>
-<td class="fieldname">
-size</td>
-<td class="fielddoc">
-Framebuffer real data length (with BPP) </td></tr>
-<tr><td class="fieldtype">
-<a id="a0463af9bf583afe770b822c1fbb9a24d"></a>unsigned char *</td>
-<td class="fieldname">
-temp_buffer</td>
-<td class="fielddoc">
-Temporary buffer. </td></tr>
-<tr><td class="fieldtype">
-<a id="a870987786121c51135f20b630d731abd"></a>int</td>
-<td class="fieldname">
-text_alpha</td>
-<td class="fielddoc">
-Text background alpha value. <p class="">Default to transparent. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="afd34a8de5a853e915bd101f11d44cf67"></a>struct <a class="el" href="fbgraphics_8h.html#struct__fbg__rgb">_fbg_rgb</a></td>
-<td class="fieldname">
-text_background</td>
-<td class="fielddoc">
-Current text background color (based on colorkey value) <p class="">Default to black. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a4abb858439598b09790ec6d5d8326bb2"></a>struct <a class="el" href="fbgraphics_8h.html#struct__fbg__rgb">_fbg_rgb</a></td>
-<td class="fieldname">
-text_color</td>
-<td class="fielddoc">
-Current text color. <p class="">Default to white. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a06e65293cf0b48e70d76d63f5de453e6"></a>unsigned char</td>
-<td class="fieldname">
-text_colorkey</td>
-<td class="fielddoc">
-Current text color key. <p class="">Default to black. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a22447f0d56680de6ff37587b44f7cf4b"></a>struct fb_var_screeninfo</td>
-<td class="fieldname">
-vinfo</td>
-<td class="fielddoc">
-Framebuffer device var. informations. </td></tr>
-<tr><td class="fieldtype">
-<a id="a1d3c76643e4ee424f4d17e27991d5e2e"></a>int</td>
-<td class="fieldname">
-width</td>
-<td class="fielddoc">
-Display width in pixels. </td></tr>
-<tr><td class="fieldtype">
-<a id="a1ab3f10e8c3483d7286db9850511d46d"></a>int</td>
-<td class="fieldname">
-width_n_height</td>
-<td class="fielddoc">
-Display lenght in pixels (width * height) </td></tr>
-</table>
-
-</div>
-</div>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="af424bd0f275b38651aabf1a7e3e34de3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af424bd0f275b38651aabf1a7e3e34de3">&#9670;&nbsp;</a></span>_FBG_MAX</h2>
@@ -623,7 +439,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer MAX Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00691">691</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00719">719</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -655,7 +471,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer MIN Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00693">693</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00721">721</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -677,7 +493,7 @@ Display lenght in pixels (width * height) </td></tr>
 
 <p>integer SIGN function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00695">695</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00723">723</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -717,7 +533,7 @@ Display lenght in pixels (width * height) </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a19d56a111248b7f7d52f4bc6392d3743" title="background fade to white with controllable factor ">fbg_fadeUp()</a>, <a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e" title="background fade to black with controllable factor ">fbg_fadeDown()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00666">666</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00694">694</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -783,9 +599,9 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00688">688</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00716">716</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -805,9 +621,9 @@ Display lenght in pixels (width * height) </td></tr>
 </div><div class="memdoc">
 
 <p>initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#aba1acfb1926907e41ccadbfceec0333d" title="initialize a FB Graphics context with a custom rendering backend ">fbg_customSetup()</a>, <a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00658">658</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00686">686</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -862,7 +678,7 @@ Display lenght in pixels (width * height) </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#ac1ccfb0069d4567313391dc819ada76b" title="set the current font ">fbg_textFont()</a>, <a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1" title="set the current text color ">fbg_textColor()</a>, <a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea" title="draw a text ">fbg_text()</a>, fbg_textColorkey(), <a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1" title="set the current text background color (based on colorkey value!) ">fbg_textBackground()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00676">676</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00704">704</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -876,7 +692,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_background </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -928,7 +744,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_clear </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -966,7 +782,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_close </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em></td><td>)</td>
           <td></td>
         </tr>
@@ -980,7 +796,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#aea89f0f15615a00ee4a390d6848ec54c" title="initialize a FB Graphics context ">fbg_setup()</a>, <a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#aea89f0f15615a00ee4a390d6848ec54c" title="initialize a FB Graphics context (framebuffer) ">fbg_setup()</a>, <a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#aba1acfb1926907e41ccadbfceec0333d" title="initialize a FB Graphics context with a custom rendering backend ">fbg_customSetup()</a> </dd></dl>
 
 </div>
 </div>
@@ -993,7 +809,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__font">_fbg_font</a>* fbg_createFont </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1053,7 +869,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a>* fbg_createImage </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1090,6 +906,66 @@ Display lenght in pixels (width * height) </td></tr>
 
 </div>
 </div>
+<a id="aba1acfb1926907e41ccadbfceec0333d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba1acfb1926907e41ccadbfceec0333d">&#9670;&nbsp;</a></span>fbg_customSetup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct__fbg.html">_fbg</a>* fbg_customSetup </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>user_context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void(*)(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)&#160;</td>
+          <td class="paramname"><em>user_draw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void(*)(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)&#160;</td>
+          <td class="paramname"><em>user_free</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>initialize a FB Graphics context with a custom rendering backend </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>render width </td></tr>
+    <tr><td class="paramname">height</td><td>render height </td></tr>
+    <tr><td class="paramname">user_context</td><td>user rendering data storage (things like window context etc.) </td></tr>
+    <tr><td class="paramname">user_draw</td><td>function to call upon <a class="el" href="fbgraphics_8h.html#a2dfb2f17bc31e161868e6baf1c391816" title="draw to the screen ">fbg_draw()</a> </td></tr>
+    <tr><td class="paramname">user_free</td><td>function to call upon <a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="struct__fbg.html" title="FB Graphics context data structure. ">_fbg</a> structure pointer to pass to any FBG library functions </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a>, <a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#aea89f0f15615a00ee4a390d6848ec54c" title="initialize a FB Graphics context (framebuffer) ">fbg_setup()</a> </dd></dl>
+
+</div>
+</div>
 <a id="a2dfb2f17bc31e161868e6baf1c391816"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2dfb2f17bc31e161868e6baf1c391816">&#9670;&nbsp;</a></span>fbg_draw()</h2>
 
@@ -1099,7 +975,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_draw </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1125,7 +1001,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_drawFramerate </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1204,7 +1080,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_drawInto </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1241,7 +1117,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_fadeDown </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1279,7 +1155,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_fadeUp </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1317,7 +1193,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_fill </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1369,7 +1245,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_flip </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1395,7 +1271,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_fpixel </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1440,7 +1316,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_frect </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1540,7 +1416,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a> </dd></dl>
 
 </div>
 </div>
@@ -1553,7 +1429,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">int fbg_getFramerate </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1591,7 +1467,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_getPixel </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1642,7 +1518,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_hline </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1715,7 +1591,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_image </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1754,7 +1630,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
 
 </div>
 </div>
@@ -1767,7 +1643,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_imageClip </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1834,7 +1710,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
 
 </div>
 </div>
@@ -1847,7 +1723,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_imageColorkey </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -1907,7 +1783,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a> </dd></dl>
 
 </div>
 </div>
@@ -1920,7 +1796,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_imageEx </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2001,7 +1877,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
 
 </div>
 </div>
@@ -2028,7 +1904,7 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file ">fbg_loadPNG()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a> </dd></dl>
 
 </div>
 </div>
@@ -2041,7 +1917,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_line </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2112,16 +1988,16 @@ Display lenght in pixels (width * height) </td></tr>
 
 </div>
 </div>
-<a id="a4be92c5b1376fb7f06de1529b0a43f7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4be92c5b1376fb7f06de1529b0a43f7f">&#9670;&nbsp;</a></span>fbg_loadPNG()</h2>
+<a id="ad05affc24eed0b9f906d6926b8f02fec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad05affc24eed0b9f906d6926b8f02fec">&#9670;&nbsp;</a></span>fbg_loadJPEG()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a>* fbg_loadPNG </td>
+          <td class="memname">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a>* fbg_loadJPEG </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2138,7 +2014,46 @@ Display lenght in pixels (width * height) </td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>load a PNG image from a file </p>
+<p>load a JPEG image from a file (NanoJPEG library) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
+    <tr><td class="paramname">filename</td><td>JPEG image filename </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="fbgraphics_8h.html#struct__fbg__img" title="Image data structure. ">_fbg_img</a> data structure pointer </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4be92c5b1376fb7f06de1529b0a43f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4be92c5b1376fb7f06de1529b0a43f7f">&#9670;&nbsp;</a></span>fbg_loadPNG()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__img">_fbg_img</a>* fbg_loadPNG </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
+          <td class="paramname"><em>fbg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>filename</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>load a PNG image from a file (lodePNG library) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
@@ -2147,7 +2062,7 @@ Display lenght in pixels (width * height) </td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="fbgraphics_8h.html#struct__fbg__img" title="Image data structure. ">_fbg_img</a> data structure pointer </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#afdcb72ae08437471569c4880fb43f20c" title="create a bitmap font from an image ">fbg_createFont()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a>, <a class="el" href="fbgraphics_8h.html#a110e7e4228a6350bebc68b6bdfd6d24a" title="draw a scaled image ">fbg_imageScale()</a>, <a class="el" href="fbgraphics_8h.html#a8ba2088b60304afa9ee7ce1b39bff114" title="draw an image with colorkey support (image colorkey value will be ignored) ">fbg_imageColorkey()</a> </dd></dl>
 
 </div>
 </div>
@@ -2160,7 +2075,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_pixel </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2226,7 +2141,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_pixela </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2299,7 +2214,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_polygon </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2364,7 +2279,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_rect </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2444,7 +2359,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_recta </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2529,7 +2444,7 @@ Display lenght in pixels (width * height) </td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a>* fbg_setup </td>
+          <td class="memname">struct <a class="el" href="struct__fbg.html">_fbg</a>* fbg_setup </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>fb_device</em>, </td>
@@ -2548,7 +2463,7 @@ Display lenght in pixels (width * height) </td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>initialize a FB Graphics context </p>
+<p>initialize a FB Graphics context (framebuffer) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fb_device</td><td>framebuffer device (example : /dev/fb0) </td></tr>
@@ -2556,8 +2471,8 @@ Display lenght in pixels (width * height) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="fbgraphics_8h.html#struct__fbg" title="FB Graphics context data structure. ">_fbg</a> structure pointer to pass to any FBG library functions </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a>, <a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="struct__fbg.html" title="FB Graphics context data structure. ">_fbg</a> structure pointer to pass to any FBG library functions </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a>, <a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#aba1acfb1926907e41ccadbfceec0333d" title="initialize a FB Graphics context with a custom rendering backend ">fbg_customSetup()</a> </dd></dl>
 
 </div>
 </div>
@@ -2570,7 +2485,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_text </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2651,7 +2566,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_textBackground </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2710,7 +2625,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_textColor </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2762,7 +2677,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_textColorKey </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2800,7 +2715,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_textFont </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
@@ -2838,7 +2753,7 @@ Display lenght in pixels (width * height) </td></tr>
         <tr>
           <td class="memname">void fbg_vline </td>
           <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg">_fbg</a> *&#160;</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
           <td class="paramname"><em>fbg</em>, </td>
         </tr>
         <tr>
