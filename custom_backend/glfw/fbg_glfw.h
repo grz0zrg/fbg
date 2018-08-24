@@ -37,16 +37,35 @@
     struct _fbg_glfw_context {
         //! GLFW window
         GLFWwindow *window;
+        //! GLFW monitor
+        GLFWmonitor *monitor;
         //! Simple GLSL program (screen-aligned textured quad)
         GLenum simple_program;
         //! FBG VAO
         GLuint fbg_vao;
         //! FBG texture (updated at each frames)
         GLuint fbg_texture;
+        //! tell wether fbg_glfw should update fbg disp_buffer after rendering
+        int update_buffer;
     };
 
     //! initialize a FB Graphics OpenGL context (GLFW library)
-    extern struct _fbg *fbg_glfwSetup(int width, int height, const char *title);
+    /*!
+      \param width window width
+      \param height window height
+      \param title window title
+      \param monitor monitor id (0 = primary display)
+      \param fullscreen 0 = windowed, 1 = fullscreen, 2 = windowed full screen
+      \return FBG data structure pointer
+    */
+    extern struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor, int fullscreen);
+
+    //! wether fbg_glfw should update fbg disp_buffer after rendering
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param enable boolean
+    */
+    extern void fbg_glfwUpdateBuffer(struct _fbg *fbg, int enable);
 
     //! Query the user requested (window close etc) close status
     /*!
@@ -54,6 +73,21 @@
       \return Boolean indicating close status
     */
     extern int fbg_glfwShouldClose(struct _fbg *fbg);
+
+    //! Switch to fullscreen or windowed mode
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param enable Boolean indicating  windowed or fullscreen
+    */
+    extern void fbg_glfwFullscreen(struct _fbg *fbg, int enable);
+
+    //! Display resize
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param new_width new display width
+      \param new_height new display height
+    */
+    extern void fbg_glfwResize(struct _fbg *fbg, unsigned int new_width, unsigned new_height);
 
     //! create a non-interpolated (NEAREST) GL texture from a FBG image
     /*!
