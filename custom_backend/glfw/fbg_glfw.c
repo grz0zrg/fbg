@@ -22,6 +22,9 @@ const char *simpleFs = "#version 330\n \
 				  	gl_FragColor = texture(t0, uv); \
 				  }";
 
+struct _fbg **fbg_contexts = NULL;
+int fbg_contexts_count = 0;
+
 void fbg_glfwDraw(struct _fbg *fbg);
 void fbg_glfwFree(struct _fbg *fbg);
 
@@ -31,8 +34,20 @@ void GLAPIENTRY fbg_debugGlCb(GLenum source, GLenum type, GLuint id, GLenum seve
             type, severity, message);
 }
 
+void fbg_glfwFramebufferResizeCb(GLFWwindow* window, int new_width, int new_height) {
+	int i = 0;
+	for (i = 0; i < fbg_contexts_count; i += 1) {
+		struct _fbg *fbg = fbg_contexts[i];
+		struct _fbg_glfw_context *glfw_context = fbg->user_context;
+		if (glfw_context->window == window) {
+			fbg_glfwResize(fbg, new_width, new_height);
 
-struct _fbg *fbg_glfwSetup(int width, int height, const char *title) {
+			break;
+		}
+	}
+}
+
+struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor_id, int fullscreen) {
     struct _fbg_glfw_context *glfw_context = (struct _fbg_glfw_context *)calloc(1, sizeof(struct _fbg_glfw_context));
     if (!glfw_context) {
         fprintf(stderr, "fbg_glfwSetup: glfw context calloc failed!\n");
@@ -50,6 +65,25 @@ struct _fbg *fbg_glfwSetup(int width, int height, const char *title) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
+	int monitor_count = 0;
+	int i = 0;
+	GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
+	for (i = 0; i < monitor_count; i += 1) {
+		if (monitor_id == i) {
+			monitor = monitors[i];
+			break;
+		}
+	}
+
+	const GLFWvidmode *window_mode = glfwGetVideoMode(monitor);
+
+	if (fullscreen == 0) {
+		monitor = NULL;
+	} else if (fullscreen == 2) {
+		width = window_mode->width;
+		height = window_mode->height;
+	}
+
     GLFWwindow *window = (void *)glfwCreateWindow(width, height, title, monitor, share);
     if (!window) {
         glfwTerminate();
@@ -60,6 +94,10 @@ struct _fbg *fbg_glfwSetup(int width, int height, const char *title) {
 
         return NULL;
     }
+
+	if (fullscreen == 1) {
+		glfwSetWindowMonitor(window, monitor, 0, 0, width, height, window_mode->refreshRate);
+	}
 
 	glfwMakeContextCurrent(window);
 
@@ -77,6 +115,7 @@ struct _fbg *fbg_glfwSetup(int width, int height, const char *title) {
     glfwSwapInterval(1);
 
 	glfw_context->window = window;
+	glfw_context->monitor = monitor;
 	glfw_context->simple_program = fbg_glfwCreateProgramFromString(simpleVs, simpleFs);
 	glfw_context->fbg_vao = fbg_glfwCreateVBO(fbg_glfwCreateVAO(), 12, &quad[0]);
 	glfw_context->fbg_texture = fbg_glfwCreateTexture(width, height);
@@ -89,7 +128,58 @@ struct _fbg *fbg_glfwSetup(int width, int height, const char *title) {
 	glDebugMessageCallback(fbg_debugGlCb, 0);
 #endif
 
-    return fbg_customSetup(width, height, (void *)glfw_context, fbg_glfwDraw, fbg_glfwFree);
+	struct _fbg *fbg = fbg_customSetup(width, height, (void *)glfw_context, fbg_glfwDraw, fbg_glfwFree);
+
+	fbg_contexts_count += 1;
+
+	// we keep track of fbg contexts globally due to resize callbacks etc.
+	if (fbg_contexts == NULL) {
+		fbg_contexts = (struct _fbg **)calloc(1, sizeof(struct _fbg *));
+		if (!fbg_contexts) {
+			fprintf(stderr, "fbg_glfwSetup: fbg_contexts calloc failed!\n");
+		} else {
+			fbg_contexts[0] = fbg;
+		}
+	} else {
+		fbg_contexts = (struct _fbg **)realloc(fbg_contexts, sizeof(struct _fbg *) * fbg_contexts_count);
+		if (!fbg_contexts) {
+			fprintf(stderr, "fbg_glfwSetup: fbg_contexts realloc failed!\n");
+		} else {
+			fbg_contexts[fbg_contexts_count - 1] = fbg;
+		}
+	}
+
+	glfwSetFramebufferSizeCallback(window, fbg_glfwFramebufferResizeCb);
+
+    return fbg;
+}
+
+void fbg_glfwFullscreen(struct _fbg *fbg, int enable) {
+	struct _fbg_glfw_context *glfw_context = fbg->user_context;
+
+	const GLFWvidmode *window_mode = glfwGetVideoMode(glfw_context->monitor);
+	if (enable) {
+		glfwSetWindowMonitor(glfw_context->window, glfw_context->monitor, 0, 0, window_mode->width, window_mode->height, window_mode->refreshRate);
+	} else {
+		glfwSetWindowMonitor(glfw_context->window, 0, 0, 0, window_mode->width, window_mode->height, window_mode->refreshRate);
+	}
+}
+
+void fbg_glfwResize(struct _fbg *fbg, unsigned int new_width, unsigned new_height) {
+	struct _fbg_glfw_context *glfw_context = fbg->user_context;
+
+	fbg_resize(fbg, new_width, new_height);
+
+	glDeleteTextures(1, &glfw_context->fbg_texture);
+	glfw_context->fbg_texture = fbg_glfwCreateTexture(new_width, new_height);
+
+	glViewport(0, 0, new_width, new_height);
+}
+
+void fbg_glfwUpdateBuffer(struct _fbg *fbg, int enable) {
+	struct _fbg_glfw_context *glfw_context = fbg->user_context;
+
+	glfw_context->update_buffer = enable;
 }
 
 int fbg_glfwShouldClose(struct _fbg *fbg) {
@@ -113,6 +203,10 @@ void fbg_glfwDraw(struct _fbg *fbg) {
 	glBindVertexArray(0);
 	glUseProgram(0);
 
+	if (glfw_context->update_buffer) {
+		glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+	}
+
     glfwSwapBuffers(glfw_context->window);
 
     glfwPollEvents();
@@ -120,6 +214,34 @@ void fbg_glfwDraw(struct _fbg *fbg) {
 
 void fbg_glfwFree(struct _fbg *fbg) {
 	struct _fbg_glfw_context *glfw_context = fbg->user_context;
+
+	// remove the fbg context in our own contexts list
+	struct _fbg **fbg_contexts_tmp = NULL;
+
+	fbg_contexts_count -= 1;
+	if (fbg_contexts_count == 0) {
+		free(fbg_contexts);
+		fbg_contexts = NULL;
+	} else {
+		fbg_contexts_tmp = (struct _fbg **)calloc(fbg_contexts_count, sizeof(struct _fbg *));
+		if (!fbg_contexts) {
+			fprintf(stderr, "fbg_glfwFree: fbg_contexts calloc failed!\n");
+		}
+	}
+
+	int i = 0, k = 0;
+	for (i = 0; i < fbg_contexts_count; i += 1) {
+		struct _fbg *ctx = fbg_contexts[i];
+		if (ctx != fbg) {
+			fbg_contexts_tmp[k] = ctx;
+
+			k += 1;
+		}
+	}
+
+	free(fbg_contexts);
+	fbg_contexts = fbg_contexts_tmp;
+	//
 
 	glDeleteTextures(1, &glfw_context->fbg_texture);
 

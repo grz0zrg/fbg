@@ -272,6 +272,14 @@
     */
     extern void fbg_close(struct _fbg *fbg);
 
+    //! resize a FB Graphics context (note : resizing is not allowed in framebuffer mode)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param new_width new render width
+      \param new_height new render height
+    */
+    extern void fbg_resize(struct _fbg *fbg, int new_width, int new_height);
+
     //! background fade to black with controllable factor
     /*!
       \param fbg pointer to a FBG context / data structure
@@ -449,6 +457,26 @@
       \sa fbg_clear()
     */
     extern void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned char b);
+
+    //! convert HSL values to RGB color
+    /*!
+      \param color pointer to a _fbg_rgb data structure
+      \param h the hue
+      \param s the saturation
+      \param l the lightness
+      \sa rgbToHsl()
+    */
+    extern void fbg_hslToRGB(struct _fbg_rgb *color, float h, float s, float l);
+
+    //! convert RGB values to HSL color
+    /*!
+      \param color pointer to a _fbg_rgb data structure
+      \param r
+      \param g
+      \param b
+      \sa fbg_hslToRGB()
+    */
+    extern void rgbToHsl(struct _fbg_rgb *color, float r, float g, float b);
 
 #ifdef FBG_PARALLEL
     //! draw to the screen

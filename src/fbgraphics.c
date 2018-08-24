@@ -35,6 +35,8 @@
 #include <linux/kd.h>
 
 #include "lodepng/lodepng.h"
+
+#define _NJ_INCLUDE_HEADER_ONLY
 #include "nanojpeg/nanojpeg.c"
 
 #include "fbgraphics.h"
@@ -287,6 +289,53 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
     return fbg;
 }
 
+void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
+    // we don't allow resizing in framebuffer mode
+    if (fbg->user_context != NULL) {
+        int new_size = new_width * new_width * fbg->components;
+
+        unsigned char *back_buffer = calloc(1, new_size * sizeof(char));
+        if (!back_buffer) {
+            fprintf(stderr, "fbg_resize: back_buffer realloc failed!\n");
+
+            return;
+        }
+
+        unsigned char *disp_buffer = calloc(1, new_size * sizeof(char));
+        if (!disp_buffer) {
+            fprintf(stderr, "fbg_resize: disp_buffer realloc failed!\n");
+
+            free(back_buffer);
+
+            return;
+        }
+
+        free(fbg->back_buffer);
+        free(fbg->disp_buffer);
+
+        fbg->back_buffer = back_buffer;
+        fbg->disp_buffer = disp_buffer;
+
+        fbg->width = new_width;
+        fbg->height = new_height;
+
+        fbg->line_length = fbg->width * fbg->components;
+
+        fbg->width_n_height = fbg->width * fbg->height;
+
+        fbg->vinfo.xres = fbg->width;
+        fbg->vinfo.yres = fbg->height;
+
+        fbg->size = new_size;
+
+#ifdef FBG_PARALLEL
+        if (fbg->tasks) {
+            fbg_createFragment(fbg, fbg->fragments[0].user_fragment_start, fbg->fragments[0].user_fragment, fbg->fragments[0].user_fragment_stop, fbg->parallel_tasks, fbg->fragments[0].queue_size);
+        }
+#endif
+    }
+}
+
 #ifdef FBG_PARALLEL
 void fbg_terminateFragments(struct _fbg *fbg) {
     fbg->state = 0;
@@ -342,15 +391,20 @@ void fbg_close(struct _fbg *fbg) {
     fbg_freeTasks(fbg);
 #endif
 
-    if (!fbg->page_flipping && fbg->user_context == NULL) {
+    if (!fbg->page_flipping) {
         free(fbg->back_buffer);
         free(fbg->disp_buffer);
     }
 
-    if (fbg->user_context != NULL) {
+    if (fbg->back_buffer) {
         free(fbg->back_buffer);
+    }
+
+    if (fbg->disp_buffer) {
         free(fbg->disp_buffer);
-    } else {
+    }
+
+    if (fbg->buffer) {
         munmap(fbg->buffer, fbg->finfo.smem_len);
         close(fbg->fd);
     }
@@ -997,6 +1051,62 @@ void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned
         *pix_pointer++;
         pix_pointer += fbg->comp_offset;
     }
+}
+
+float fbg_hue2rgb(float p, float q, float t) {
+    if (t < 0.0f) t += 1.0f;
+    if (t > 1.0f) t -= 1.0f;
+    if (t < 1.0f/6.0f) return p + (q - p) * 6.0f * t;
+    if (t < 1.0f/2.0f) return q;
+    if (t < 2.0f/3.0f) return p + (q - p) * (2.0f/3.0f - t) * 6.0f;
+
+    return p;
+}
+
+void fbg_hslToRGB(struct _fbg_rgb *color, float h, float s, float l) {
+    float r, g, b;
+
+    if (s == 0) {
+        r = g = b = l; // achromatic
+    } else {
+        float q = l < 0.5f ? l * (1.0f + s) : l + s - l * s;
+        float p = 2 * l - q;
+        r = fbg_hue2rgb(p, q, h + 1.0f/3.0f);
+        g = fbg_hue2rgb(p, q, h);
+        b = fbg_hue2rgb(p, q, h - 1.0f/3.0f);
+    }
+
+    color->r = roundf(r * 255);
+    color->g = roundf(g * 255);
+    color->g = roundf(b * 255);
+}
+
+void rgbToHsl(struct _fbg_rgb *color, float r, float g, float b) {
+    r /= 255.0f, g /= 255.0f, b /= 255.0f;
+    int max = fmaxf(fmaxf(r, g), b), min = fminf(fminf(r, g), b);
+    float h = 0, s, l = (max + min) / 2.0f;
+
+    int ri = r, gi = g, bi = b;
+
+    if (max == min){
+        h = s = 0; // achromatic
+    } else {
+        float d = max - min;
+        s = l > 0.5f ? d / (2.0f - max - min) : d / (max + min);
+
+        if (max == ri)
+            h = (g - b) / d + (g < b ? 6.0f : 0);
+        else if (max == gi)
+            h = (b - r) / d + 2.0f;
+        else if (max == bi)
+            h = (r - g) / d + 4.0f;
+
+        h /= 6.0f;
+    }
+
+    color->r = h;
+    color->g = s;
+    color->b = l;
 }
 
 struct _fbg_font *fbg_createFont(struct _fbg *fbg, struct _fbg_img *img, int glyph_width, int glyph_height, unsigned char first_char) {

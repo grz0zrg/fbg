@@ -42,6 +42,8 @@ struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$ \mbox{\hyperlink{fbgraph
 \begin{DoxyCompactList}\small\item\em initialize a FB Graphics context with a custom rendering backend \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em free up the memory associated with a FB Graphics context and close the framebuffer device \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fbgraphics_8h_a00509b4956e358ae3f9135151c1e524a}{fbg\+\_\+resize}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int new\+\_\+width, int new\+\_\+height)
+\begin{DoxyCompactList}\small\item\em resize a FB Graphics context (note \+: resizing is not allowed in framebuffer mode) \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_ab18823ca0e95ca51c5d6c69a48af8d0e}{fbg\+\_\+fade\+Down}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char rgb\+\_\+fade\+\_\+amount)
 \begin{DoxyCompactList}\small\item\em background fade to black with controllable factor \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a19d56a111248b7f7d52f4bc6392d3743}{fbg\+\_\+fade\+Up}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char rgb\+\_\+fade\+\_\+amount)
@@ -74,6 +76,10 @@ void \mbox{\hyperlink{fbgraphics_8h_a2a5a2ef48f5b26794473c51082fb75ab}{fbg\+\_\+
 \begin{DoxyCompactList}\small\item\em draw a polygon \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a1622b4cd13f223d161cd234ea1fe6125}{fbg\+\_\+background}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em clear the background with a color \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fbgraphics_8h_ac037925696a8bfab4163e011731a76a4}{fbg\+\_\+hsl\+To\+R\+GB}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} $\ast$color, float h, float s, float l)
+\begin{DoxyCompactList}\small\item\em convert H\+SL values to R\+GB color \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fbgraphics_8h_a6b7e5de1c20631e9c2fb2f768cade457}{rgb\+To\+Hsl}} (struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} $\ast$color, float r, float g, float b)
+\begin{DoxyCompactList}\small\item\em convert R\+GB values to H\+SL color \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\+\_\+draw}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em draw to the screen \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_aedfec23bc4c51ff5ffb843bb289d448b}{fbg\+\_\+flip}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
@@ -245,7 +251,7 @@ integer M\+AX Math function
 
 
 
-Definition at line 719 of file fbgraphics.\+h.
+Definition at line 747 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}\label{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+M\+IN@{\+\_\+\+F\+B\+G\+\_\+\+M\+IN}}
@@ -259,7 +265,7 @@ integer M\+IN Math function
 
 
 
-Definition at line 721 of file fbgraphics.\+h.
+Definition at line 749 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}\label{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+S\+GN@{\+\_\+\+F\+B\+G\+\_\+\+S\+GN}}
@@ -273,7 +279,7 @@ integer S\+I\+GN function
 
 
 
-Definition at line 723 of file fbgraphics.\+h.
+Definition at line 751 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}\label{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fade@{fbg\+\_\+fade}}
@@ -297,7 +303,7 @@ background fade to black with controllable factor
 \end{DoxySeeAlso}
 
 
-Definition at line 694 of file fbgraphics.\+h.
+Definition at line 722 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}\label{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Scale@{fbg\+\_\+image\+Scale}}
@@ -329,7 +335,7 @@ draw a scaled image
 \end{DoxySeeAlso}
 
 
-Definition at line 716 of file fbgraphics.\+h.
+Definition at line 744 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}\label{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+init@{fbg\+\_\+init}}
@@ -346,7 +352,7 @@ initialize a FB Graphics context with \textquotesingle{}/dev/fb0\textquotesingle
 \end{DoxySeeAlso}
 
 
-Definition at line 686 of file fbgraphics.\+h.
+Definition at line 714 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}\label{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+write@{fbg\+\_\+write}}
@@ -375,7 +381,7 @@ draw a text by using the current font and the current color
 \end{DoxySeeAlso}
 
 
-Definition at line 704 of file fbgraphics.\+h.
+Definition at line 732 of file fbgraphics.\+h.
 
 
 
@@ -820,6 +826,30 @@ draw a horizontal line
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{fbgraphics_8h_a3c4fb5fa694646ec66b50a32eaf38557}{fbg\+\_\+vline}}, \mbox{\hyperlink{fbgraphics_8h_a46f7354a04a7bfb7467d25394ce38303}{fbg\+\_\+line()}} 
 \end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_ac037925696a8bfab4163e011731a76a4}\label{fbgraphics_8h_ac037925696a8bfab4163e011731a76a4}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+hsl\+To\+R\+GB@{fbg\+\_\+hsl\+To\+R\+GB}}
+\index{fbg\+\_\+hsl\+To\+R\+GB@{fbg\+\_\+hsl\+To\+R\+GB}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+hsl\+To\+R\+G\+B()}{fbg\_hslToRGB()}}
+{\footnotesize\ttfamily void fbg\+\_\+hsl\+To\+R\+GB (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} $\ast$}]{color,  }\item[{float}]{h,  }\item[{float}]{s,  }\item[{float}]{l }\end{DoxyParamCaption})}
+
+
+
+convert H\+SL values to R\+GB color 
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & pointer to a \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} data structure \\
+\hline
+{\em h} & the hue \\
+\hline
+{\em s} & the saturation \\
+\hline
+{\em l} & the lightness \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a6b7e5de1c20631e9c2fb2f768cade457}{rgb\+To\+Hsl()}} 
+\end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}\label{fbgraphics_8h_a600d896c04feec33d001662ca23e50ad}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image@{fbg\+\_\+image}}
 \index{fbg\+\_\+image@{fbg\+\_\+image}!fbgraphics.\+h@{fbgraphics.\+h}}
@@ -1187,6 +1217,25 @@ draw a rectangle with alpha transparency
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{fbgraphics_8h_a543755814e43b77b0beebea7a08457db}{fbg\+\_\+frect()}}, \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect()}} 
 \end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_a00509b4956e358ae3f9135151c1e524a}\label{fbgraphics_8h_a00509b4956e358ae3f9135151c1e524a}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+resize@{fbg\+\_\+resize}}
+\index{fbg\+\_\+resize@{fbg\+\_\+resize}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+resize()}{fbg\_resize()}}
+{\footnotesize\ttfamily void fbg\+\_\+resize (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{new\+\_\+width,  }\item[{int}]{new\+\_\+height }\end{DoxyParamCaption})}
+
+
+
+resize a FB Graphics context (note \+: resizing is not allowed in framebuffer mode) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em new\+\_\+width} & new render width \\
+\hline
+{\em new\+\_\+height} & new render height \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}\label{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+setup@{fbg\+\_\+setup}}
 \index{fbg\+\_\+setup@{fbg\+\_\+setup}!fbgraphics.\+h@{fbgraphics.\+h}}
@@ -1362,4 +1411,28 @@ draw a vertical line
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{fbgraphics_8h_a0558e4513da1d844526d54afea4d1531}{fbg\+\_\+hline}}, \mbox{\hyperlink{fbgraphics_8h_a46f7354a04a7bfb7467d25394ce38303}{fbg\+\_\+line()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_a6b7e5de1c20631e9c2fb2f768cade457}\label{fbgraphics_8h_a6b7e5de1c20631e9c2fb2f768cade457}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!rgb\+To\+Hsl@{rgb\+To\+Hsl}}
+\index{rgb\+To\+Hsl@{rgb\+To\+Hsl}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{rgb\+To\+Hsl()}{rgbToHsl()}}
+{\footnotesize\ttfamily void rgb\+To\+Hsl (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} $\ast$}]{color,  }\item[{float}]{r,  }\item[{float}]{g,  }\item[{float}]{b }\end{DoxyParamCaption})}
+
+
+
+convert R\+GB values to H\+SL color 
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & pointer to a \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} data structure \\
+\hline
+{\em r} & \\
+\hline
+{\em g} & \\
+\hline
+{\em b} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_ac037925696a8bfab4163e011731a76a4}{fbg\+\_\+hsl\+To\+R\+G\+B()}} 
 \end{DoxySeeAlso}
