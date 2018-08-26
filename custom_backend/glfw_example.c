@@ -22,6 +22,8 @@ int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 
     do {
+        fbg_glfwClear();
+        
         fbg_clear(fbg, 0);
         fbg_draw(fbg);
 

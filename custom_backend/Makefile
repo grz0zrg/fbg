@@ -20,4 +20,4 @@ debug:
 	$(CC) $(SRC2) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS2) -o $(OUT2)
 
 clean:
-	rm -f *.o $(OUT1)
+	rm -f *.o $(OUT1) $(OUT2)

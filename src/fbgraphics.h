@@ -52,6 +52,14 @@
         unsigned char a;
     };
 
+    //! HSL color data structure
+    /*! Hold HSL components S/L [0,1], HUE [0, 360]*/
+    struct _fbg_hsl {
+        int h;
+        float s;
+        float l;
+    };
+
     //! Image data structure
     /*! Hold images informations and data */
     struct _fbg_img {
@@ -168,6 +176,12 @@
         //! Flag indicating that page flipping is enabled
         int page_flipping;
 
+        //! Backend resize function
+        void (*backend_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height);
+        //! User-defined resize function
+        void (*user_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height);
+        //! User-defined flip function
+        void (*user_flip)(struct _fbg *fbg);
         //! User-defined draw function
         void (*user_draw)(struct _fbg *fbg);
         //! User-defined free function
@@ -259,11 +273,13 @@
       \param height render height
       \param user_context user rendering data storage (things like window context etc.)
       \param user_draw function to call upon fbg_draw()
+      \param user_flip function to call upon fbg_flip()
+      \param backend_resize function to call upon fbg_resize()
       \param user_free function to call upon fbg_close()
       \return _fbg structure pointer to pass to any FBG library functions
       \sa fbg_close(), fbg_init(), fbg_setup()
     */
-    extern struct _fbg *fbg_customSetup(int width, int height, void *user_context, void (*user_draw)(struct _fbg *fbg), void (*user_free)(struct _fbg *fbg));
+    extern struct _fbg *fbg_customSetup(int width, int height, void *user_context, void (*user_draw)(struct _fbg *fbg), void (*user_flip)(struct _fbg *fbg), void (*backend_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height), void (*user_free)(struct _fbg *fbg));
 
     //! free up the memory associated with a FB Graphics context and close the framebuffer device
     /*!
@@ -271,6 +287,13 @@
       \sa fbg_setup(), fbg_init(), fbg_customSetup()
     */
     extern void fbg_close(struct _fbg *fbg);
+
+    //! register a resize callback
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param user_resize resize function
+    */
+    void fbg_setResizeCallback(struct _fbg *fbg, void (*user_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height));
 
     //! resize a FB Graphics context (note : resizing is not allowed in framebuffer mode)
     /*!
@@ -470,13 +493,13 @@
 
     //! convert RGB values to HSL color
     /*!
-      \param color pointer to a _fbg_rgb data structure
+      \param color pointer to a _fbg_hsl data structure
       \param r
       \param g
       \param b
       \sa fbg_hslToRGB()
     */
-    extern void rgbToHsl(struct _fbg_rgb *color, float r, float g, float b);
+    extern void rgbToHsl(struct _fbg_hsl *color, float r, float g, float b);
 
 #ifdef FBG_PARALLEL
     //! draw to the screen
@@ -749,5 +772,10 @@
     #define _FBG_MIN(a,b) ((a) < (b) ? a : b)
     //! integer SIGN function
     #define _FBG_SGN(x) ((x<0)?-1:((x>0)?1:0))
+
+    //! convert a degree angle to radians
+    #define _FBG_DEGTORAD(angle_degree) ((angle_degree) * M_PI / 180.0)
+    //! convert a radian angle to degree
+    #define _FBG_RADTODEG(angle_radians) ((angle_radians) * 180.0 / M_PI)
 
 #endif
