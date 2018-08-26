@@ -58,6 +58,8 @@ struct _fbg *fbg_customSetup(
         int width, int height,
         void *user_context,
         void (*user_draw)(struct _fbg *fbg),
+        void (*user_flip)(struct _fbg *fbg),
+        void (*backend_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height),
         void (*user_free)(struct _fbg *fbg)) {
     struct _fbg *fbg = (struct _fbg *)calloc(1, sizeof(struct _fbg));
     if (!fbg) {
@@ -66,8 +68,10 @@ struct _fbg *fbg_customSetup(
         return NULL;
     }
 
+    fbg->user_flip = user_flip;
     fbg->user_draw = user_draw;
     fbg->user_free = user_free;
+    fbg->backend_resize = backend_resize;
 
     fbg->width = width;
     fbg->height = height;
@@ -289,9 +293,17 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
     return fbg;
 }
 
+void fbg_setResizeCallback(struct _fbg *fbg, void (*user_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height)) {
+    fbg->user_resize = user_resize;
+}
+
 void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
+    if (fbg->backend_resize) {
+        fbg->backend_resize(fbg, new_width, new_height);
+    }
+
     // we don't allow resizing in framebuffer mode
-    if (fbg->user_context != NULL) {
+    if (fbg->buffer == NULL) {
         int new_size = new_width * new_width * fbg->components;
 
         unsigned char *back_buffer = calloc(1, new_size * sizeof(char));
@@ -333,6 +345,10 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
             fbg_createFragment(fbg, fbg->fragments[0].user_fragment_start, fbg->fragments[0].user_fragment, fbg->fragments[0].user_fragment_stop, fbg->parallel_tasks, fbg->fragments[0].queue_size);
         }
 #endif
+    }
+
+    if (fbg->user_resize) {
+        fbg->user_resize(fbg, new_width, new_height);
     }
 }
 
@@ -391,16 +407,12 @@ void fbg_close(struct _fbg *fbg) {
     fbg_freeTasks(fbg);
 #endif
 
+    if (fbg->user_free) {
+        fbg->user_free(fbg);
+    }
+
     if (!fbg->page_flipping) {
         free(fbg->back_buffer);
-        free(fbg->disp_buffer);
-    }
-
-    if (fbg->back_buffer) {
-        free(fbg->back_buffer);
-    }
-
-    if (fbg->disp_buffer) {
         free(fbg->disp_buffer);
     }
 
@@ -998,6 +1010,10 @@ void fbg_flip(struct _fbg *fbg) {
     fbg->disp_buffer = fbg->back_buffer;
     fbg->back_buffer = tmp_buffer;
 
+    if (fbg->user_flip) {
+        fbg->user_flip(fbg);
+    }
+
     fbg_computeFramerate(fbg, 1);
 }
 
@@ -1053,35 +1069,42 @@ void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned
     }
 }
 
-float fbg_hue2rgb(float p, float q, float t) {
-    if (t < 0.0f) t += 1.0f;
-    if (t > 1.0f) t -= 1.0f;
-    if (t < 1.0f/6.0f) return p + (q - p) * 6.0f * t;
-    if (t < 1.0f/2.0f) return q;
-    if (t < 2.0f/3.0f) return p + (q - p) * (2.0f/3.0f - t) * 6.0f;
+float fbg_hue2rgb(float v1, float v2, float vH) {
+	if (vH < 0)
+		vH += 1;
 
-    return p;
+	if (vH > 1)
+		vH -= 1;
+
+	if ((6 * vH) < 1)
+		return (v1 + (v2 - v1) * 6 * vH);
+
+	if ((2 * vH) < 1)
+		return v2;
+
+	if ((3 * vH) < 2)
+		return (v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);
+
+	return v1;
 }
 
 void fbg_hslToRGB(struct _fbg_rgb *color, float h, float s, float l) {
-    float r, g, b;
+	if (s == 0) {
+		color->r = color->g = color->b = (unsigned char)(l * 255);
+	} else {
+		float v1, v2;
+		float hue = (float)h / 360;
 
-    if (s == 0) {
-        r = g = b = l; // achromatic
-    } else {
-        float q = l < 0.5f ? l * (1.0f + s) : l + s - l * s;
-        float p = 2 * l - q;
-        r = fbg_hue2rgb(p, q, h + 1.0f/3.0f);
-        g = fbg_hue2rgb(p, q, h);
-        b = fbg_hue2rgb(p, q, h - 1.0f/3.0f);
-    }
+		v2 = (l < 0.5) ? (l * (1 + s)) : ((l + s) - (l * s));
+		v1 = 2 * l - v2;
 
-    color->r = roundf(r * 255);
-    color->g = roundf(g * 255);
-    color->g = roundf(b * 255);
+		color->r = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue + (1.0f / 3)));
+		color->g = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue));
+		color->b = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue - (1.0f / 3)));
+	}
 }
 
-void rgbToHsl(struct _fbg_rgb *color, float r, float g, float b) {
+void rgbToHsl(struct _fbg_hsl *color, float r, float g, float b) {
     r /= 255.0f, g /= 255.0f, b /= 255.0f;
     int max = fmaxf(fmaxf(r, g), b), min = fminf(fminf(r, g), b);
     float h = 0, s, l = (max + min) / 2.0f;
@@ -1104,9 +1127,9 @@ void rgbToHsl(struct _fbg_rgb *color, float r, float g, float b) {
         h /= 6.0f;
     }
 
-    color->r = h;
-    color->g = s;
-    color->b = l;
+    color->h = h;
+    color->s = s;
+    color->l = l;
 }
 
 struct _fbg_font *fbg_createFont(struct _fbg *fbg, struct _fbg_img *img, int glyph_width, int glyph_height, unsigned char first_char) {

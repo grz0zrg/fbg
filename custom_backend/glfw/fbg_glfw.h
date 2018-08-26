@@ -49,6 +49,15 @@
         int update_buffer;
     };
 
+    //! Simple quad geometry (vertices + UV)
+    extern const GLfloat fbg_glfwQuad[];
+
+    //! Simple vertex shader (screen quad, vertices + UV)
+    extern const char *fbg_glfwSimpleVs;
+
+    //! Simple textured fragment shader
+    extern const char *fbg_glfwSimpleFs;
+
     //! initialize a FB Graphics OpenGL context (GLFW library)
     /*!
       \param width window width
@@ -60,12 +69,14 @@
     */
     extern struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor, int fullscreen);
 
-    //! wether fbg_glfw should update fbg disp_buffer after rendering
+    //! OpenGL clear
+    extern void fbg_glfwClear();
+
+    //! this update FBG disp_buffer with the actual rendered OpenGL content
     /*!
       \param fbg pointer to a FBG context / data structure
-      \param enable boolean
     */
-    extern void fbg_glfwUpdateBuffer(struct _fbg *fbg, int enable);
+    extern void fbg_glfwUpdateBuffer(struct _fbg *fbg);
 
     //! Query the user requested (window close etc) close status
     /*!
@@ -105,20 +116,33 @@
     */
     extern GLuint fbg_glfwCreateTexture(GLuint width, GLuint height);
 
-    //! create a VAO
+    //! create a VAO from indexed data, support for vertices, UVs, normals and colors
     /*!
+      \param indices_count indices count
+      \param indices_data data containing indices
+      \param vertices_count vertices count
+      \param vertices_data data containing vertices
+      \param texcoords_count uv count
+      \param texcoords_data data containing uv
+      \param normals_count normals count
+      \param normals_data data containing normals
+      \param colors_count colors count
+      \param colors_data data containing colors
       \return GL VAO id
     */
-    extern GLuint fbg_glfwCreateVAO();
+    extern GLuint fbg_glfwCreateVAO(GLsizeiptr indices_count, const GLvoid *indices_data, size_t sizeof_indice_type,
+                                    GLsizeiptr vertices_count, const GLvoid *vertices_data,
+                                    GLsizeiptr texcoords_count, const GLvoid *texcoords_data,
+                                    GLsizeiptr normals_count, const GLvoid *normals_data,
+                                    GLsizeiptr colors_count, const GLvoid *colors_data);
 
-    //! create a VBO containing vertices + UV data; always attached to a VAO
+    //! create a VAO from vertices + UV data packed into a single array
     /*!
-      \param vao GL VAO id (created using fbg_glfwCreateVAO)
       \param data_count vertices data count
-      \param data data containing vertices (set of 3 x float) + UV (set of 2 x float)
-      \return GL VBO id
+      \param data data containing all vertices (set of 3 x float) then all associated UVs (set of 2 x float)
+      \return GL VAO id
     */
-    extern GLuint fbg_glfwCreateVBO(GLuint vao, GLsizeiptr data_count, const GLvoid *data);
+    extern GLuint fbg_glfwCreateVAOvu(GLsizeiptr data_count, const GLvoid *data);
 
     //! create a FBO
     /*!
@@ -147,24 +171,27 @@
     /*!
       \param vertex_shader vertex shader id, can be 0
       \param fragment_shader fragment shader id, can be 0
+      \param geometry_shader geometry shader id, can be 0
       \return GL shader id
     */
-    extern GLuint fbg_glfwCreateProgram(GLuint vertex_shader, GLuint fragment_shader);
+    extern GLuint fbg_glfwCreateProgram(GLuint vertex_shader, GLuint fragment_shader, GLuint geometry_shader);
 
-    //! create a vertex and/or fragment program from a file
+    //! create a vertex and/or fragment/geometry program from a file
     /*!
       \param vs vertex shader file
-      \param vs fragment shader file
+      \param fs fragment shader file
+      \param gs geometry shader file
       \return GL shader id
     */
-    extern GLenum fbg_glfwCreateProgramFromFiles(const char *vs, const char *fs);
+    extern GLenum fbg_glfwCreateProgramFromFiles(const char *vs, const char *fs, const char *gs);
 
-    //! create a vertex and/or fragment program from a string
+    //! create a vertex and/or fragment/geometry program from a string
     /*!
       \param vs vertex shader string
-      \param vs fragment shader string
+      \param fs fragment shader string
+      \param gs geometry shader string
       \return GL shader id
     */
-    extern GLenum fbg_glfwCreateProgramFromString(const char *vs, const char *fs);
+    extern GLenum fbg_glfwCreateProgramFromString(const char *vs, const char *fs, const char *gs);
 
 #endif

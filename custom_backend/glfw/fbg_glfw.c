@@ -3,10 +3,10 @@
 
 #include "fbg_glfw.h"
 
-const GLfloat quad[] = { -1.0f, 1.0f, 0.0f, -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, -1.0f, 0.0f, // vertices
+const GLfloat fbg_glfwQuad[] = { -1.0f, 1.0f, 0.0f, -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, -1.0f, 0.0f, // vertices
 						0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f }; // UV
 
-const char *simpleVs = "#version 330\n \
+const char *fbg_glfwSimpleVs = "#version 330\n \
 				  layout(location = 0) in vec3 vp; \
 				  layout(location = 1) in vec2 vu; \
 				  out vec2 uv; \
@@ -15,17 +15,19 @@ const char *simpleVs = "#version 330\n \
 				  	gl_Position = vec4(vp, 1.0); \
 				  }";
 
-const char *simpleFs = "#version 330\n \
+const char *fbg_glfwSimpleFs = "#version 330\n \
 				  in vec2 uv; \
+				  out vec4 final_color; \
 				  uniform sampler2D t0; \
 				  void main() { \
-				  	gl_FragColor = texture(t0, uv); \
+				  	final_color = texture(t0, uv); \
 				  }";
 
 struct _fbg **fbg_contexts = NULL;
 int fbg_contexts_count = 0;
 
 void fbg_glfwDraw(struct _fbg *fbg);
+void fbg_glfwFlip(struct _fbg *fbg);
 void fbg_glfwFree(struct _fbg *fbg);
 
 void GLAPIENTRY fbg_debugGlCb(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam ) {
@@ -40,7 +42,9 @@ void fbg_glfwFramebufferResizeCb(GLFWwindow* window, int new_width, int new_heig
 		struct _fbg *fbg = fbg_contexts[i];
 		struct _fbg_glfw_context *glfw_context = fbg->user_context;
 		if (glfw_context->window == window) {
-			fbg_glfwResize(fbg, new_width, new_height);
+			fbg_resize(fbg, new_width, new_height);
+			// called from fbg_resize
+			//fbg_glfwResize(fbg, new_width, new_height);
 
 			break;
 		}
@@ -116,8 +120,8 @@ struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor
 
 	glfw_context->window = window;
 	glfw_context->monitor = monitor;
-	glfw_context->simple_program = fbg_glfwCreateProgramFromString(simpleVs, simpleFs);
-	glfw_context->fbg_vao = fbg_glfwCreateVBO(fbg_glfwCreateVAO(), 12, &quad[0]);
+	glfw_context->simple_program = fbg_glfwCreateProgramFromString(fbg_glfwSimpleVs, fbg_glfwSimpleFs, 0);
+	glfw_context->fbg_vao = fbg_glfwCreateVAOvu(12, &fbg_glfwQuad[0]);
 	glfw_context->fbg_texture = fbg_glfwCreateTexture(width, height);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -128,11 +132,11 @@ struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor
 	glDebugMessageCallback(fbg_debugGlCb, 0);
 #endif
 
-	struct _fbg *fbg = fbg_customSetup(width, height, (void *)glfw_context, fbg_glfwDraw, fbg_glfwFree);
+	struct _fbg *fbg = fbg_customSetup(width, height, (void *)glfw_context, fbg_glfwDraw, fbg_glfwFlip, fbg_glfwResize, fbg_glfwFree);
 
 	fbg_contexts_count += 1;
 
-	// we keep track of fbg contexts globally due to resize callbacks etc.
+	// we keep track of fbg contexts globally due to registered callbacks (resize etc.)
 	if (fbg_contexts == NULL) {
 		fbg_contexts = (struct _fbg **)calloc(1, sizeof(struct _fbg *));
 		if (!fbg_contexts) {
@@ -168,18 +172,25 @@ void fbg_glfwFullscreen(struct _fbg *fbg, int enable) {
 void fbg_glfwResize(struct _fbg *fbg, unsigned int new_width, unsigned new_height) {
 	struct _fbg_glfw_context *glfw_context = fbg->user_context;
 
-	fbg_resize(fbg, new_width, new_height);
+	// we keep a copy of user defined parameters for the fbg_texture (in case it changed)
+	GLint mag_filter, min_filter, swrap_mode, twrap_mode;
+
+	glBindTexture(GL_TEXTURE_2D, glfw_context->fbg_texture);
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &mag_filter);
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &min_filter); 
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &swrap_mode);
+    glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &twrap_mode); 
 
 	glDeleteTextures(1, &glfw_context->fbg_texture);
 	glfw_context->fbg_texture = fbg_glfwCreateTexture(new_width, new_height);
 
+	// and we restore its user defined parameters again (if any)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, swrap_mode);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, twrap_mode);
+
 	glViewport(0, 0, new_width, new_height);
-}
-
-void fbg_glfwUpdateBuffer(struct _fbg *fbg, int enable) {
-	struct _fbg_glfw_context *glfw_context = fbg->user_context;
-
-	glfw_context->update_buffer = enable;
 }
 
 int fbg_glfwShouldClose(struct _fbg *fbg) {
@@ -188,10 +199,16 @@ int fbg_glfwShouldClose(struct _fbg *fbg) {
     return glfwWindowShouldClose(glfw_context->window);
 }
 
+void fbg_glfwUpdateBuffer(struct _fbg *fbg) {
+	glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+}
+
+void fbg_glfwClear() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 void fbg_glfwDraw(struct _fbg *fbg) {
 	struct _fbg_glfw_context *glfw_context = fbg->user_context;
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindVertexArray(glfw_context->fbg_vao);
 	glUseProgram(glfw_context->simple_program);
@@ -202,10 +219,10 @@ void fbg_glfwDraw(struct _fbg *fbg) {
 
 	glBindVertexArray(0);
 	glUseProgram(0);
+}
 
-	if (glfw_context->update_buffer) {
-		glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->disp_buffer);
-	}
+void fbg_glfwFlip(struct _fbg *fbg) {
+	struct _fbg_glfw_context *glfw_context = fbg->user_context;
 
     glfwSwapBuffers(glfw_context->window);
 
@@ -255,7 +272,7 @@ void fbg_glfwFree(struct _fbg *fbg) {
 GLuint fbg_glfwCreateTextureFromImage(struct _fbg_img *img) {
     GLuint texture = fbg_glfwCreateTexture(img->width, img->height);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->width, img->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data);
 
     return texture;
 }
@@ -270,6 +287,8 @@ GLuint fbg_glfwCreateTexture(GLuint width, GLuint height) {
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     return texture;
 }
@@ -294,16 +313,11 @@ GLuint fbg_glfwCreateFBO(GLuint texture) {
     return fbo;
 }
 
-GLuint fbg_glfwCreateVAO() {
-	GLuint vao = 0;
-	glGenVertexArrays(1, &vao);
-
-	return vao;
-}
-
-GLuint fbg_glfwCreateVBO(GLuint vao, GLsizeiptr data_count, const GLvoid *data) {
+GLuint fbg_glfwCreateVAOvu(GLsizeiptr data_count, const GLvoid *data) {
 	GLuint vbo = 0;
+	GLuint vao = 0;
 
+	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
 	glGenBuffers(1, &vbo);
@@ -322,6 +336,81 @@ GLuint fbg_glfwCreateVBO(GLuint vao, GLsizeiptr data_count, const GLvoid *data) 
 	glBindVertexArray(0);
 
 	glDeleteBuffers(1, &vbo);
+
+	return vao;
+}
+
+GLuint fbg_glfwCreateVAO(GLsizeiptr indices_count, const GLvoid *indices_data, size_t sizeof_indice_type,
+						 GLsizeiptr vertices_count, const GLvoid *vertices_data,
+						 GLsizeiptr texcoords_count, const GLvoid *texcoords_data,
+						 GLsizeiptr normals_count, const GLvoid *normals_data,
+						 GLsizeiptr colors_count, const GLvoid *colors_data) {
+	GLuint vbo = 0;
+	GLuint tbo = 0;
+	GLuint ibo = 0;
+	GLuint nbo = 0;
+	GLuint cbo = 0;
+	GLuint vao = 0;
+
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	glGenBuffers(1, &ibo);
+
+	// Vertices
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertices_count * 3 * sizeof(GLfloat), vertices_data, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+    glEnableVertexAttribArray(0);
+
+	int attrib_id = 1;
+
+	// UVs
+	if (texcoords_data) {
+		glGenBuffers(1, &tbo);
+		glBindBuffer(GL_ARRAY_BUFFER, tbo);
+		glBufferData(GL_ARRAY_BUFFER, texcoords_count * 2 * sizeof(GLfloat), texcoords_data, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(attrib_id);
+		glVertexAttribPointer(attrib_id, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
+
+		attrib_id += 1;
+	}
+
+	// normals
+	if (normals_data) {
+		glGenBuffers(1, &nbo);
+		glBindBuffer(GL_ARRAY_BUFFER, nbo);
+		glBufferData(GL_ARRAY_BUFFER, normals_count * 3 * sizeof(GLfloat), normals_data, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(attrib_id);
+		glVertexAttribPointer(attrib_id, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) 0);
+
+		attrib_id += 1;
+	}
+
+	// colors
+	if (colors_data) {
+		glGenBuffers(1, &cbo);
+		glBindBuffer(GL_ARRAY_BUFFER, cbo);
+		glBufferData(GL_ARRAY_BUFFER, colors_count * 3 * sizeof(GL_UNSIGNED_BYTE), colors_data, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(attrib_id);
+		glVertexAttribPointer(attrib_id, 3, GL_UNSIGNED_BYTE, GL_FALSE, 0, (GLvoid*) 0);
+	}
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_count * sizeof_indice_type, indices_data, GL_STATIC_DRAW);
+
+	glBindVertexArray(0);
+
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &tbo);
+	glDeleteBuffers(1, &ibo);
+	glDeleteBuffers(1, &nbo);
+	glDeleteBuffers(1, &cbo);
 
 	return vao;
 }
@@ -393,7 +482,7 @@ GLuint fbg_glfwCreateShaderFromFile(GLenum type, const char *filename) {
 	return shader;
 }
 
-GLuint fbg_glfwCreateProgram(GLuint vertex_shader, GLuint fragment_shader) {
+GLuint fbg_glfwCreateProgram(GLuint vertex_shader, GLuint fragment_shader, GLuint geometry_shader) {
 	GLuint program = 0;
 	GLint status;
 
@@ -406,6 +495,10 @@ GLuint fbg_glfwCreateProgram(GLuint vertex_shader, GLuint fragment_shader) {
 	if (fragment_shader) {
 		glAttachShader(program, fragment_shader);
     }
+
+	if (geometry_shader) {
+		glAttachShader(program, geometry_shader);
+	}
 
 	glLinkProgram(program);
 
@@ -420,15 +513,25 @@ GLuint fbg_glfwCreateProgram(GLuint vertex_shader, GLuint fragment_shader) {
 		return 0;
 	}
 
-	glDetachShader(program, vertex_shader);
-	glDetachShader(program, fragment_shader);
+	if (vertex_shader) {
+		glDetachShader(program, vertex_shader);
+	}
+
+	if (fragment_shader) {
+		glDetachShader(program, fragment_shader);
+	}
+
+	if (geometry_shader) {
+		glDetachShader(program, geometry_shader);
+	}
 
 	return program;
 }
 
-GLenum fbg_glfwCreateProgramFromFiles(const char *vs, const char *fs) {
+GLenum fbg_glfwCreateProgramFromFiles(const char *vs, const char *fs, const char *gs) {
 	GLuint id_vs = 0;
 	GLuint id_fs = 0;
+	GLuint id_gs = 0;
 
 	if (vs) {
 		id_vs = fbg_glfwCreateShaderFromFile(GL_VERTEX_SHADER, vs);
@@ -438,17 +541,31 @@ GLenum fbg_glfwCreateProgramFromFiles(const char *vs, const char *fs) {
 		id_fs = fbg_glfwCreateShaderFromFile(GL_FRAGMENT_SHADER, fs);
 	}
 
-	GLuint program = fbg_glfwCreateProgram(id_vs, id_fs);
+	if (gs) {
+		id_gs = fbg_glfwCreateShaderFromFile(GL_GEOMETRY_SHADER, gs);
+	}
 
-	glDeleteShader(id_vs);
-	glDeleteShader(id_fs);
+	GLuint program = fbg_glfwCreateProgram(id_vs, id_fs, id_gs);
+
+	if (vs) {
+		glDeleteShader(id_vs);
+	}
+
+	if (fs) {
+		glDeleteShader(id_fs);
+	}
+
+	if (gs) {
+		glDeleteShader(id_gs);
+	}
 
 	return program;
 }
 
-GLenum fbg_glfwCreateProgramFromString(const char *vs, const char *fs) {
+GLenum fbg_glfwCreateProgramFromString(const char *vs, const char *fs, const char *gs) {
 	GLuint id_vs = 0;
 	GLuint id_fs = 0;
+	GLuint id_gs = 0;
 
 	if (vs) {
 		id_vs = fbg_glfwCreateShader(GL_VERTEX_SHADER, vs);
@@ -458,10 +575,23 @@ GLenum fbg_glfwCreateProgramFromString(const char *vs, const char *fs) {
 		id_fs = fbg_glfwCreateShader(GL_FRAGMENT_SHADER, fs);
 	}
 
-	GLuint program = fbg_glfwCreateProgram(id_vs, id_fs);
+	if (gs) {
+		id_gs = fbg_glfwCreateShader(GL_GEOMETRY_SHADER, gs);
+	}
 
-	glDeleteShader(id_vs);
-	glDeleteShader(id_fs);
+	GLuint program = fbg_glfwCreateProgram(id_vs, id_fs, id_gs);
+
+	if (vs) {
+		glDeleteShader(id_vs);
+	}
+
+	if (fs) {
+		glDeleteShader(id_fs);
+	}
+
+	if (gs) {
+		glDeleteShader(id_gs);
+	}
 
 	return program;
 }
