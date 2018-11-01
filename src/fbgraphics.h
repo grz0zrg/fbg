@@ -46,7 +46,7 @@
     #define lfds720_ringbuffer_n_element lfds711_ringbuffer_element
     #define lfds720_ringbuffer_n_state lfds711_ringbuffer_state
     #define lfds720_freelist_n_state lfds711_freelist_state
-    #define LFDS720_PAL_ATOMIC_ISOLATION_IN_BYTES LFDS711_PAL_ATOMIC_ISOLATION_IN_BYTES
+    #define LFDS720_PAL_ATOMIC_ISOLATION_LENGTH_IN_BYTES LFDS711_PAL_ATOMIC_ISOLATION_IN_BYTES
     #define lfds720_ringbuffer_n_init_valid_on_current_logical_core lfds711_ringbuffer_init_valid_on_current_logical_core
     #define lfds720_freelist_n_init_valid_on_current_logical_core lfds711_freelist_init_valid_on_current_logical_core
     #define LFDS720_FREELIST_N_SET_VALUE_IN_ELEMENT LFDS711_FREELIST_SET_VALUE_IN_ELEMENT
