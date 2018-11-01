@@ -34,20 +34,13 @@ void int_handler(int dummy) {
     keep_running = 0;
 }
 
-float randf(float a, float b) {
-    float random = ((float) rand()) / (float) RAND_MAX;
-    float diff = b - a;
-    float r = random * diff;
-    return a + r;
-}
-
 void generatePoints(struct _fbg *fbg) {
     for (int i = 0; i < pcount; i += 4) {
-        float vx = randf(-1, 1);
-        float vy = randf(-0.005, 0.005);
+        float vx = fbg_randf(-1, 1);
+        float vy = fbg_randf(-0.005, 0.005);
 
-        points[i] = randf(vx, fbg->width - vx);
-        points[i + 1] = randf(vy, fbg->height - vy);
+        points[i] = fbg_randf(vx, fbg->width - vx);
+        points[i + 1] = fbg_randf(vy, fbg->height - vy);
 
         points[i + 2] = vx;
         points[i + 3] = vy;
@@ -168,9 +161,9 @@ int main(int argc, char* argv[]) {
             float vx = points[i + 2];
             float vy = points[i + 3];
 
-            fbg_hslToRGB(&color, abs(sin(x / (float)fbg->width * 3.1415 / 2) * 360), randf(0.5f, 1), 0.5f);
+            fbg_hslToRGB(&color, abs(sin(x / (float)fbg->width * 3.1415 / 2) * 360), fbg_randf(0.5f, 1), 0.5f);
 
-            fbg_getPixel(fbg, x + randf(-1, 1), y + randf(-1, 1), &color2);
+            fbg_getPixel(fbg, x + fbg_randf(-1, 1), y + fbg_randf(-1, 1), &color2);
 
             fbg_recta(fbg, x, y, 1, 1, (color.r + color2.r) / 2, (color.g + color2.g) / 2, (color.b + color2.b) / 2, i % 255);
 
@@ -220,11 +213,14 @@ int main(int argc, char* argv[]) {
         glBindVertexArray(cube_vao);
         glUseProgram(program_3d);
 
-        glm_rotate_make(model, sin(motion / 8.), (vec3){0., 1., 0.25});
+        float scale_motion = 2.75 + fabsf(sin(motion / 24.) / 8.) * 28.;
+
+        glm_translate_make(model, (vec3){0., 0., scale_motion});
+        glm_rotate(model, sin(motion / 8.), (vec3){0., 1., 0.25});
         glm_rotate(model, cos(motion / 14.) / 2., (vec3){1., 1., 1.});
 
-        float scale_motion = 2.75 + fabsf(sin(motion / 24.) / 8.) * 28.;
-        glm_scale(model, (vec3){scale_motion, scale_motion, scale_motion});
+        //glm_scale(model, (vec3){scale_motion, scale_motion, scale_motion});
+        
 
         // upload M V P as separate components
         //glm_mat4_mulN((mat4 *[]){&proj, &view}, 2, vp);

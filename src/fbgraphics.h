@@ -38,7 +38,32 @@
     #include <stdatomic.h>
     #include <pthread.h>
 
+// compatibility layer for liblfds 711 version (because 720 was unreleased at the time of writing this)
+#ifdef LFDS711
+    #include "liblfds711.h"
+
+    #define lfds720_freelist_n_element lfds711_freelist_element
+    #define lfds720_ringbuffer_n_element lfds711_ringbuffer_element
+    #define lfds720_ringbuffer_n_state lfds711_ringbuffer_state
+    #define lfds720_freelist_n_state lfds711_freelist_state
+    #define LFDS720_PAL_ATOMIC_ISOLATION_IN_BYTES LFDS711_PAL_ATOMIC_ISOLATION_IN_BYTES
+    #define lfds720_ringbuffer_n_init_valid_on_current_logical_core lfds711_ringbuffer_init_valid_on_current_logical_core
+    #define lfds720_freelist_n_init_valid_on_current_logical_core lfds711_freelist_init_valid_on_current_logical_core
+    #define LFDS720_FREELIST_N_SET_VALUE_IN_ELEMENT LFDS711_FREELIST_SET_VALUE_IN_ELEMENT
+    #define LFDS720_FREELIST_N_GET_VALUE_FROM_ELEMENT LFDS711_FREELIST_GET_VALUE_FROM_ELEMENT
+    #define lfds720_freelist_n_threadsafe_push lfds711_freelist_push
+    #define lfds720_freelist_n_threadsafe_pop lfds711_freelist_pop
+    #define lfds720_ringbuffer_n_cleanup lfds711_ringbuffer_cleanup
+    #define lfds720_freelist_n_cleanup lfds711_freelist_cleanup
+    #define lfds720_ringbuffer_n_read lfds711_ringbuffer_read
+    #define lfds720_ringbuffer_n_write lfds711_ringbuffer_write
+    #define lfds720_misc_flag lfds711_misc_flag
+    #define LFDS720_MISC_FLAG_RAISED LFDS711_MISC_FLAG_RAISED
+    #define LFDS720_MISC_MAKE_VALID_ON_CURRENT_LOGICAL_CORE_INITS_COMPLETED_BEFORE_NOW_ON_ANY_OTHER_PHYSICAL_CORE LFDS711_MISC_MAKE_VALID_ON_CURRENT_LOGICAL_CORE_INITS_COMPLETED_BEFORE_NOW_ON_ANY_OTHER_LOGICAL_CORE
+    #define lfds720_pal_uint_t lfds711_pal_uint_t
+#else
     #include "liblfds720.h"
+#endif
 #endif
 
 // ### Library structures
@@ -231,10 +256,10 @@
         //! Ringbuffer element
         struct lfds720_ringbuffer_n_element *ringbuffer_element;
         //! Ringbuffer state
-        struct lfds720_ringbuffer_n_state ringbuffer_state;
+        struct lfds720_ringbuffer_n_state *ringbuffer_state;
 
         //! Freelist state
-        struct lfds720_freelist_n_state freelist_state;
+        struct lfds720_freelist_n_state *freelist_state;
         //! Pre-allocated tasks data
         struct _fbg_freelist_data *fbg_freelist_data;
 
@@ -538,7 +563,7 @@
       \param fbg pointer to a FBG context / data structure
       \param filename PNG image filename
       \return _fbg_img data structure pointer
-      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadJPEG(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadJPEG(), fbg_loadImage(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename);
 
@@ -547,9 +572,18 @@
       \param fbg pointer to a FBG context / data structure
       \param filename JPEG image filename
       \return _fbg_img data structure pointer
-      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadPNG(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadPNG(), fbg_loadImage(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename);
+
+    //! load an image (PNG or JPEG)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param filename JPEG/PNG image filename
+      \return _fbg_img data structure pointer
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+    */
+    extern struct _fbg_img *fbg_loadImage(struct _fbg *fbg, const char *filename);
 
     //! draw an image
     /*!
@@ -557,7 +591,7 @@
       \param img image structure pointer
       \param x image X position (upper left coordinate)
       \param y image Y position (upper left coordinate)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_loadImage(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y);
 
@@ -570,7 +604,7 @@
       \param cr colorkey red component
       \param cg colorkey green component
       \param cb colorkey blue component
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_image()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_loadImage(), fbg_imageClip(), fbg_freeImage(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_image()
     */
     extern void fbg_imageColorkey(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cr, int cg, int cb);
 
@@ -584,14 +618,14 @@
       \param cy The Y coordinate where to start clipping
       \param cw The width of the clipped image (from cx)
       \param ch The height of the clipped image (from cy)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_loadImage(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_imageClip(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int cx, int cy, int cw, int ch);
 
     //! flip an image vertically
     /*!
       \param img image structure pointer
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_loadImage()
     */
     extern void fbg_imageFlip(struct _fbg_img *img);
 
@@ -607,14 +641,14 @@
       \param cy The Y coordinate where to start clipping
       \param cw The width of the clipped image (from cx)
       \param ch The height of the clipped image (from cy)
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageScale(), fbg_imageColorkey()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_loadImage(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageScale(), fbg_imageColorkey()
     */
     extern void fbg_imageEx(struct _fbg *fbg, struct _fbg_img *img, int x, int y, float sx, float sy, int cx, int cy, int cw, int ch);
 
     //! free the memory associated with an image
     /*!
       \param img image structure pointer
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_loadImage()
     */
     extern void fbg_freeImage(struct _fbg_img *img);
 
@@ -716,6 +750,14 @@
     */
     extern void fbg_drawInto(struct _fbg *fbg, unsigned char *buffer);
 
+    //! pseudo random number between min / max
+    /*!
+      \param min
+      \param max
+      \return pseudo random number between min / max
+    */
+    extern float fbg_randf(float min, float max);
+
 #ifdef FBG_PARALLEL
     //! create a FB Graphics parallel task (also called a 'fragment')
     /*!
@@ -762,7 +804,7 @@
       \param y image Y position (upper left coordinate)
       \param sx The X scale factor
       \param sy The Y scale factor
-      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx()
+      \sa fbg_createImage(), fbg_loadPNG(), fbg_loadJPEG(), fbg_loadImage(), fbg_imageClip(), fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_imageEx()
     */
     #define fbg_imageScale(fbg, img, x, y, sx, sy) fbg_imageEx(fbg, img, x, y, sx, sy, 0, 0, img->width, img->height)
 

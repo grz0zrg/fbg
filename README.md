@@ -1,9 +1,11 @@
-FBGraphics : Lightweight C graphics library with custom rendering backend and parallelism support
+FBGraphics : Lightweight C 2D graphics API agnostic library with parallelism support
 =====
 
-FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library with parallelism support and custom rendering backend support.
+FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library with parallelism and custom rendering backend support (graphics API agnostic).
 
-The library come bundled with a Linux framebuffer rendering backend and an external OpenGL backend (through GLFW).
+The library come with two backend : 
+ * a Linux framebuffer rendering backend (bundled)
+ * OpenGL backend which use the [GLFW](http://www.glfw.org/) library (available aside)
 
 Features :
 
@@ -17,7 +19,7 @@ Features :
  * PNG/JPEG images loading (provided by [LodePNG](https://lodev.org/lodepng/) and [NanoJPEG](http://keyj.emphy.de/nanojpeg/))
  * Bitmap fonts for drawing texts
  * Bare-metal graphics primitive (pixels, rectangles, lines, polygon)
- * Easy to do fading and screen-clearing related effects (motion blur etc.)
+ * Easy to do fading, clipping and screen-clearing related effects (motion blur etc.)
  * Drawing calls can be used to render into a specified target buffer such as fbg_image etc.
  * Framerate tracking & display for all cores
  * Lightweight enough to be hackable; adapt to all kinds of needs (and still support parallelism easily)
@@ -35,12 +37,13 @@ Table of Contents
    * [Benchmark](#benchmark)
    * [Documentation](#documentation)
    * [Building](#building)
+   * [GLFW backend](#GLFW-backend)
    * [Screenshots](#screenshots)
    * [License](#license)
 
 ## About
 
-FBGraphics was built to produce fullscreen pixels effects easily (think of Processing-like creative coding etc.) with non-accelerated framebuffer by leveraging multi-core processors, it is a bit like a software GPU but much less complex and featured, the initial target platform was a Raspberry PI 3B, it extended to the NanoPI (and many other devices).
+FBGraphics was built to produce fullscreen pixels effects easily (think of Processing-like creative coding etc.) with non-accelerated framebuffer by leveraging multi-core processors, it is a bit like a software GPU but much less complex and featured, the initial target platform was a Raspberry PI 3B / NanoPI.
 
 FBGraphics was also extended to support any numbers of custom rendering backend; all graphics calls manipulate internal buffers and a simple interface allow to draw the result the way you want to.
 
@@ -48,13 +51,13 @@ An OpenGL rendering backend which use the [GLFW library](http://www.glfw.org/) w
 
 FBGraphics was built so that it is possible to create any number of rendering context using different backend running at the same time while exploiting multi-core processors... the content of any rendering context can be transfered into other context through images when calling `fbg_drawInto`
 
-FBGraphics framebuffer settings support 16, 24 (BGR/RGB), 32 bpp, 16 bpp mode is handled by converting from 24 bpp to 16 bpp upon drawing, page flipping mechanism is disabled in 16 bpp mode, *24 bpp is the fastest mode*.
+FBGraphics framebuffer settings support 16, 24 (BGR/RGB), 32 bpp, 16 bpp mode is handled by converting from 24 bpp to 16 bpp upon drawing, page flipping mechanism is disabled in 16 bpp mode, **24 bpp is the fastest mode**.
 
 FBGraphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing computer graphics right away with or without multi-core support.
 
 If you want to use the parallelism features with more advanced graphics primitives, take a look at great libraries such as [libgd](http://libgd.github.io/) or [Adafruit GFX library](https://github.com/adafruit/Adafruit-GFX-Library) which should be easy to integrate.
 
-FBGraphics is fast but should be used with caution, bounds checking is not implemented on most primitives.
+FBGraphics is fast but should be used with caution, display bounds checking is not implemented on most primitives, this allow raw performances at the cost of crashs if not careful.
 
 Multi-core support is optional and is only enabled when `FBG_PARALLEL` C definition is present.
 
@@ -131,8 +134,8 @@ int main(int argc, char* argv[]) {
 
     struct _fbg *fbg = fbg_init();
 
-    struct _fbg_img *texture = fbg_loadPNG(fbg, "texture.png");
-    struct _fbg_img *bb_font_img = fbg_loadPNG(fbg, "bbmode1_8x8.png");
+    struct _fbg_img *texture = fbg_loadImage(fbg, "texture.png");
+    struct _fbg_img *bb_font_img = fbg_loadImage(fbg, "bbmode1_8x8.png");
 
     struct _fbg_font *bbfont = fbg_createFont(fbg, bb_font_img, 8, 8, 33);
 
@@ -278,7 +281,7 @@ Each threads begin by fetching a pre-allocated buffer from a freelist, then the 
 
 FBGraphics parallelism make use of the [liblfds](http://liblfds.org/) library for the Ringbuffer and Freelist data structure.
 
-## Benchmark
+## Benchmark (framebuffer)
 
 A simple unoptimized per pixels screen clearing with 4 cores on a Raspberry PI 3B :  30 FPS @ 1280x768 and 370 FPS @ 320x240
 
@@ -345,9 +348,15 @@ For parallelism support, `FBG_PARALLEL` need to be defined and you will need the
  * type `make` in a terminal
  * `liblfds711.a` can now be found in the `bin` directory, you need to link against it when compiling (see examples)
 
-To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make`.
+To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make lfds711`.
 
-**Note** : The basic version of the library work on the ARM64 platform but parallel support on ARM64 platform is only supported in the ARM64 branch, you will need the not yet released liblfds720 to compile it.
+**Note** : FBGraphics work on ARM64 platforms by default but you will need liblfds720 which is not yet released.
+
+## GLFW backend
+
+See `README` into `custom_backend` folder
+
+The GLFW backend was done made to demonstrate how to write a backend, it is complete enough to be used by default.
 
 ## Screenshots
 

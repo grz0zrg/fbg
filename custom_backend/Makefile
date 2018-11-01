@@ -6,18 +6,35 @@ DEFP=-DFBG_PARALLEL
 SRC_LIBS=../src/lodepng/lodepng.c ../src/nanojpeg/nanojpeg.c ../src/fbgraphics.c glfw/fbg_glfw.c
 SRC1=$(SRC_LIBS) glfw_example.c
 SRC2=$(SRC_LIBS) glfw_example_advanced.c
+SRC3=$(SRC_LIBS) glfw_parallel_raycasting.c
+SRC4=$(SRC_LIBS) glfw_parallel.c
 OUT1=glfw_example
 OUT2=glfw_example_advanced
-LIBS2=-lm -lpthread ../examples/liblfds720.a `pkg-config --static --libs glfw3` `pkg-config --libs glu` `pkg-config --libs glew`
-INCS=-I ../src/ -I. `pkg-config --cflags glfw3 glu`
+OUT3=glfw_parallel_raycasting
+OUT4=glfw_parallel
+LIBS1=-lm -lpthread `pkg-config --static --libs glfw3` `pkg-config --libs glu` `pkg-config --libs glew`
+LIBS2=../examples/liblfds720.a -lm -lpthread `pkg-config --static --libs glfw3` `pkg-config --libs glu` `pkg-config --libs glew`
+LIBS3=../examples/liblfds711.a -lm -lpthread `pkg-config --static --libs glfw3` `pkg-config --libs glu` `pkg-config --libs glew`
+INCS=-I ../src/ -I. -Iliblfds720 `pkg-config --cflags glfw3 glu`
+INCS2=-I ../src/ -I. -Iliblfds711 `pkg-config --cflags glfw3 glu`
 
 all:
-	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT1)
-	$(CC) $(SRC2) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT2)
+	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS1) -o $(OUT1)
+	$(CC) $(SRC2) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS1) -o $(OUT2)
+	$(CC) $(SRC3) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS2) $(DEFP) -o $(OUT3)
+	$(CC) $(SRC4) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS2) $(DEFP) -o $(OUT4)
 
 debug:
-	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS2) -o $(OUT1)
-	$(CC) $(SRC2) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS2) -o $(OUT2)
+	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS1) -o $(OUT1)
+	$(CC) $(SRC2) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS1) -o $(OUT2)
+	$(CC) $(SRC3) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS2) $(DEFP) -o $(OUT3)
+	$(CC) $(SRC4) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS2) $(DEFP) -o $(OUT4)
+
+lfds711:
+	$(CC) $(SRC1) $(INCS2) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS1) -DLFDS711 -o $(OUT1)
+	$(CC) $(SRC2) $(INCS2) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS1) -DLFDS711 -o $(OUT2)
+	$(CC) $(SRC3) $(INCS2) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS3) -DLFDS711 $(DEFP) -o $(OUT3)
+	$(CC) $(SRC4) $(INCS2) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS3) -DLFDS711 $(DEFP) -o $(OUT4)
 
 clean:
-	rm -f *.o $(OUT1) $(OUT2)
+	rm -f *.o $(OUT1) $(OUT2) $(OUT3) $(OUT4)
