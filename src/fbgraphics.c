@@ -664,7 +664,7 @@ void fbg_createFragment(struct _fbg *fbg,
         }
 
         // liblfds
-        frag->ringbuffer_element = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_IN_BYTES, sizeof(struct lfds720_ringbuffer_n_element) * (queue_size + 1));
+        frag->ringbuffer_element = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_LENGTH_IN_BYTES, sizeof(struct lfds720_ringbuffer_n_element) * (queue_size + 1));
         if (frag->ringbuffer_element == NULL) {
             fprintf(stderr, "fbg_createFragment: liblfds ringbuffer data structures aligned_alloc error.\n");
 
@@ -674,7 +674,7 @@ void fbg_createFragment(struct _fbg *fbg,
             continue;
         }
 
-        frag->ringbuffer_state = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_IN_BYTES, sizeof(struct lfds720_ringbuffer_n_state));
+        frag->ringbuffer_state = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_LENGTH_IN_BYTES, sizeof(struct lfds720_ringbuffer_n_state));
         if (frag->ringbuffer_state == NULL) {
             fprintf(stderr, "fbg_createFragment: liblfds ringbuffer state aligned_alloc error.\n");
 
@@ -685,7 +685,7 @@ void fbg_createFragment(struct _fbg *fbg,
             continue;
         }
 
-        frag->freelist_state = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_IN_BYTES, sizeof(struct lfds720_freelist_n_state));
+        frag->freelist_state = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_LENGTH_IN_BYTES, sizeof(struct lfds720_freelist_n_state));
         if (frag->ringbuffer_state == NULL) {
             fprintf(stderr, "fbg_createFragment: liblfds ringbuffer state aligned_alloc error.\n");
 
