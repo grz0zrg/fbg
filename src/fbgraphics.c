@@ -47,6 +47,8 @@ void fbg_freelistCleanup(struct lfds720_freelist_n_state *fs, struct lfds720_fre
     freelist_data = LFDS720_FREELIST_N_GET_VALUE_FROM_ELEMENT(*fe);
 
     free(freelist_data->buffer);
+
+    freelist_data->buffer = NULL;
 }
 
 void fbg_ringbufferCleanup(struct lfds720_ringbuffer_n_state *rs, void *key, void *value, enum lfds720_misc_flag unread_flag) {
@@ -304,7 +306,7 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
 
     // we don't allow resizing in framebuffer mode
     if (fbg->buffer == NULL) {
-        int new_size = new_width * new_width * fbg->components;
+        int new_size = new_width * new_height * fbg->components;
 
         unsigned char *back_buffer = calloc(1, new_size * sizeof(char));
         if (!back_buffer) {
@@ -353,7 +355,10 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
 }
 
 #ifdef FBG_PARALLEL
+// basically tell all threads/fragments that they should stop
 void fbg_terminateFragments(struct _fbg *fbg) {
+    // this is the context state because all fragments actually share the main context state
+    // as such if fragments are terminated temporarily by calling this function, main context state should be set again afterward
     fbg->state = 0;
 }
 
@@ -386,6 +391,8 @@ void fbg_freeTasks(struct _fbg *fbg) {
         lfds720_ringbuffer_n_cleanup(frag->ringbuffer_state, fbg_ringbufferCleanup);
         lfds720_freelist_n_cleanup(frag->freelist_state, fbg_freelistCleanup);
         free(frag->ringbuffer_element);
+        free(frag->ringbuffer_state);
+        free(frag->freelist_state);
         free(frag->fbg_freelist_data);
 
         free(frag);
@@ -395,10 +402,15 @@ void fbg_freeTasks(struct _fbg *fbg) {
         pthread_barrier_destroy(fbg->sync_barrier);
 
         free(fbg->sync_barrier);
+
+        fbg->sync_barrier = NULL;
     }
 
     free(fbg->tasks);
     free(fbg->fragments);
+
+    fbg->tasks = NULL;
+    fbg->fragments = NULL;
 
     fbg->parallel_tasks = 0;
 }
@@ -549,7 +561,7 @@ void fbg_fragment(struct _fbg_fragment *fbg_fragment) {
 
     struct _fbg *fbg = fbg_fragment->fbg;
 
-    fprintf(stdout, "fbg_fragment: Task started\n");
+    //fprintf(stdout, "fbg_fragment: Task started\n");
 
     if (fbg_fragment->user_fragment_start) {
         fbg_fragment->user_data = fbg_fragment->user_fragment_start(fbg);
@@ -578,7 +590,7 @@ void fbg_fragment(struct _fbg_fragment *fbg_fragment) {
         fbg_fragment->user_fragment_stop(fbg, fbg_fragment->user_data);
     }
 
-    fprintf(stdout, "fbg_fragment: Task ended successfully.\n");
+    //fprintf(stdout, "fbg_fragment: Task ended successfully.\n");
 }
 
 void fbg_createFragment(struct _fbg *fbg,
@@ -595,6 +607,9 @@ void fbg_createFragment(struct _fbg *fbg,
         fbg_terminateFragments(fbg);
         
         fbg_freeTasks(fbg);
+
+        // see fbg_terminateFragments function for explanations
+        fbg->state = 1;
     }
 
     fbg->parallel_tasks = parallel_tasks;
@@ -686,8 +701,8 @@ void fbg_createFragment(struct _fbg *fbg,
         }
 
         frag->freelist_state = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_LENGTH_IN_BYTES, sizeof(struct lfds720_freelist_n_state));
-        if (frag->ringbuffer_state == NULL) {
-            fprintf(stderr, "fbg_createFragment: liblfds ringbuffer state aligned_alloc error.\n");
+        if (frag->freelist_state == NULL) {
+            fprintf(stderr, "fbg_createFragment: liblfds freelist state aligned_alloc error.\n");
 
             free(task_fbg);
             free(frag);
@@ -710,6 +725,8 @@ void fbg_createFragment(struct _fbg *fbg,
 
             free(task_fbg);
             free(frag->ringbuffer_element);
+            free(frag->ringbuffer_state);
+            free(frag->freelist_state);
             free(frag);
 
             continue;
@@ -749,6 +766,8 @@ void fbg_createFragment(struct _fbg *fbg,
             lfds720_ringbuffer_n_cleanup(frag->ringbuffer_state, fbg_ringbufferCleanup);
             lfds720_freelist_n_cleanup(frag->freelist_state, fbg_freelistCleanup);
             free(frag->ringbuffer_element);
+            free(frag->ringbuffer_state);
+            free(frag->freelist_state);
             free(frag->fbg_freelist_data);
             free(frag);
 
@@ -963,8 +982,7 @@ void fbg_getPixel(struct _fbg *fbg, int x, int y, struct _fbg_rgb *color) {
 #ifdef FBG_PARALLEL
 void fbg_additiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
     int j = 0;
-    for (j = 0; j < fbg->size; j += 1)
-    {
+    for (j = 0; j < fbg->size; j += 1) {
         fbg->back_buffer[j] = _FBG_MIN(fbg->back_buffer[j] + buffer[j], 255);
     }
 }
@@ -981,7 +999,7 @@ void fbg_draw(struct _fbg *fbg, int sync_with_tasks, void (*user_mixing)(struct 
     for (i = 0; i < fbg->parallel_tasks; i += 1) {
         struct _fbg_fragment *fragment = fbg->fragments[i];
         struct _fbg_freelist_data *freelist_data;
-        unsigned char *task_buffer;
+        unsigned char *task_buffer = NULL;
 
         if (sync_with_tasks) {
             while ((ringbuffer_read_status = lfds720_ringbuffer_n_read(fragment->ringbuffer_state, &key, NULL)) != 1) {
