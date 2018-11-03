@@ -24,7 +24,7 @@ Features :
  * Framerate tracking & display for all cores
  * Lightweight enough to be hackable; adapt to all kinds of needs (and still support parallelism easily)
 
-The library is generic,  most functions (including parallel ones) only manipulate buffers and you can build a custom rendering backend pretty easily with few functions call, see the `custom_backend` folder.
+The library is generic, most functions (including parallel ones) only manipulate buffers and you can build a custom rendering backend pretty easily with few functions call, see the `custom_backend` folder.
 
 Table of Contents
 =================
@@ -356,7 +356,9 @@ To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and
 
 See `README` into `custom_backend` folder
 
-The GLFW backend was done made to demonstrate how to write a backend, it is complete enough to be used by default.
+The GLFW backend was done made to demonstrate how to write a backend but it is complete enough to be used by default.
+
+The GLFW backend has a cool lightweight Lua example which setup a Processing-like environment making use of the parallelism feature of the library, allowing the user to prototype multithreaded graphical stuff without C code compilation through the Lua language.
 
 ## Screenshots
 

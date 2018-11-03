@@ -13,6 +13,16 @@ It is also possible to modify the way the FBG display buffer is rendered through
 
 See the FB Graphics documentation.
 
+### Lua example
+
+The Lua example is an advanced sample which use the [Lua](https://www.lua.org/) scripting language (through [LuaJIT](http://luajit.org/)) to provide a sort of multithreaded Processing-like (much much less featured) environment with JIT to build FB Graphics graphical sketches from a Lua script without the need to compile any C code.
+
+This use 8 cores, all threads (FBG fragments) have their own Lua state and call the Lua draw() function at each frames.
+
+See `sketch.lua` and `glfw_lua.c`
+
+It require the LuaJIT library.
+
 ### Basic usage 
 
 Just call `fbg_glfwSetup` then any FB Graphics calls can be used.
