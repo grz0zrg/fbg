@@ -216,7 +216,7 @@ int program() {
 
     struct _fbg_font *bbfont = fbg_createFont(fbg, bb_font_img, 8, 8, 33);
 
-    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 7, 7);
+    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 7);
 
     srand(time(NULL));
 

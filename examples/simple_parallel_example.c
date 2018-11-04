@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
 
     struct _fbg_font *bbfont = fbg_createFont(fbg, bb_font_img, 8, 8, 33);
 
-    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3, 63);
+    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3);
 
     // we will make a call to fragment function in our main drawing loop here so we
     // also need to call fragmentStart and fragmentStop for this thread

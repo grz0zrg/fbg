@@ -166,11 +166,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:a390cd3fb535cbad76856700a035ed401"><td class="mdescLeft">&#160;</td><td class="mdescRight">free up the memory associated with a FB Graphics context and close the framebuffer device  <a href="#a390cd3fb535cbad76856700a035ed401">More...</a><br /></td></tr>
 <tr class="separator:a390cd3fb535cbad76856700a035ed401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e747dee4eda4a434b746e2bbd14386"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a70e747dee4eda4a434b746e2bbd14386">fbg_setResizeCallback</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, void(*user_resize)(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int new_width, unsigned int new_height))</td></tr>
-<tr class="memdesc:a70e747dee4eda4a434b746e2bbd14386"><td class="mdescLeft">&#160;</td><td class="mdescRight">register a resize callback  <a href="#a70e747dee4eda4a434b746e2bbd14386">More...</a><br /></td></tr>
+<tr class="memdesc:a70e747dee4eda4a434b746e2bbd14386"><td class="mdescLeft">&#160;</td><td class="mdescRight">register a user resize callback  <a href="#a70e747dee4eda4a434b746e2bbd14386">More...</a><br /></td></tr>
 <tr class="separator:a70e747dee4eda4a434b746e2bbd14386"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00509b4956e358ae3f9135151c1e524a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a00509b4956e358ae3f9135151c1e524a">fbg_resize</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int new_width, int new_height)</td></tr>
-<tr class="memdesc:a00509b4956e358ae3f9135151c1e524a"><td class="mdescLeft">&#160;</td><td class="mdescRight">resize a FB Graphics context (note : resizing is not allowed in framebuffer mode)  <a href="#a00509b4956e358ae3f9135151c1e524a">More...</a><br /></td></tr>
 <tr class="separator:a00509b4956e358ae3f9135151c1e524a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3604f59f02b47730a47a2fc15644d61e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a3604f59f02b47730a47a2fc15644d61e">fbg_pushResize</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int new_width, int new_height)</td></tr>
+<tr class="separator:a3604f59f02b47730a47a2fc15644d61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab18823ca0e95ca51c5d6c69a48af8d0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e">fbg_fadeDown</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned char rgb_fade_amount)</td></tr>
 <tr class="memdesc:ab18823ca0e95ca51c5d6c69a48af8d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">background fade to black with controllable factor  <a href="#ab18823ca0e95ca51c5d6c69a48af8d0e">More...</a><br /></td></tr>
 <tr class="separator:ab18823ca0e95ca51c5d6c69a48af8d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,6 +196,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a5f656e76477d51b8faf039dd5baea65c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a5f656e76477d51b8faf039dd5baea65c">fbg_fpixel</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y)</td></tr>
 <tr class="memdesc:a5f656e76477d51b8faf039dd5baea65c"><td class="mdescLeft">&#160;</td><td class="mdescRight">fast pixel drawing which use the fill color set by <a class="el" href="fbgraphics_8h.html#a224b9ae07cc8fcd8c497b1d5f7007b66" title="set the filling color for fast drawing operations ">fbg_fill()</a>  <a href="#a5f656e76477d51b8faf039dd5baea65c">More...</a><br /></td></tr>
 <tr class="separator:a5f656e76477d51b8faf039dd5baea65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a990acac7dcc899656dc87c98404af777"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a990acac7dcc899656dc87c98404af777">fbg_plot</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int index, unsigned char value)</td></tr>
+<tr class="memdesc:a990acac7dcc899656dc87c98404af777"><td class="mdescLeft">&#160;</td><td class="mdescRight">direct pixel access from index value  <a href="#a990acac7dcc899656dc87c98404af777">More...</a><br /></td></tr>
+<tr class="separator:a990acac7dcc899656dc87c98404af777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad208d61ec4f50a5fd13f2cc8dd2ee0e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ad208d61ec4f50a5fd13f2cc8dd2ee0e5">fbg_rect</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)</td></tr>
 <tr class="memdesc:ad208d61ec4f50a5fd13f2cc8dd2ee0e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw a rectangle  <a href="#ad208d61ec4f50a5fd13f2cc8dd2ee0e5">More...</a><br /></td></tr>
 <tr class="separator:ad208d61ec4f50a5fd13f2cc8dd2ee0e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,6 +298,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aedca9d7bf294d143f860d2f0ddcd528c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aedca9d7bf294d143f860d2f0ddcd528c">fbg_randf</a> (float min, float max)</td></tr>
 <tr class="memdesc:aedca9d7bf294d143f860d2f0ddcd528c"><td class="mdescLeft">&#160;</td><td class="mdescRight">pseudo random number between min / max  <a href="#aedca9d7bf294d143f860d2f0ddcd528c">More...</a><br /></td></tr>
 <tr class="separator:aedca9d7bf294d143f860d2f0ddcd528c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cbf3b72e1cc590b1efcbc18c724322b"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a4cbf3b72e1cc590b1efcbc18c724322b">fbg_getBackBuffer</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)</td></tr>
+<tr class="memdesc:a4cbf3b72e1cc590b1efcbc18c724322b"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the current back buffer of a FB Graphics context  <a href="#a4cbf3b72e1cc590b1efcbc18c724322b">More...</a><br /></td></tr>
+<tr class="separator:a4cbf3b72e1cc590b1efcbc18c724322b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="struct__fbg__rgb" id="struct__fbg__rgb"></a>
@@ -495,7 +502,7 @@ Width of a glyph. </td></tr>
 
 <p>convert a degree angle to radians </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00819">819</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00861">861</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -527,7 +534,7 @@ Width of a glyph. </td></tr>
 
 <p>integer MAX Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00812">812</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00854">854</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -559,7 +566,7 @@ Width of a glyph. </td></tr>
 
 <p>integer MIN Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00814">814</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00856">856</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -581,7 +588,7 @@ Width of a glyph. </td></tr>
 
 <p>convert a radian angle to degree </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00821">821</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00863">863</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -603,7 +610,7 @@ Width of a glyph. </td></tr>
 
 <p>integer SIGN function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00816">816</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00858">858</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -643,7 +650,7 @@ Width of a glyph. </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a19d56a111248b7f7d52f4bc6392d3743" title="background fade to white with controllable factor ">fbg_fadeUp()</a>, <a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e" title="background fade to black with controllable factor ">fbg_fadeDown()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00787">787</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00829">829</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -711,7 +718,7 @@ Width of a glyph. </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#a731ce4c5439d16555aa6ec48751ecea6" title="load an image (PNG or JPEG) ">fbg_loadImage()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00809">809</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00851">851</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -733,7 +740,7 @@ Width of a glyph. </td></tr>
 <p>initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#ac2b04a31a81e6257c7e6be35c8ba5109" title="initialize a FB Graphics context with a custom rendering backend ">fbg_customSetup()</a>, <a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00779">779</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00821">821</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -788,7 +795,7 @@ Width of a glyph. </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#ac1ccfb0069d4567313391dc819ada76b" title="set the current font ">fbg_textFont()</a>, <a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1" title="set the current text color ">fbg_textColor()</a>, <a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea" title="draw a text ">fbg_text()</a>, fbg_textColorkey(), <a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1" title="set the current text background color (based on colorkey value!) ">fbg_textBackground()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00797">797</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00839">839</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -1080,7 +1087,7 @@ Width of a glyph. </td></tr>
     <tr><td class="paramname">user_context</td><td>user rendering data storage (things like window context etc.) </td></tr>
     <tr><td class="paramname">user_draw</td><td>function to call upon <a class="el" href="fbgraphics_8h.html#a2dfb2f17bc31e161868e6baf1c391816" title="draw to the screen ">fbg_draw()</a> </td></tr>
     <tr><td class="paramname">user_flip</td><td>function to call upon <a class="el" href="fbgraphics_8h.html#aedfec23bc4c51ff5ffb843bb289d448b" title="flip the buffers ">fbg_flip()</a> </td></tr>
-    <tr><td class="paramname">backend_resize</td><td>function to call upon <a class="el" href="fbgraphics_8h.html#a00509b4956e358ae3f9135151c1e524a" title="resize a FB Graphics context (note : resizing is not allowed in framebuffer mode) ...">fbg_resize()</a> </td></tr>
+    <tr><td class="paramname">backend_resize</td><td>function to call upon <a class="el" href="fbgraphics_8h.html#a00509b4956e358ae3f9135151c1e524a">fbg_resize()</a> </td></tr>
     <tr><td class="paramname">user_free</td><td>function to call upon <a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a> </td></tr>
   </table>
   </dd>
@@ -1541,6 +1548,33 @@ Width of a glyph. </td></tr>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#a731ce4c5439d16555aa6ec48751ecea6" title="load an image (PNG or JPEG) ">fbg_loadImage()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4cbf3b72e1cc590b1efcbc18c724322b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cbf3b72e1cc590b1efcbc18c724322b">&#9670;&nbsp;</a></span>fbg_getBackBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char* fbg_getBackBuffer </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
+          <td class="paramname"><em>fbg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>get the current back buffer of a FB Graphics context </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>back buffer pointer </dd></dl>
 
 </div>
 </div>
@@ -2420,6 +2454,51 @@ Width of a glyph. </td></tr>
 
 </div>
 </div>
+<a id="a990acac7dcc899656dc87c98404af777"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a990acac7dcc899656dc87c98404af777">&#9670;&nbsp;</a></span>fbg_plot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fbg_plot </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
+          <td class="paramname"><em>fbg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>direct pixel access from index value </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
+    <tr><td class="paramname">index</td><td>pixel index in the buffer </td></tr>
+    <tr><td class="paramname">value</td><td>color value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a7d81b1ddf54b0d4da0f30e36d7e2f3bb" title="draw a pixel ">fbg_pixel()</a>, <a class="el" href="fbgraphics_8h.html#a224b9ae07cc8fcd8c497b1d5f7007b66" title="set the filling color for fast drawing operations ">fbg_fill()</a>, <a class="el" href="fbgraphics_8h.html#a08c6a08afcb5bd07793801554b8f0bfe" title="draw a pixel with alpha component (alpha blending) ">fbg_pixela()</a> </dd></dl>
+
+</div>
+</div>
 <a id="a2a5a2ef48f5b26794473c51082fb75ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2a5a2ef48f5b26794473c51082fb75ab">&#9670;&nbsp;</a></span>fbg_polygon()</h2>
 
@@ -2482,6 +2561,50 @@ Width of a glyph. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a3604f59f02b47730a47a2fc15644d61e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3604f59f02b47730a47a2fc15644d61e">&#9670;&nbsp;</a></span>fbg_pushResize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fbg_pushResize </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
+          <td class="paramname"><em>fbg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>new_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>new_height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p class="">push a resize event for the FB Graphics context note : the resize event is processed into the fbg_draw function note : resizing is not yet allowed in framebuffer mode note : if you want to immediately resize the context, see fbg_resize</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
+    <tr><td class="paramname">new_width</td><td>new render width </td></tr>
+    <tr><td class="paramname">new_height</td><td>new render height </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a00509b4956e358ae3f9135151c1e524a">fbg_resize()</a>, <a class="el" href="fbgraphics_8h.html#a70e747dee4eda4a434b746e2bbd14386" title="register a user resize callback ">fbg_setResizeCallback()</a> </dd></dl>
 
 </div>
 </div>
@@ -2721,8 +2844,7 @@ Width of a glyph. </td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>resize a FB Graphics context (note : resizing is not allowed in framebuffer mode) </p>
+<p class="">resize the FB Graphics context immediately note : prefer the usage of fbg_pushResize when integrating the resize event of a custom backend (fbg_pushResize is thread safe all the time) note : resizing is not yet allowed in framebuffer mode</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
@@ -2731,6 +2853,7 @@ Width of a glyph. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a3604f59f02b47730a47a2fc15644d61e">fbg_pushResize()</a>, <a class="el" href="fbgraphics_8h.html#a70e747dee4eda4a434b746e2bbd14386" title="register a user resize callback ">fbg_setResizeCallback()</a> </dd></dl>
 
 </div>
 </div>
@@ -2760,7 +2883,7 @@ Width of a glyph. </td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>register a resize callback </p>
+<p>register a user resize callback </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
@@ -2768,6 +2891,7 @@ Width of a glyph. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a00509b4956e358ae3f9135151c1e524a">fbg_resize()</a>, <a class="el" href="fbgraphics_8h.html#a3604f59f02b47730a47a2fc15644d61e">fbg_pushResize()</a> </dd></dl>
 
 </div>
 </div>

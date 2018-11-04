@@ -178,6 +178,11 @@
         //! Internal buffers line length
         int line_length;
 
+        //! Requested new display width (resize event)
+        int new_width;
+        //! Requested new display height (resize event)
+        int new_height;
+
         //! Current FPS
 #ifdef FBG_PARALLEL
         atomic_uint_fast16_t fps;
@@ -214,6 +219,9 @@
         //! User-defined context structure
         void *user_context;
 
+        //! currently processed task buffer (assigned before compositing function is called in fbg_draw)
+        //unsigned char *curr_task_buffer;
+
 #ifdef FBG_PARALLEL
         //! Total number of actual parallel tasks
         unsigned int parallel_tasks;
@@ -232,6 +240,9 @@
 
         //! FBG tasks running flag (shared between all tasks)
         atomic_int state;
+
+        //! Ringbuffer queue length (7 by default)
+        unsigned int fragment_queue_size;
 #endif
     };
 
@@ -277,7 +288,7 @@
         void *user_data;
 
         //! Ringbuffer queue lenght
-        unsigned int queue_size;
+        //unsigned int queue_size;
     };
 #endif
 
@@ -313,20 +324,36 @@
     */
     extern void fbg_close(struct _fbg *fbg);
 
-    //! register a resize callback
+    //! register a user resize callback
     /*!
       \param fbg pointer to a FBG context / data structure
       \param user_resize resize function
+      \sa fbg_resize(), fbg_pushResize()
     */
     void fbg_setResizeCallback(struct _fbg *fbg, void (*user_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height));
 
-    //! resize a FB Graphics context (note : resizing is not allowed in framebuffer mode)
+    //! resize the FB Graphics context immediately
+    //! note : prefer the usage of fbg_pushResize when integrating the resize event of a custom backend (fbg_pushResize is thread safe all the time)
+    //! note : resizing is not yet allowed in framebuffer mode
     /*!
       \param fbg pointer to a FBG context / data structure
       \param new_width new render width
       \param new_height new render height
+      \sa fbg_pushResize(), fbg_setResizeCallback()
     */
     extern void fbg_resize(struct _fbg *fbg, int new_width, int new_height);
+
+    //! push a resize event for the FB Graphics context
+    //! note : the resize event is processed into the fbg_draw function
+    //! note : resizing is not yet allowed in framebuffer mode
+    //! note : if you want to immediately resize the context, see fbg_resize
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param new_width new render width
+      \param new_height new render height
+      \sa fbg_resize(), fbg_setResizeCallback()
+    */
+    extern void fbg_pushResize(struct _fbg *fbg, int new_width, int new_height);
 
     //! background fade to black with controllable factor
     /*!
@@ -404,6 +431,15 @@
       \sa fbg_pixel(), fbg_fill(), fbg_pixela()
     */
     extern void fbg_fpixel(struct _fbg *fbg, int x, int y);
+
+    //! direct pixel access from index value
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param index pixel index in the buffer
+      \param value color value
+      \sa fbg_pixel(), fbg_fill(), fbg_pixela()
+    */
+    extern void fbg_plot(struct _fbg *fbg, int index, unsigned char value);
 
     //! draw a rectangle
     /*!
@@ -758,6 +794,13 @@
     */
     extern float fbg_randf(float min, float max);
 
+    //! get the current back buffer of a FB Graphics context
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \return back buffer pointer
+    */
+    extern unsigned char *fbg_getBackBuffer(struct _fbg *fbg);
+
 #ifdef FBG_PARALLEL
     //! create a FB Graphics parallel task (also called a 'fragment')
     /*!
@@ -766,9 +809,8 @@
       \param fragment a function taking a _fbg structure as argument and user_data pointer
       \param fragment_stop a function taking user_data pointer as argument
       \param parallel_tasks the number of parallel tasks to register
-      \param queue_size the number of pre-allocated buffer to each tasks, this has an influence on memory and might have an impact on performances
     */
-    extern void fbg_createFragment(struct _fbg *fbg, void *(*fragment_start)(struct _fbg *fbg), void (*fragment)(struct _fbg *fbg, void *user_data), void (*fragment_stop)(struct _fbg *fbg, void *user_data), unsigned int parallel_tasks, unsigned int queue_size);
+    extern void fbg_createFragment(struct _fbg *fbg, void *(*fragment_start)(struct _fbg *fbg), void (*fragment)(struct _fbg *fbg, void *user_data), void (*fragment_stop)(struct _fbg *fbg, void *user_data), unsigned int parallel_tasks);
 #endif
 
 // ### Helper functions
@@ -819,5 +861,4 @@
     #define _FBG_DEGTORAD(angle_degree) ((angle_degree) * M_PI / 180.0)
     //! convert a radian angle to degree
     #define _FBG_RADTODEG(angle_radians) ((angle_radians) * 180.0 / M_PI)
-
 #endif

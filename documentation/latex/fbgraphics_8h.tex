@@ -49,9 +49,11 @@ struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$ \mbox{\hyperlink{fbgraph
 void \mbox{\hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\+\_\+close}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em free up the memory associated with a FB Graphics context and close the framebuffer device \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a70e747dee4eda4a434b746e2bbd14386}{fbg\+\_\+set\+Resize\+Callback}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, void($\ast$user\+\_\+resize)(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned int new\+\_\+width, unsigned int new\+\_\+height))
-\begin{DoxyCompactList}\small\item\em register a resize callback \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em register a user resize callback \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a00509b4956e358ae3f9135151c1e524a}{fbg\+\_\+resize}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int new\+\_\+width, int new\+\_\+height)
-\begin{DoxyCompactList}\small\item\em resize a FB Graphics context (note \+: resizing is not allowed in framebuffer mode) \end{DoxyCompactList}\item 
+\item 
+void \mbox{\hyperlink{fbgraphics_8h_a3604f59f02b47730a47a2fc15644d61e}{fbg\+\_\+push\+Resize}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int new\+\_\+width, int new\+\_\+height)
+\item 
 void \mbox{\hyperlink{fbgraphics_8h_ab18823ca0e95ca51c5d6c69a48af8d0e}{fbg\+\_\+fade\+Down}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char rgb\+\_\+fade\+\_\+amount)
 \begin{DoxyCompactList}\small\item\em background fade to black with controllable factor \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a19d56a111248b7f7d52f4bc6392d3743}{fbg\+\_\+fade\+Up}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char rgb\+\_\+fade\+\_\+amount)
@@ -68,6 +70,8 @@ void \mbox{\hyperlink{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}{fbg\+\_\+
 \begin{DoxyCompactList}\small\item\em draw a pixel with alpha component (alpha blending) \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+fpixel}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y)
 \begin{DoxyCompactList}\small\item\em fast pixel drawing which use the fill color set by \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fbgraphics_8h_a990acac7dcc899656dc87c98404af777}{fbg\+\_\+plot}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int index, unsigned char value)
+\begin{DoxyCompactList}\small\item\em direct pixel access from index value \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\+\_\+rect}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)
 \begin{DoxyCompactList}\small\item\em draw a rectangle \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fbgraphics_8h_a83a99e5c8d44e2acf52cad38519ececf}{fbg\+\_\+recta}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
@@ -133,7 +137,9 @@ int \mbox{\hyperlink{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}{fbg\+\_\+g
 void \mbox{\hyperlink{fbgraphics_8h_adda2a3ebc3a63cc275c78c61e62ce437}{fbg\+\_\+draw\+Into}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned char $\ast$buffer)
 \begin{DoxyCompactList}\small\item\em set an offscreen target for all subsequent fbg context draw calls, it is important to reset back to display target once done by calling fbg\+\_\+draw\+Into(\+N\+U\+L\+L) \end{DoxyCompactList}\item 
 float \mbox{\hyperlink{fbgraphics_8h_aedca9d7bf294d143f860d2f0ddcd528c}{fbg\+\_\+randf}} (float min, float max)
-\begin{DoxyCompactList}\small\item\em pseudo random number between min / max \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em pseudo random number between min / max \end{DoxyCompactList}\item 
+unsigned char $\ast$ \mbox{\hyperlink{fbgraphics_8h_a4cbf3b72e1cc590b1efcbc18c724322b}{fbg\+\_\+get\+Back\+Buffer}} (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
+\begin{DoxyCompactList}\small\item\em get the current back buffer of a FB Graphics context \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Data Structure Documentation}
@@ -292,7 +298,7 @@ convert a degree angle to radians
 
 
 
-Definition at line 819 of file fbgraphics.\+h.
+Definition at line 861 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_af424bd0f275b38651aabf1a7e3e34de3}\label{fbgraphics_8h_af424bd0f275b38651aabf1a7e3e34de3}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+M\+AX@{\+\_\+\+F\+B\+G\+\_\+\+M\+AX}}
@@ -306,7 +312,7 @@ integer M\+AX Math function
 
 
 
-Definition at line 812 of file fbgraphics.\+h.
+Definition at line 854 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}\label{fbgraphics_8h_add101b7a583f64094141ce1de49f92a7}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+M\+IN@{\+\_\+\+F\+B\+G\+\_\+\+M\+IN}}
@@ -320,7 +326,7 @@ integer M\+IN Math function
 
 
 
-Definition at line 814 of file fbgraphics.\+h.
+Definition at line 856 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_ab377dd49e23e56f2325559991ac85347}\label{fbgraphics_8h_ab377dd49e23e56f2325559991ac85347}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+R\+A\+D\+T\+O\+D\+EG@{\+\_\+\+F\+B\+G\+\_\+\+R\+A\+D\+T\+O\+D\+EG}}
@@ -334,7 +340,7 @@ convert a radian angle to degree
 
 
 
-Definition at line 821 of file fbgraphics.\+h.
+Definition at line 863 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}\label{fbgraphics_8h_a1e3a69cf9aa6b9d50ac0dad1abb42390}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!\+\_\+\+F\+B\+G\+\_\+\+S\+GN@{\+\_\+\+F\+B\+G\+\_\+\+S\+GN}}
@@ -348,7 +354,7 @@ integer S\+I\+GN function
 
 
 
-Definition at line 816 of file fbgraphics.\+h.
+Definition at line 858 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}\label{fbgraphics_8h_a4f15c1c2215c201e644c4c3de812f16f}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+fade@{fbg\+\_\+fade}}
@@ -372,7 +378,7 @@ background fade to black with controllable factor
 \end{DoxySeeAlso}
 
 
-Definition at line 787 of file fbgraphics.\+h.
+Definition at line 829 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}\label{fbgraphics_8h_a110e7e4228a6350bebc68b6bdfd6d24a}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+image\+Scale@{fbg\+\_\+image\+Scale}}
@@ -404,7 +410,7 @@ draw a scaled image
 \end{DoxySeeAlso}
 
 
-Definition at line 809 of file fbgraphics.\+h.
+Definition at line 851 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}\label{fbgraphics_8h_a728d7c5d9eaf556fa9286dbe3d922794}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+init@{fbg\+\_\+init}}
@@ -421,7 +427,7 @@ initialize a FB Graphics context with \textquotesingle{}/dev/fb0\textquotesingle
 \end{DoxySeeAlso}
 
 
-Definition at line 779 of file fbgraphics.\+h.
+Definition at line 821 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}\label{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+write@{fbg\+\_\+write}}
@@ -450,7 +456,7 @@ draw a text by using the current font and the current color
 \end{DoxySeeAlso}
 
 
-Definition at line 797 of file fbgraphics.\+h.
+Definition at line 839 of file fbgraphics.\+h.
 
 
 
@@ -828,6 +834,24 @@ free the memory associated with an image
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{fbgraphics_8h_a1e3ebfcc75e055a24f1a0f5765936d16}{fbg\+\_\+create\+Image()}}, \mbox{\hyperlink{fbgraphics_8h_a4be92c5b1376fb7f06de1529b0a43f7f}{fbg\+\_\+load\+P\+N\+G()}}, \mbox{\hyperlink{fbgraphics_8h_ad05affc24eed0b9f906d6926b8f02fec}{fbg\+\_\+load\+J\+P\+E\+G()}}, \mbox{\hyperlink{fbgraphics_8h_a731ce4c5439d16555aa6ec48751ecea6}{fbg\+\_\+load\+Image()}} 
 \end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_a4cbf3b72e1cc590b1efcbc18c724322b}\label{fbgraphics_8h_a4cbf3b72e1cc590b1efcbc18c724322b}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+get\+Back\+Buffer@{fbg\+\_\+get\+Back\+Buffer}}
+\index{fbg\+\_\+get\+Back\+Buffer@{fbg\+\_\+get\+Back\+Buffer}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+get\+Back\+Buffer()}{fbg\_getBackBuffer()}}
+{\footnotesize\ttfamily unsigned char$\ast$ fbg\+\_\+get\+Back\+Buffer (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg }\end{DoxyParamCaption})}
+
+
+
+get the current back buffer of a FB Graphics context 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+back buffer pointer 
+\end{DoxyReturn}
 \mbox{\Hypertarget{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}\label{fbgraphics_8h_a8125b5b37979f803c4640d9864fadbab}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+get\+Framerate@{fbg\+\_\+get\+Framerate}}
 \index{fbg\+\_\+get\+Framerate@{fbg\+\_\+get\+Framerate}!fbgraphics.\+h@{fbgraphics.\+h}}
@@ -1222,6 +1246,28 @@ draw a pixel with alpha component (alpha blending)
 \begin{DoxySeeAlso}{See also}
 \mbox{\hyperlink{fbgraphics_8h_a5f656e76477d51b8faf039dd5baea65c}{fbg\+\_\+fpixel()}}, \mbox{\hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\+\_\+pixel()}} 
 \end{DoxySeeAlso}
+\mbox{\Hypertarget{fbgraphics_8h_a990acac7dcc899656dc87c98404af777}\label{fbgraphics_8h_a990acac7dcc899656dc87c98404af777}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+plot@{fbg\+\_\+plot}}
+\index{fbg\+\_\+plot@{fbg\+\_\+plot}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+plot()}{fbg\_plot()}}
+{\footnotesize\ttfamily void fbg\+\_\+plot (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{index,  }\item[{unsigned char}]{value }\end{DoxyParamCaption})}
+
+
+
+direct pixel access from index value 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em index} & pixel index in the buffer \\
+\hline
+{\em value} & color value \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\+\_\+pixel()}}, \mbox{\hyperlink{fbgraphics_8h_a224b9ae07cc8fcd8c497b1d5f7007b66}{fbg\+\_\+fill()}}, \mbox{\hyperlink{fbgraphics_8h_a08c6a08afcb5bd07793801554b8f0bfe}{fbg\+\_\+pixela()}} 
+\end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a2a5a2ef48f5b26794473c51082fb75ab}\label{fbgraphics_8h_a2a5a2ef48f5b26794473c51082fb75ab}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+polygon@{fbg\+\_\+polygon}}
 \index{fbg\+\_\+polygon@{fbg\+\_\+polygon}!fbgraphics.\+h@{fbgraphics.\+h}}
@@ -1247,6 +1293,26 @@ draw a polygon
 {\em b} & \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{fbgraphics_8h_a3604f59f02b47730a47a2fc15644d61e}\label{fbgraphics_8h_a3604f59f02b47730a47a2fc15644d61e}} 
+\index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+push\+Resize@{fbg\+\_\+push\+Resize}}
+\index{fbg\+\_\+push\+Resize@{fbg\+\_\+push\+Resize}!fbgraphics.\+h@{fbgraphics.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+push\+Resize()}{fbg\_pushResize()}}
+{\footnotesize\ttfamily void fbg\+\_\+push\+Resize (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{new\+\_\+width,  }\item[{int}]{new\+\_\+height }\end{DoxyParamCaption})}
+
+push a resize event for the FB Graphics context note \+: the resize event is processed into the fbg\+\_\+draw function note \+: resizing is not yet allowed in framebuffer mode note \+: if you want to immediately resize the context, see fbg\+\_\+resize
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em new\+\_\+width} & new render width \\
+\hline
+{\em new\+\_\+height} & new render height \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a00509b4956e358ae3f9135151c1e524a}{fbg\+\_\+resize()}}, \mbox{\hyperlink{fbgraphics_8h_a70e747dee4eda4a434b746e2bbd14386}{fbg\+\_\+set\+Resize\+Callback()}} 
+\end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_aedca9d7bf294d143f860d2f0ddcd528c}\label{fbgraphics_8h_aedca9d7bf294d143f860d2f0ddcd528c}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+randf@{fbg\+\_\+randf}}
 \index{fbg\+\_\+randf@{fbg\+\_\+randf}!fbgraphics.\+h@{fbgraphics.\+h}}
@@ -1339,9 +1405,7 @@ draw a rectangle with alpha transparency
 \subsubsection{\texorpdfstring{fbg\+\_\+resize()}{fbg\_resize()}}
 {\footnotesize\ttfamily void fbg\+\_\+resize (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$}]{fbg,  }\item[{int}]{new\+\_\+width,  }\item[{int}]{new\+\_\+height }\end{DoxyParamCaption})}
 
-
-
-resize a FB Graphics context (note \+: resizing is not allowed in framebuffer mode) 
+resize the FB Graphics context immediately note \+: prefer the usage of fbg\+\_\+push\+Resize when integrating the resize event of a custom backend (fbg\+\_\+push\+Resize is thread safe all the time) note \+: resizing is not yet allowed in framebuffer mode
 
 
 \begin{DoxyParams}{Parameters}
@@ -1352,6 +1416,9 @@ resize a FB Graphics context (note \+: resizing is not allowed in framebuffer mo
 {\em new\+\_\+height} & new render height \\
 \hline
 \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a3604f59f02b47730a47a2fc15644d61e}{fbg\+\_\+push\+Resize()}}, \mbox{\hyperlink{fbgraphics_8h_a70e747dee4eda4a434b746e2bbd14386}{fbg\+\_\+set\+Resize\+Callback()}} 
+\end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_a70e747dee4eda4a434b746e2bbd14386}\label{fbgraphics_8h_a70e747dee4eda4a434b746e2bbd14386}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+set\+Resize\+Callback@{fbg\+\_\+set\+Resize\+Callback}}
 \index{fbg\+\_\+set\+Resize\+Callback@{fbg\+\_\+set\+Resize\+Callback}!fbgraphics.\+h@{fbgraphics.\+h}}
@@ -1360,7 +1427,7 @@ resize a FB Graphics context (note \+: resizing is not allowed in framebuffer mo
 
 
 
-register a resize callback 
+register a user resize callback 
 
 
 \begin{DoxyParams}{Parameters}
@@ -1369,6 +1436,9 @@ register a resize callback
 {\em user\+\_\+resize} & resize function \\
 \hline
 \end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{fbgraphics_8h_a00509b4956e358ae3f9135151c1e524a}{fbg\+\_\+resize()}}, \mbox{\hyperlink{fbgraphics_8h_a3604f59f02b47730a47a2fc15644d61e}{fbg\+\_\+push\+Resize()}} 
+\end{DoxySeeAlso}
 \mbox{\Hypertarget{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}\label{fbgraphics_8h_aea89f0f15615a00ee4a390d6848ec54c}} 
 \index{fbgraphics.\+h@{fbgraphics.\+h}!fbg\+\_\+setup@{fbg\+\_\+setup}}
 \index{fbg\+\_\+setup@{fbg\+\_\+setup}!fbgraphics.\+h@{fbgraphics.\+h}}

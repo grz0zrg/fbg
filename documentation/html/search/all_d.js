@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['user_5fcontext',['user_context',['../struct__fbg.html#ae3ecac18abee9dedabacaca9bb063bde',1,'_fbg']]],
-  ['user_5fdraw',['user_draw',['../struct__fbg.html#ac66a762877982c6f381a7cfd54a8f17e',1,'_fbg']]],
-  ['user_5fflip',['user_flip',['../struct__fbg.html#a3f2ad2eb06555cdbe2d18f541231cb37',1,'_fbg']]],
-  ['user_5ffree',['user_free',['../struct__fbg.html#a88d48b502672cfb8bd2c94ea3feac8d0',1,'_fbg']]],
-  ['user_5fresize',['user_resize',['../struct__fbg.html#a68add70dac4b055809c1bcab1e65b18d',1,'_fbg']]]
+  ['temp_5fbuffer',['temp_buffer',['../struct__fbg.html#a0463af9bf583afe770b822c1fbb9a24d',1,'_fbg']]],
+  ['text_5falpha',['text_alpha',['../struct__fbg.html#a870987786121c51135f20b630d731abd',1,'_fbg']]],
+  ['text_5fbackground',['text_background',['../struct__fbg.html#afd34a8de5a853e915bd101f11d44cf67',1,'_fbg']]],
+  ['text_5fcolor',['text_color',['../struct__fbg.html#a4abb858439598b09790ec6d5d8326bb2',1,'_fbg']]],
+  ['text_5fcolorkey',['text_colorkey',['../struct__fbg.html#a06e65293cf0b48e70d76d63f5de453e6',1,'_fbg']]]
 ];

@@ -42,7 +42,7 @@ void fbg_glfwFramebufferResizeCb(GLFWwindow* window, int new_width, int new_heig
 		struct _fbg *fbg = fbg_contexts[i];
 		struct _fbg_glfw_context *glfw_context = fbg->user_context;
 		if (glfw_context->window == window) {
-			fbg_resize(fbg, new_width, new_height);
+			fbg_pushResize(fbg, new_width, new_height);
 			// called from fbg_resize
 			//fbg_glfwResize(fbg, new_width, new_height);
 

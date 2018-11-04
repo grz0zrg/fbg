@@ -123,7 +123,12 @@ struct _fbg *fbg_customSetup(
     fbg->state = 1;
     fbg->frame = 0;
     fbg->fps = 0;
+
+    fbg->fragment_queue_size = 7;
 #endif
+
+    fbg->new_width = 0;
+    fbg->new_height = 0;
 
     return fbg;
 }
@@ -290,7 +295,12 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
     fbg->state = 1;
     fbg->frame = 0;
     fbg->fps = 0;
+
+    fbg->fragment_queue_size = 7;
 #endif
+
+    fbg->new_width = 0;
+    fbg->new_height = 0;
 
     return fbg;
 }
@@ -344,7 +354,7 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
 
 #ifdef FBG_PARALLEL
         if (fbg->tasks) {
-            fbg_createFragment(fbg, fbg->fragments[0]->user_fragment_start, fbg->fragments[0]->user_fragment, fbg->fragments[0]->user_fragment_stop, fbg->parallel_tasks, fbg->fragments[0]->queue_size);
+            fbg_createFragment(fbg, fbg->fragments[0]->user_fragment_start, fbg->fragments[0]->user_fragment, fbg->fragments[0]->user_fragment_stop, fbg->parallel_tasks);
         }
 #endif
     }
@@ -354,11 +364,19 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
     }
 }
 
+void fbg_pushResize(struct _fbg *fbg, int new_width, int new_height) {
+    if (new_width > 0 && new_height > 0) {
+        fbg->new_width = new_width;
+        fbg->new_height = new_height;
+    }
+}
+
 #ifdef FBG_PARALLEL
 // basically tell all threads/fragments that they should stop
 void fbg_terminateFragments(struct _fbg *fbg) {
     // this is the context state because all fragments actually share the main context state
-    // as such if fragments are terminated temporarily by calling this function, main context state should be set again afterward
+    // as such if fragments are terminated temporarily by calling this function, main context state should be restored again afterward
+    // TODO : provide a state per fragment to avoid confusions
     fbg->state = 0;
 }
 
@@ -455,7 +473,7 @@ void fbg_computeFramerate(struct _fbg *fbg, int to_string) {
         fbg->frame = 0;
 
         if (to_string) {
-            sprintf(fbg->fps_char, "%i", fbg->fps);
+            sprintf(fbg->fps_char, "%lu", (long unsigned int)fbg->fps);
         }
     }
 
@@ -597,8 +615,7 @@ void fbg_createFragment(struct _fbg *fbg,
         void *(*user_fragment_start)(struct _fbg *fbg),
         void (*user_fragment)(struct _fbg *fbg, void *user_data),
         void (*user_fragment_stop)(struct _fbg *fbg, void *user_data),
-        unsigned int parallel_tasks,
-        unsigned int queue_size) {
+        unsigned int parallel_tasks) {
     if (parallel_tasks < 1) {
         return;
     }
@@ -679,7 +696,7 @@ void fbg_createFragment(struct _fbg *fbg,
         }
 
         // liblfds
-        frag->ringbuffer_element = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_LENGTH_IN_BYTES, sizeof(struct lfds720_ringbuffer_n_element) * (queue_size + 1));
+        frag->ringbuffer_element = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_LENGTH_IN_BYTES, sizeof(struct lfds720_ringbuffer_n_element) * (fbg->fragment_queue_size + 1));
         if (frag->ringbuffer_element == NULL) {
             fprintf(stderr, "fbg_createFragment: liblfds ringbuffer data structures aligned_alloc error.\n");
 
@@ -712,14 +729,14 @@ void fbg_createFragment(struct _fbg *fbg,
             continue;
         }
 
-        lfds720_ringbuffer_n_init_valid_on_current_logical_core(frag->ringbuffer_state, frag->ringbuffer_element, (queue_size + 1), NULL);
+        lfds720_ringbuffer_n_init_valid_on_current_logical_core(frag->ringbuffer_state, frag->ringbuffer_element, (fbg->fragment_queue_size + 1), NULL);
 #ifdef LFDS711
         lfds720_freelist_n_init_valid_on_current_logical_core(frag->freelist_state, NULL, 0, NULL);
 #else
         lfds720_freelist_n_init_valid_on_current_logical_core(frag->freelist_state, NULL);
 #endif
 
-        frag->fbg_freelist_data = malloc(sizeof(struct _fbg_freelist_data) * queue_size);
+        frag->fbg_freelist_data = malloc(sizeof(struct _fbg_freelist_data) * fbg->fragment_queue_size);
         if (frag->fbg_freelist_data == NULL) {
             fprintf(stderr, "fbg_createFragment: fbg_freelist_data malloc error.\n");
 
@@ -733,7 +750,7 @@ void fbg_createFragment(struct _fbg *fbg,
         }
 
         // allocate buffers
-        for (j = 0; j < queue_size; j += 1) {
+        for (j = 0; j < fbg->fragment_queue_size; j += 1) {
             frag->fbg_freelist_data[j].buffer = calloc(1, sizeof(unsigned char) * task_fbg->size);
 
             LFDS720_FREELIST_N_SET_VALUE_IN_ELEMENT(frag->fbg_freelist_data[j].freelist_element, &frag->fbg_freelist_data[j]);
@@ -748,7 +765,7 @@ void fbg_createFragment(struct _fbg *fbg,
         task_fbg->sync_barrier = fbg->sync_barrier;
         task_fbg->task_id = created_tasks + 1;
 
-        frag->queue_size = queue_size;
+        //frag->queue_size = fbg->fragment_queue_size;
         frag->fbg = task_fbg;
         frag->state = &fbg->state;
 
@@ -758,7 +775,7 @@ void fbg_createFragment(struct _fbg *fbg,
 
         fbg->fragments[created_tasks] = frag;
 
-        err = pthread_create(&fbg->tasks[created_tasks], NULL, fbg_fragment, frag);
+        err = pthread_create(&fbg->tasks[created_tasks], NULL, (void * (*)(void *))fbg_fragment, frag);
         if (err) {
             fprintf(stderr, "fbg_createFragment: pthread_create error '%i'!\n", err);
 
@@ -818,6 +835,10 @@ void fbg_fpixel(struct _fbg *fbg, int x, int y) {
     char *pix_pointer = (char *)(fbg->back_buffer + (y * fbg->line_length));
 
     memcpy(pix_pointer, &fbg->fill_color, fbg->components);
+}
+
+void fbg_plot(struct _fbg *fbg, int index, unsigned char value) {
+    fbg->back_buffer[index] = value;
 }
 
 void fbg_hline(struct _fbg *fbg, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b) {
@@ -1014,6 +1035,8 @@ void fbg_draw(struct _fbg *fbg, int sync_with_tasks, void (*user_mixing)(struct 
 
             task_buffer = freelist_data->buffer;
 
+            //fbg->curr_task_buffer = task_buffer;
+
             user_mixing(fbg, task_buffer, i + 1);
 
             LFDS720_FREELIST_N_SET_VALUE_IN_ELEMENT(freelist_data->freelist_element, freelist_data);
@@ -1053,6 +1076,15 @@ void fbg_draw(struct _fbg *fbg) {
         } else {
             memcpy(fbg->buffer, fbg->disp_buffer, fbg->size);
         }
+    }
+
+    // resize the context (registered) by fbg_pushResize if needed
+    // note : we process the resize event here to be sure that a single resize is processed in the main thread, avoiding potential issues with fragments / caller thread
+    if (fbg->new_width > 0 && fbg->new_height > 0) {
+        fbg_resize(fbg, fbg->new_width, fbg->new_height);
+
+        fbg->new_width = 0;
+        fbg->new_height = 0;
     }
 }
 
@@ -1633,4 +1665,8 @@ float fbg_randf(float a, float b) {
     float diff = b - a;
     float r = random * diff;
     return a + r;
+}
+
+unsigned char *fbg_getBackBuffer(struct _fbg *fbg) {
+    return fbg->back_buffer;
 }

@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
 
     struct _fbg_font *bbfont = fbg_createFont(fbg, bbimg, 8, 8, 33);
 
-    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3, 7);
+    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3);
 
     do {
         fbg_clear(fbg, 0);

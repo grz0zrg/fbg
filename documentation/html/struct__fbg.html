@@ -161,6 +161,12 @@ Data Fields</h2></td></tr>
 <tr class="memitem:af8a1ee8d7004e6f2193f2a3ed98f8ce8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#af8a1ee8d7004e6f2193f2a3ed98f8ce8">line_length</a></td></tr>
 <tr class="memdesc:af8a1ee8d7004e6f2193f2a3ed98f8ce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal buffers line length.  <a href="#af8a1ee8d7004e6f2193f2a3ed98f8ce8">More...</a><br /></td></tr>
 <tr class="separator:af8a1ee8d7004e6f2193f2a3ed98f8ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95859bd418a5cfff155cdb1421d295ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#a95859bd418a5cfff155cdb1421d295ef">new_width</a></td></tr>
+<tr class="memdesc:a95859bd418a5cfff155cdb1421d295ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Requested new display width (resize event)  <a href="#a95859bd418a5cfff155cdb1421d295ef">More...</a><br /></td></tr>
+<tr class="separator:a95859bd418a5cfff155cdb1421d295ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a509aa5f8f0a94d8313bb4da777aa64bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#a509aa5f8f0a94d8313bb4da777aa64bc">new_height</a></td></tr>
+<tr class="memdesc:a509aa5f8f0a94d8313bb4da777aa64bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Requested new display height (resize event)  <a href="#a509aa5f8f0a94d8313bb4da777aa64bc">More...</a><br /></td></tr>
+<tr class="separator:a509aa5f8f0a94d8313bb4da777aa64bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64b16363bc48d1e19141df2e242930a9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#a64b16363bc48d1e19141df2e242930a9">fps</a></td></tr>
 <tr class="memdesc:a64b16363bc48d1e19141df2e242930a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current FPS.  <a href="#a64b16363bc48d1e19141df2e242930a9">More...</a><br /></td></tr>
 <tr class="separator:a64b16363bc48d1e19141df2e242930a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,10 +188,10 @@ Data Fields</h2></td></tr>
 <tr class="memitem:ad32509bca6ac4fb467476834cb8ce9d2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#ad32509bca6ac4fb467476834cb8ce9d2">page_flipping</a></td></tr>
 <tr class="memdesc:ad32509bca6ac4fb467476834cb8ce9d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag indicating that page flipping is enabled.  <a href="#ad32509bca6ac4fb467476834cb8ce9d2">More...</a><br /></td></tr>
 <tr class="separator:ad32509bca6ac4fb467476834cb8ce9d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef07a92ae059ea2a43653f4d0c5d928e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#aef07a92ae059ea2a43653f4d0c5d928e">backend_resize</a> )(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int new_width, unsigned int new_height)</td></tr>
+<tr class="memitem:aef07a92ae059ea2a43653f4d0c5d928e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#aef07a92ae059ea2a43653f4d0c5d928e">backend_resize</a> )(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int <a class="el" href="struct__fbg.html#a95859bd418a5cfff155cdb1421d295ef">new_width</a>, unsigned int <a class="el" href="struct__fbg.html#a509aa5f8f0a94d8313bb4da777aa64bc">new_height</a>)</td></tr>
 <tr class="memdesc:aef07a92ae059ea2a43653f4d0c5d928e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backend resize function.  <a href="#aef07a92ae059ea2a43653f4d0c5d928e">More...</a><br /></td></tr>
 <tr class="separator:aef07a92ae059ea2a43653f4d0c5d928e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68add70dac4b055809c1bcab1e65b18d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#a68add70dac4b055809c1bcab1e65b18d">user_resize</a> )(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int new_width, unsigned int new_height)</td></tr>
+<tr class="memitem:a68add70dac4b055809c1bcab1e65b18d"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#a68add70dac4b055809c1bcab1e65b18d">user_resize</a> )(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int <a class="el" href="struct__fbg.html#a95859bd418a5cfff155cdb1421d295ef">new_width</a>, unsigned int <a class="el" href="struct__fbg.html#a509aa5f8f0a94d8313bb4da777aa64bc">new_height</a>)</td></tr>
 <tr class="memdesc:a68add70dac4b055809c1bcab1e65b18d"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-defined resize function.  <a href="#a68add70dac4b055809c1bcab1e65b18d">More...</a><br /></td></tr>
 <tr class="separator:a68add70dac4b055809c1bcab1e65b18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f2ad2eb06555cdbe2d18f541231cb37"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__fbg.html#a3f2ad2eb06555cdbe2d18f541231cb37">user_flip</a> )(struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)</td></tr>
@@ -233,14 +239,14 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* _fbg::backend_resize) (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int new_width, unsigned int new_height)</td>
+          <td class="memname">void(* _fbg::backend_resize) (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int <a class="el" href="struct__fbg.html#a95859bd418a5cfff155cdb1421d295ef">new_width</a>, unsigned int <a class="el" href="struct__fbg.html#a509aa5f8f0a94d8313bb4da777aa64bc">new_height</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Backend resize function. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00205">205</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00210">210</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -258,7 +264,7 @@ Data Fields</h2></td></tr>
 
 <p>Flag indicating a BGR framebuffer. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00200">200</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00205">205</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -422,7 +428,7 @@ Data Fields</h2></td></tr>
 
 <p>Current FPS. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00185">185</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00190">190</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -440,7 +446,7 @@ Data Fields</h2></td></tr>
 
 <p>Current FPS as a string. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00189">189</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00194">194</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -458,7 +464,7 @@ Data Fields</h2></td></tr>
 
 <p>First frame time for the current second. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00192">192</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00197">197</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -476,7 +482,7 @@ Data Fields</h2></td></tr>
 
 <p>Last frame time for the current second. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00194">194</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00199">199</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -494,7 +500,7 @@ Data Fields</h2></td></tr>
 
 <p>Frame counter for the current second. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00197">197</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00202">202</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -534,6 +540,42 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
+<a id="a509aa5f8f0a94d8313bb4da777aa64bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a509aa5f8f0a94d8313bb4da777aa64bc">&#9670;&nbsp;</a></span>new_height</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int _fbg::new_height</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Requested new display height (resize event) </p>
+
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00184">184</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+
+</div>
+</div>
+<a id="a95859bd418a5cfff155cdb1421d295ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95859bd418a5cfff155cdb1421d295ef">&#9670;&nbsp;</a></span>new_width</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int _fbg::new_width</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Requested new display width (resize event) </p>
+
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00182">182</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+
+</div>
+</div>
 <a id="ad32509bca6ac4fb467476834cb8ce9d2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad32509bca6ac4fb467476834cb8ce9d2">&#9670;&nbsp;</a></span>page_flipping</h2>
 
@@ -548,7 +590,7 @@ Data Fields</h2></td></tr>
 
 <p>Flag indicating that page flipping is enabled. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00202">202</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00207">207</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -678,7 +720,7 @@ Data Fields</h2></td></tr>
 
 <p>User-defined context structure. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00215">215</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00220">220</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -696,7 +738,7 @@ Data Fields</h2></td></tr>
 
 <p>User-defined draw function. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00211">211</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00216">216</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -714,7 +756,7 @@ Data Fields</h2></td></tr>
 
 <p>User-defined flip function. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00209">209</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00214">214</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -732,7 +774,7 @@ Data Fields</h2></td></tr>
 
 <p>User-defined free function. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00213">213</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00218">218</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -743,14 +785,14 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* _fbg::user_resize) (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int new_width, unsigned int new_height)</td>
+          <td class="memname">void(* _fbg::user_resize) (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg, unsigned int <a class="el" href="struct__fbg.html#a95859bd418a5cfff155cdb1421d295ef">new_width</a>, unsigned int <a class="el" href="struct__fbg.html#a509aa5f8f0a94d8313bb4da777aa64bc">new_height</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>User-defined resize function. </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00207">207</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00212">212</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>

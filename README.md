@@ -221,7 +221,7 @@ void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
 Then you have to create a 'Fragment' which is a FBG multi-core task :
 
 ```c
-fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3, 7);
+fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3);
 ```
 
 Where :
@@ -231,7 +231,6 @@ Where :
 * `fragment`is a C function which will be executed indefinitly for each threads and where all the draw code will happen
 * `fragmentStop` is a C function which will be executed when the thread end  (can be NULL)
 * `3`is the number of parallel tasks (this will launch 3 threads)
-* `7` is the buffer queue length for each threads (the amount of frame buffers stored in the internal ringbuffer queue), this has an impact on memory and may have an impact on performances
 
 And finally you just have to make a call to your fragment function in your drawing loop and call  `fbg_draw`!
 
@@ -350,13 +349,13 @@ For parallelism support, `FBG_PARALLEL` need to be defined and you will need the
 
 To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make lfds711`.
 
-**Note** : FBGraphics work on ARM64 platforms by default but you will need liblfds720 which is not yet released.
+**Note** : FBGraphics work on ARM64 platforms but you will need liblfds720 which is not yet released.
 
 ## GLFW backend
 
 See `README` into `custom_backend` folder
 
-The GLFW backend was done made to demonstrate how to write a backend but it is complete enough to be used by default.
+The GLFW backend was made to demonstrate how to write a backend but it is complete enough to be used by default.
 
 The GLFW backend has a cool lightweight Lua example which setup a Processing-like environment making use of the parallelism feature of the library, allowing the user to prototype multithreaded graphical stuff without C code compilation through the Lua language.
 
