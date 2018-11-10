@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2018, Julien Verneuil
+    Copyright (c) 2018, 2019, Julien Verneuil
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -241,7 +241,8 @@
         //! FBG tasks running flag (shared between all tasks)
         atomic_int state;
 
-        //! Ringbuffer queue length (7 by default)
+        //! Ringbuffer queue length (1 by default, best settings with sync. since we just wait till all threads finish)
+        //! Note : This settings may have an impact on feedback effects (since it will pick sequentially buffers from the list, thus allowing a number of "past" rendered frame which may not be what you want with regular feedback effects but also may be what you want for other effects like unlimited blobs...)
         unsigned int fragment_queue_size;
 #endif
     };
@@ -286,9 +287,6 @@
 
         //! User-defined data
         void *user_data;
-
-        //! Ringbuffer queue lenght
-        //unsigned int queue_size;
     };
 #endif
 
@@ -560,7 +558,7 @@
       \param b
       \sa fbg_hslToRGB()
     */
-    extern void rgbToHsl(struct _fbg_hsl *color, float r, float g, float b);
+    extern void fbg_rgbToHsl(struct _fbg_hsl *color, float r, float g, float b);
 
 #ifdef FBG_PARALLEL
     //! draw to the screen
@@ -794,13 +792,6 @@
     */
     extern float fbg_randf(float min, float max);
 
-    //! get the current back buffer of a FB Graphics context
-    /*!
-      \param fbg pointer to a FBG context / data structure
-      \return back buffer pointer
-    */
-    extern unsigned char *fbg_getBackBuffer(struct _fbg *fbg);
-
 #ifdef FBG_PARALLEL
     //! create a FB Graphics parallel task (also called a 'fragment')
     /*!
@@ -826,7 +817,7 @@
       \param fade_amount fade amount
       \sa fbg_fadeUp(), fbg_fadeDown()
     */
-    #define fbg_fade(fbg, fade_amount) fbg_fade_down(fbg, fade_amount)
+    #define fbg_fade(fbg, fade_amount) fbg_fadeDown(fbg, fade_amount)
 
     //! draw a text by using the current font and the current color
     /*!

@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2018, Julien Verneuil
+    Copyright (c) 2018, 2019, Julien Verneuil
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -1199,7 +1199,7 @@ void fbg_hslToRGB(struct _fbg_rgb *color, float h, float s, float l) {
 	}
 }
 
-void rgbToHsl(struct _fbg_hsl *color, float r, float g, float b) {
+void fbg_rgbToHsl(struct _fbg_hsl *color, float r, float g, float b) {
     r /= 255.0f, g /= 255.0f, b /= 255.0f;
     int max = fmaxf(fmaxf(r, g), b), min = fminf(fminf(r, g), b);
     float h = 0, s, l = (max + min) / 2.0f;
@@ -1665,8 +1665,4 @@ float fbg_randf(float a, float b) {
     float diff = b - a;
     float r = random * diff;
     return a + r;
-}
-
-unsigned char *fbg_getBackBuffer(struct _fbg *fbg) {
-    return fbg->back_buffer;
 }
