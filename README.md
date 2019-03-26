@@ -15,6 +15,7 @@ Features :
     * Double buffering (with optional page flipping mechanism)
     * 16, 24 (BGR/RGB), 32 bpp support
  * OpenGL rendering backend through GLFW
+ * OpenGL ES 2.0 rendering backend for Raspberry PI or through fbdev (tested on Nano PI Fire 3 board)
  * Optional : Full parallelism, execute graphics code on multiple CPU cores **with a single function**
  * PNG/JPEG images loading (provided by [LodePNG](https://lodev.org/lodepng/) and [NanoJPEG](http://keyj.emphy.de/nanojpeg/))
  * Bitmap fonts for drawing texts
@@ -38,6 +39,7 @@ Table of Contents
    * [Documentation](#documentation)
    * [Building](#building)
    * [GLFW backend](#GLFW-backend)
+   * [OpenGL ES 2.0 backend](#OpenGL-ES-2-backend)
    * [Screenshots](#screenshots)
    * [License](#license)
 
@@ -48,6 +50,8 @@ FBGraphics was built to produce fullscreen pixels effects easily (think of Proce
 FBGraphics was also extended to support any numbers of custom rendering backend; all graphics calls manipulate internal buffers and a simple interface allow to draw the result the way you want to.
 
 An OpenGL rendering backend which use the [GLFW library](http://www.glfw.org/) was created to demonstrate the custom backend feature, it allow to draw the non-accelerated FB Graphics buffer into an OpenGL context through a texture and thus allow to interwine 3D or 2D graphics produced with standard OpenGL calls with CPU-only graphics produced by FBGraphics draw calls.
+
+An OpenGL ES 2.0 backend is also available with similar features, it target platforms with support for OpenGL ES 2.0 through fbdev (tested on Nano PI Fire 3 SBC) or Raspberry PI and similar platforms, it wouldn't be hard to extend this for more OpenGL ES 2.0 platforms...
 
 FBGraphics was built so that it is possible to create any number of rendering context using different backend running at the same time while exploiting multi-core processors... the content of any rendering context can be transfered into other context through images when calling `fbg_drawInto`
 
@@ -358,6 +362,10 @@ See `README` into `custom_backend` folder
 The GLFW backend was made to demonstrate how to write a backend but it is complete enough to be used by default.
 
 The GLFW backend has a cool lightweight Lua example which setup a Processing-like environment making use of the parallelism feature of the library, allowing the user to prototype multithreaded graphical stuff without C code compilation through the Lua language.
+
+## OpenGL ES 2 backend
+
+See `README` into `custom_backend` folder
 
 ## Screenshots
 

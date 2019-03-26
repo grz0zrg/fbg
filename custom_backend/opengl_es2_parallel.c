@@ -1,0 +1,146 @@
+#include <sys/stat.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <math.h>
+
+#include "opengl_es2/fbg_opengl_es2.h"
+
+int keep_running = 1;
+
+void int_handler(int dummy) {
+    keep_running = 0;
+}
+
+// user data example
+struct _fragment_user_data {
+    float offset_x;
+    float offset_y;
+    float velx;
+    float vely;
+};
+
+void *fragmentStart(struct _fbg *fbg) {
+    struct _fragment_user_data *user_data = (struct _fragment_user_data *)calloc(1, sizeof(struct _fragment_user_data));
+
+    user_data->offset_x = fbg->task_id * 32.0f;
+    user_data->offset_y = fbg->task_id * 32.0f;
+
+    float signx = 1;
+    float signy = 1;
+
+    if (fbg_randf(0, 1) > 0.5) {
+        signx = -1;
+    }
+
+    if (fbg_randf(0, 1) > 0.5) {
+        signy = -1;
+    }
+
+    user_data->velx = fbg_randf(4, 8) * signx;
+    user_data->vely = fbg_randf(4, 8) * signy;
+
+    return user_data;
+}
+
+void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
+    float c = (float)fbg->task_id / fbg->parallel_tasks * 255;
+
+    fbg_recta(fbg,
+        user_data->offset_x,
+        user_data->offset_y, 32, 32,
+        c,
+        255 - c,
+        abs(128 - c),
+        fbg_randf(0, 255));
+
+    fbg_recta(fbg,
+        fbg->width - user_data->offset_x,
+        fbg->height - user_data->offset_y, 32, 32,
+        c,
+        255 - c,
+        abs(128 - c),
+        fbg_randf(0, 255));
+        
+    fbg_recta(fbg,
+        fbg->width - user_data->offset_x,
+        user_data->offset_y, 32, 32,
+        c,
+        255 - c,
+        abs(128 - c),
+        fbg_randf(0, 255));
+
+    fbg_recta(fbg,
+        user_data->offset_x,
+        fbg->height - user_data->offset_y, 32, 32,
+        c,
+        255 - c,
+        abs(128 - c),
+        fbg_randf(0, 255));
+
+    user_data->offset_x += user_data->velx;
+    user_data->offset_y += user_data->vely;
+
+    if (user_data->offset_x <= 32) {
+        user_data->velx = -user_data->velx;
+        user_data->offset_x = 32;
+    } else if (user_data->offset_x > fbg->width - 32) {
+        user_data->velx = -user_data->velx;
+        user_data->offset_x = fbg->width - 32;
+    }
+
+    if (user_data->offset_y <= 32) {
+        user_data->vely = -user_data->vely;
+        user_data->offset_y = 32;
+    } else if (user_data->offset_y > fbg->height - 32) {
+        user_data->vely = -user_data->vely;
+        user_data->offset_y = fbg->height - 32;
+    }
+}
+
+void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
+    free(data);
+}
+
+void fbg_XORMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
+    for (int j = 0; j < fbg->size; j += 1) {
+        fbg->back_buffer[j] = fbg->back_buffer[j] ^ buffer[j];
+    }
+}
+
+int main(int argc, char* argv[]) {
+    // fbdev version
+    //struct _fbg *fbg = fbg_gles2Setup("/dev/fb0");
+    // rpi version
+    struct _fbg *fbg = fbg_gles2Setup();
+    if (fbg == NULL) {
+        return 0;
+    }
+
+    struct _fbg_img *bb_font_img = fbg_loadPNG(fbg, "../examples/bbmode1_8x8.png");
+
+    struct _fbg_font *bbfont = fbg_createFont(fbg, bb_font_img, 8, 8, 33);
+
+    fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3);
+
+    srand(time(NULL));
+
+    signal(SIGINT, int_handler);
+
+    do {
+        fbg_gles2Clear();
+        
+        fbg_clear(fbg, 0);
+        fbg_draw(fbg, fbg_XORMixing);
+
+        for (int j = 0; j < fbg->parallel_tasks; j += 1) {
+            fbg_write(fbg, fbg->fps_char, 2, 2 + j * 10);
+        }
+
+        fbg_flip(fbg);
+    } while (keep_running);
+
+    fbg_freeImage(bb_font_img);
+    fbg_freeFont(bbfont);
+
+    fbg_close(fbg);
+}

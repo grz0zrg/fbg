@@ -1,6 +1,24 @@
 FBGraphics : Custom rendering backend
 =====
 
+## OpenGL ES 2.0
+
+FBG OpenGL ES 2.0 rendering backend with GL utilities, similar to the GLFW backend.
+
+Support rendering through fbdev (tested on Nano PI Fire 3 board) and Raspberry PI.
+
+### Compiling
+
+See examples `makefile` rule to compile
+
+On Raspberry PI you must define `FBG_RPI` when compiling
+
+### Examples
+
+See `opengl_es2_example.c`
+
+See `opengl_es2_parallel.c`
+
 ## GLFW
 
 FBG OpenGL 3.x+ rendering backend with GL utilities, multi-platform, use the [GLFW](https://www.glfw.org/) and [GLEW](http://glew.sourceforge.net/) library.
