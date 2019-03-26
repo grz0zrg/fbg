@@ -3,9 +3,10 @@ FBGraphics : Lightweight C 2D graphics API agnostic library with parallelism sup
 
 FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library with parallelism and custom rendering backend support (graphics API agnostic).
 
-The library come with two backend : 
+The library come with three backend : 
  * a Linux framebuffer rendering backend (bundled)
  * OpenGL backend which use the [GLFW](http://www.glfw.org/) library (available aside)
+ * OpenGL ES 2.0 backend for fbdev or Raspberry PI
 
 Features :
 
