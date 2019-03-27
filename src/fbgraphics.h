@@ -39,6 +39,7 @@
     #include <pthread.h>
 
 // compatibility layer for liblfds 711 version (because 720 was unreleased at the time of writing this)
+#ifdef FBG_LFDS
 #ifdef LFDS711
     #include "liblfds711.h"
 
@@ -63,6 +64,7 @@
     #define lfds720_pal_uint_t lfds711_pal_uint_t
 #else
     #include "liblfds720.h"
+#endif
 #endif
 #endif
 
@@ -232,13 +234,13 @@
         //! Array of tasks data structure
         struct _fbg_fragment **fragments;
 
-        //! Task id associated to that FBG context
-        int task_id;
-
         //! FBG synchronization barrier
         pthread_barrier_t *sync_barrier;
 
-        //! FBG tasks running flag (shared between all tasks)
+        //! Task id associated to that FBG context
+        int task_id;
+
+        //! FBG context running state
         atomic_int state;
 
         //! Ringbuffer queue length (1 by default, best settings with sync. since we just wait till all threads finish)
@@ -248,6 +250,7 @@
     };
 
 #ifdef FBG_PARALLEL
+#ifdef FBG_LFDS
     //! Freelist data structure
     /*! Hold pre-allocated data associated with a task */
     struct _fbg_freelist_data {
@@ -255,16 +258,18 @@
 
         unsigned char *buffer;
     };
+  #endif
 
     //! Task (fragment) data structure
     /*! Hold a task data */
     struct _fbg_fragment {
-        //! Pointer to the main FBG state
-        atomic_int *state;
+        //! Fragment running state
+        atomic_int state;
 
         //! Task own FBG context
         struct _fbg *fbg;
 
+#ifdef FBG_LFDS
         //! Ringbuffer element
         struct lfds720_ringbuffer_n_element *ringbuffer_element;
         //! Ringbuffer state
@@ -272,11 +277,16 @@
 
         //! Freelist state
         struct lfds720_freelist_n_state *freelist_state;
+
         //! Pre-allocated tasks data
         struct _fbg_freelist_data *fbg_freelist_data;
 
         //! Temporary task data
-        struct _fbg_freelist_data *tmp_fbg_freelist_data;
+        struct _fbg_freelist_data *tmp_fbg_freelist_data; 
+#endif
+
+        //! thread <> main thread synchronization
+        atomic_int sync_wait;
 
         //! User-defined task start function
         void *(*user_fragment_start)(struct _fbg *fbg);
@@ -567,7 +577,7 @@
       \param sync_with_task 1 = wait for all fragment tasks to be finished before rendering
       \param user_mixing a function used to mix the result of fragment tasks
     */
-    extern void fbg_draw(struct _fbg *fbg, int sync_with_task, void (*user_mixing)(struct _fbg *fbg, unsigned char *buffer, int task_id));
+    extern void fbg_draw(struct _fbg *fbg, void (*user_mixing)(struct _fbg *fbg, unsigned char *buffer, int task_id));
 #else
     //! draw to the screen
     /*!
@@ -599,7 +609,9 @@
       \return _fbg_img data structure pointer
       \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadJPEG(), fbg_loadImage(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
+#ifndef WITHOUT_PNG
     extern struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename);
+#endif
 
     //! load a JPEG image from a file (NanoJPEG library)
     /*!
@@ -608,7 +620,9 @@
       \return _fbg_img data structure pointer
       \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadPNG(), fbg_loadImage(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
     */
+#ifndef WITHOUT_JPEG
     extern struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename);
+#endif
 
     //! load an image (PNG or JPEG)
     /*!

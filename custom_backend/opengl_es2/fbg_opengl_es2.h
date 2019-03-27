@@ -25,8 +25,8 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef FB_GRAPHICS_FBDEV_ES2_H
-#define FB_GRAPHICS_FBDEV_ES2_H
+#ifndef FB_GRAPHICS_OPENGL_ES2_H
+#define FB_GRAPHICS_OPENGL_ES2_H
 
     #include <sys/ioctl.h>
     #include <linux/fb.h>

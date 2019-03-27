@@ -34,14 +34,19 @@
 #include <sys/ioctl.h>
 #include <linux/kd.h>
 
+#ifndef WITHOUT_PNG
 #include "lodepng/lodepng.h"
+#endif
 
+#ifndef WITHOUT_JPEG
 #define _NJ_INCLUDE_HEADER_ONLY
 #include "nanojpeg/nanojpeg.c"
+#endif
 
 #include "fbgraphics.h"
 
 #ifdef FBG_PARALLEL
+#ifdef FBG_LFDS
 void fbg_freelistCleanup(struct lfds720_freelist_n_state *fs, struct lfds720_freelist_n_element *fe) {
     struct _fbg_freelist_data *freelist_data;
     freelist_data = LFDS720_FREELIST_N_GET_VALUE_FROM_ELEMENT(*fe);
@@ -54,6 +59,7 @@ void fbg_freelistCleanup(struct lfds720_freelist_n_state *fs, struct lfds720_fre
 void fbg_ringbufferCleanup(struct lfds720_ringbuffer_n_state *rs, void *key, void *value, enum lfds720_misc_flag unread_flag) {
 
 }
+#endif
 #endif
 
 struct _fbg *fbg_customSetup(
@@ -374,12 +380,15 @@ void fbg_pushResize(struct _fbg *fbg, int new_width, int new_height) {
 #ifdef FBG_PARALLEL
 // basically tell all threads/fragments that they should stop
 void fbg_terminateFragments(struct _fbg *fbg) {
-    // this is the context state because all fragments actually share the main context state
-    // as such if fragments are terminated temporarily by calling this function, main context state should be restored again afterward
-    // TODO : provide a state per fragment to avoid confusions
-    fbg->state = 0;
+    int i = 0;
+    for (i = 0; i < fbg->parallel_tasks; i += 1) {
+        struct _fbg_fragment *frag = fbg->fragments[i];
+
+        frag->state = 0;
+    }
 }
 
+#ifdef FBG_LFDS
 void fbg_clearQueue(struct lfds720_ringbuffer_n_state *rs, struct lfds720_freelist_n_state *fs) {
     void *key;
     struct _fbg_freelist_data *freelist_data;
@@ -394,6 +403,7 @@ void fbg_clearQueue(struct lfds720_ringbuffer_n_state *rs, struct lfds720_freeli
 #endif
     }
 }
+#endif
 
 void fbg_freeTasks(struct _fbg *fbg) {
     int i = 0;
@@ -404,6 +414,7 @@ void fbg_freeTasks(struct _fbg *fbg) {
 
         free(frag->fbg);
 
+#ifdef FBG_LFDS
         fbg_clearQueue(frag->ringbuffer_state, frag->freelist_state);
 
         lfds720_ringbuffer_n_cleanup(frag->ringbuffer_state, fbg_ringbufferCleanup);
@@ -412,6 +423,9 @@ void fbg_freeTasks(struct _fbg *fbg) {
         free(frag->ringbuffer_state);
         free(frag->freelist_state);
         free(frag->fbg_freelist_data);
+#else
+        free(frag->fbg->back_buffer);
+#endif
 
         free(frag);
     }
@@ -530,11 +544,12 @@ int fbg_getFramerate(struct _fbg *fbg, int task) {
 }
 
 #ifdef FBG_PARALLEL
-int fbg_fragmentState(struct _fbg_fragment *fbg_fragment) {
-    return (*fbg_fragment->state);
+atomic_int fbg_fragmentState(struct _fbg_fragment *fbg_fragment) {
+    return fbg_fragment->state;
 }
 
 void fbg_fragmentPull(struct _fbg_fragment *fbg_fragment) {
+#ifdef FBG_LFDS
     struct lfds720_freelist_n_element *freelist_element;
 
 #ifdef LFDS711
@@ -542,8 +557,9 @@ void fbg_fragmentPull(struct _fbg_fragment *fbg_fragment) {
 #else
     int pop_result = lfds720_freelist_n_threadsafe_pop(fbg_fragment->freelist_state, NULL, &freelist_element);
 #endif
+
     if (pop_result == 0) {
-        fbg_fragment->fbg->back_buffer = 0;
+        fbg_fragment->fbg->back_buffer = NULL;
 
         return;
     }
@@ -551,9 +567,11 @@ void fbg_fragmentPull(struct _fbg_fragment *fbg_fragment) {
     fbg_fragment->tmp_fbg_freelist_data = LFDS720_FREELIST_N_GET_VALUE_FROM_ELEMENT(*freelist_element);
 
     fbg_fragment->fbg->back_buffer = fbg_fragment->tmp_fbg_freelist_data->buffer;
+#endif
 }
 
 void fbg_fragmentPush(struct _fbg_fragment *fbg_fragment) {
+#ifdef FBG_LFDS
     enum lfds720_misc_flag overwrite_occurred_flag;
 
     struct _fbg_freelist_data *overwritten_data = NULL;
@@ -566,16 +584,20 @@ void fbg_fragmentPush(struct _fbg_fragment *fbg_fragment) {
 
         // okay, push it back!
         LFDS720_FREELIST_N_SET_VALUE_IN_ELEMENT(overwritten_data->freelist_element, overwritten_data);
+
 #ifdef LFDS711
         lfds720_freelist_n_threadsafe_push(fbg_fragment->freelist_state, &overwritten_data->freelist_element, NULL);
 #else
         lfds720_freelist_n_threadsafe_push(fbg_fragment->freelist_state, NULL, &overwritten_data->freelist_element);
 #endif
     }
+#endif
 }
 
 void fbg_fragment(struct _fbg_fragment *fbg_fragment) {
+#ifdef FBG_LFDS
     LFDS720_MISC_MAKE_VALID_ON_CURRENT_LOGICAL_CORE_INITS_COMPLETED_BEFORE_NOW_ON_ANY_OTHER_PHYSICAL_CORE;
+#endif
 
     struct _fbg *fbg = fbg_fragment->fbg;
 
@@ -587,7 +609,7 @@ void fbg_fragment(struct _fbg_fragment *fbg_fragment) {
         fbg_fragment->user_data = NULL;
     }
 
-    while (fbg_fragmentState(fbg_fragment)) {
+    while (fbg_fragment->state) {
         fbg_fragmentPull(fbg_fragment);
 
         if (fbg->back_buffer) {
@@ -600,6 +622,11 @@ void fbg_fragment(struct _fbg_fragment *fbg_fragment) {
             // push to main thread
             fbg_fragmentPush(fbg_fragment);
 
+#ifndef FBG_LFDS
+            // wait till back buffer is consumed (synchronization mechanism; dumb busy wait for now)
+            fbg_fragment->sync_wait = 1;
+            while (fbg_fragment->sync_wait == 1 && fbg_fragment->state);
+#endif
             fbg_computeFramerate(fbg, 0);
         }
     }
@@ -624,9 +651,6 @@ void fbg_createFragment(struct _fbg *fbg,
         fbg_terminateFragments(fbg);
         
         fbg_freeTasks(fbg);
-
-        // see fbg_terminateFragments function for explanations
-        fbg->state = 1;
     }
 
     fbg->parallel_tasks = parallel_tasks;
@@ -696,6 +720,7 @@ void fbg_createFragment(struct _fbg *fbg,
         }
 
         // liblfds
+#ifdef FBG_LFDS
         frag->ringbuffer_element = aligned_alloc(LFDS720_PAL_ATOMIC_ISOLATION_LENGTH_IN_BYTES, sizeof(struct lfds720_ringbuffer_n_element) * (fbg->fragment_queue_size + 1));
         if (frag->ringbuffer_element == NULL) {
             fprintf(stderr, "fbg_createFragment: liblfds ringbuffer data structures aligned_alloc error.\n");
@@ -761,13 +786,24 @@ void fbg_createFragment(struct _fbg *fbg,
 #endif
         }
         //
+#else
+        task_fbg->back_buffer = calloc(1, sizeof(unsigned char) * task_fbg->size);
+        if (!task_fbg->back_buffer) {
+            fprintf(stderr, "fbg_createFragment: frag back. buffer calloc failed!\n");
+
+            free(task_fbg);
+            free(frag);
+
+            continue;
+        }
+#endif
 
         task_fbg->sync_barrier = fbg->sync_barrier;
         task_fbg->task_id = created_tasks + 1;
 
         //frag->queue_size = fbg->fragment_queue_size;
         frag->fbg = task_fbg;
-        frag->state = &fbg->state;
+        frag->state = 1;
 
         frag->user_fragment_start = user_fragment_start;
         frag->user_fragment = user_fragment;
@@ -775,17 +811,19 @@ void fbg_createFragment(struct _fbg *fbg,
 
         fbg->fragments[created_tasks] = frag;
 
-        err = pthread_create(&fbg->tasks[created_tasks], NULL, (void * (*)(void *))fbg_fragment, frag);
+        int err = pthread_create(&fbg->tasks[created_tasks], NULL, (void * (*)(void *))fbg_fragment, frag);
         if (err) {
             fprintf(stderr, "fbg_createFragment: pthread_create error '%i'!\n", err);
 
             free(task_fbg);
+#ifdef FBG_LFDS
             lfds720_ringbuffer_n_cleanup(frag->ringbuffer_state, fbg_ringbufferCleanup);
             lfds720_freelist_n_cleanup(frag->freelist_state, fbg_freelistCleanup);
             free(frag->ringbuffer_element);
             free(frag->ringbuffer_state);
             free(frag->freelist_state);
             free(frag->fbg_freelist_data);
+#endif
             free(frag);
 
             continue;
@@ -1008,27 +1046,31 @@ void fbg_additiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
     }
 }
 
-void fbg_draw(struct _fbg *fbg, int sync_with_tasks, void (*user_mixing)(struct _fbg *fbg, unsigned char *buffer, int task_id)) {
+void fbg_draw(struct _fbg *fbg, void (*user_mixing)(struct _fbg *fbg, unsigned char *buffer, int task_id)) {
     int i = 0;
-    int ringbuffer_read_status = 0;
-    void *key;
 
     if (user_mixing == NULL) {
         user_mixing = fbg_additiveMixing;
     }
 
+#ifdef FBG_LFDS
+    void *key;
+    int ringbuffer_read_status = 0;
+#endif
+
     for (i = 0; i < fbg->parallel_tasks; i += 1) {
         struct _fbg_fragment *fragment = fbg->fragments[i];
+#ifdef FBG_LFDS
         struct _fbg_freelist_data *freelist_data;
         unsigned char *task_buffer = NULL;
 
-        if (sync_with_tasks) {
+        //if (sync_with_tasks) {
             while ((ringbuffer_read_status = lfds720_ringbuffer_n_read(fragment->ringbuffer_state, &key, NULL)) != 1) {
 
             }
-        } else {
+        /*} else {
             ringbuffer_read_status = lfds720_ringbuffer_n_read(fragment->ringbuffer_state, &key, NULL);
-        }
+        }*/
 
         if (ringbuffer_read_status == 1) {
             freelist_data = (struct _fbg_freelist_data *)key;
@@ -1047,6 +1089,13 @@ void fbg_draw(struct _fbg *fbg, int sync_with_tasks, void (*user_mixing)(struct 
 #endif
             
         }
+#else
+        while (fragment->sync_wait == 0 && fragment->state != 0);
+
+        user_mixing(fbg, fragment->fbg->back_buffer, i + 1);
+        
+        fragment->sync_wait = 0;
+#endif
     }
 #else
 void fbg_draw(struct _fbg *fbg) {
@@ -1379,6 +1428,7 @@ struct _fbg_img *fbg_createImage(struct _fbg *fbg, unsigned int width, unsigned 
     return img;
 }
 
+#ifndef WITHOUT_JPEG
 struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename) {
     unsigned char *data;
     unsigned int width;
@@ -1470,7 +1520,9 @@ struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename) {
 
     return img;
 }
+#endif
 
+#ifndef WITHOUT_PNG
 struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
     unsigned char *data;
     unsigned int width;
@@ -1524,13 +1576,20 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
 
     return img;
 }
+#endif
 
 struct _fbg_img *fbg_loadImage(struct _fbg *fbg, const char *filename) {
-    struct _fbg_img *img = fbg_loadPNG(fbg, filename);
+    struct _fbg_img *img = NULL;
+    
+#ifndef WITHOUT_PNG
+    img = fbg_loadPNG(fbg, filename);
+#endif
 
+#ifndef WITHOUT_JPEG
     if (img == NULL) {
         img = fbg_loadJPEG(fbg, filename);
     }
+#endif
 
     return img;
 }

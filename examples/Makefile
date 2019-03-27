@@ -19,10 +19,17 @@ OUT5=earth
 OUT6=flags
 OUT7=compositing
 LIBS1=-lm
-LIBS2=-lm -lpthread liblfds720.a
-LIBS3=-lm -lpthread liblfds711.a
-INCS=-I ../src/ -I. -Iliblfds720
-INCS3=-I ../src/ -I. -Iliblfds711
+LIBS2=-lm -lpthread
+LIBS3=-lm -lpthread
+LIBS_LFDS_711=liblfds711.a
+LIBS_LFDS_720=liblfds720.a
+INCS=-I ../src/ -I.
+INCS3=-I ../src/ -I.
+INCS_LFDS_711=-Iliblfds711
+INCS_LFDS_720=-Iliblfds720
+
+tiny:
+	$(CC) ../src/fbgraphics.c simple_parallel_example.c $(INCS) $(STANDARD_FLAGS) $(DEFP) -fdata-sections -ffunction-sections -flto -DFBG_LIGHT -Os -lpthread -o $(OUT2) -Wl,--gc-sections,-flto
 
 all:
 	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS1) -o $(OUT1)

@@ -216,7 +216,7 @@ int main(int argc, char* argv[]) {
 
         fragment(fbg, user_data);
 
-        fbg_draw(fbg, 1, selectiveMixing);
+        fbg_draw(fbg, selectiveMixing);
 
         fbg_rect(fbg, 0, 2, 8 * 19, 8 * 9 - 4, 0, 0, 0);
         fbg_write(fbg, "FBGraphics: Earth", 4, 2);

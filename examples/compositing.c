@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
         fbg_imageClip(fbg, texture, 0, 0, 0, 0, _FBG_MIN(fbg->width, texture->width), _FBG_MIN(fbg->height, texture->height));
 
         // we draw with alpha blending function to mix our layer with the background
-        fbg_draw(fbg, 1, alphaBlending);
+        fbg_draw(fbg, alphaBlending);
 
         // draw fps
         fbg_write(fbg, "FBGraphics: Compositing", 4, 2);

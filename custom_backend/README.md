@@ -5,19 +5,37 @@ FBGraphics : Custom rendering backend
 
 FBG OpenGL ES 2.0 rendering backend with GL utilities, similar to the GLFW backend.
 
-Support rendering through fbdev (tested on Nano PI Fire 3 board) and Raspberry PI.
+Support rendering through fbdev (tested on Nano PI Fire 3 board) and / or dispmanx on Raspberry PI.
 
 ### Compiling
 
-See examples `makefile` rule to compile
+See examples `makefile` `rpies2` / `fbdeves2` rule to compile
 
-On Raspberry PI you must define `FBG_RPI` when compiling
+On Raspberry PI you must define `FBG_RPI` when compiling, this will enable the use of dispmanx which has some advantages over fbdev.
 
 ### Examples
 
 See `opengl_es2_example.c`
 
 See `opengl_es2_parallel.c`
+
+## dispmanx
+
+FBG dispmanx double buffering rendering backend, allow fast blitting of the buffers on Video Core IV GPU (as used in Raspberry PI)
+
+Note : All drawing is still done in software, dispmanx is just used for fast CPU -> GPU buffer transfer aka blitting... the single core example run at full fps at 1920x1080.
+
+Parallelism is trickier because FBG mix the fragments buffer on the main CPU and at 1080p with 3 threads there is alot of pixels to mix... the example still run at 8 fps at 1920x1080 (and 30 fps at 720p) with 3 threads by doing the compositing on dispmanx, without dispmanx compositing the example run at around 2 fps at 1080p.
+
+### Compiling
+
+See examples `makefile` `dispman` rule to compile
+
+### Examples
+
+See `dispmanx_example.c`
+
+See `dispmanx_parallel.c`
 
 ## GLFW
 

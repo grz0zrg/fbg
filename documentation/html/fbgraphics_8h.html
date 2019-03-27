@@ -129,7 +129,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a728d7c5d9eaf556fa9286dbe3d922794"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794">fbg_init</a>()&#160;&#160;&#160;<a class="el" href="fbgraphics_8h.html#aea89f0f15615a00ee4a390d6848ec54c">fbg_setup</a>(NULL, 0)</td></tr>
 <tr class="memdesc:a728d7c5d9eaf556fa9286dbe3d922794"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping  <a href="#a728d7c5d9eaf556fa9286dbe3d922794">More...</a><br /></td></tr>
 <tr class="separator:a728d7c5d9eaf556fa9286dbe3d922794"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f15c1c2215c201e644c4c3de812f16f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a4f15c1c2215c201e644c4c3de812f16f">fbg_fade</a>(fbg,  fade_amount)&#160;&#160;&#160;fbg_fade_down(fbg, fade_amount)</td></tr>
+<tr class="memitem:a4f15c1c2215c201e644c4c3de812f16f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a4f15c1c2215c201e644c4c3de812f16f">fbg_fade</a>(fbg,  fade_amount)&#160;&#160;&#160;<a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e">fbg_fadeDown</a>(fbg, fade_amount)</td></tr>
 <tr class="memdesc:a4f15c1c2215c201e644c4c3de812f16f"><td class="mdescLeft">&#160;</td><td class="mdescRight">background fade to black with controllable factor  <a href="#a4f15c1c2215c201e644c4c3de812f16f">More...</a><br /></td></tr>
 <tr class="separator:a4f15c1c2215c201e644c4c3de812f16f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45d1d295d53d80013ca6d55487c02fa0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a45d1d295d53d80013ca6d55487c02fa0">fbg_write</a>(fbg,  text,  x,  y)&#160;&#160;&#160;<a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea">fbg_text</a>(fbg, &amp;fbg-&gt;current_font, text, x, y, fbg-&gt;text_color.r, fbg-&gt;text_color.g, fbg-&gt;text_color.b)</td></tr>
@@ -226,9 +226,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ac037925696a8bfab4163e011731a76a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#ac037925696a8bfab4163e011731a76a4">fbg_hslToRGB</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg__rgb">_fbg_rgb</a> *color, float h, float s, float l)</td></tr>
 <tr class="memdesc:ac037925696a8bfab4163e011731a76a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert HSL values to RGB color  <a href="#ac037925696a8bfab4163e011731a76a4">More...</a><br /></td></tr>
 <tr class="separator:ac037925696a8bfab4163e011731a76a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b89c989d4bedd173affaa8bf2dd6b54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2b89c989d4bedd173affaa8bf2dd6b54">rgbToHsl</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg__hsl">_fbg_hsl</a> *color, float r, float g, float b)</td></tr>
-<tr class="memdesc:a2b89c989d4bedd173affaa8bf2dd6b54"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert RGB values to HSL color  <a href="#a2b89c989d4bedd173affaa8bf2dd6b54">More...</a><br /></td></tr>
-<tr class="separator:a2b89c989d4bedd173affaa8bf2dd6b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf344cf56286931ee7a4a0e5fce920fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aaf344cf56286931ee7a4a0e5fce920fc">fbg_rgbToHsl</a> (struct <a class="el" href="fbgraphics_8h.html#struct__fbg__hsl">_fbg_hsl</a> *color, float r, float g, float b)</td></tr>
+<tr class="memdesc:aaf344cf56286931ee7a4a0e5fce920fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert RGB values to HSL color  <a href="#aaf344cf56286931ee7a4a0e5fce920fc">More...</a><br /></td></tr>
+<tr class="separator:aaf344cf56286931ee7a4a0e5fce920fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dfb2f17bc31e161868e6baf1c391816"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a2dfb2f17bc31e161868e6baf1c391816">fbg_draw</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)</td></tr>
 <tr class="memdesc:a2dfb2f17bc31e161868e6baf1c391816"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw to the screen  <a href="#a2dfb2f17bc31e161868e6baf1c391816">More...</a><br /></td></tr>
 <tr class="separator:a2dfb2f17bc31e161868e6baf1c391816"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,9 +298,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aedca9d7bf294d143f860d2f0ddcd528c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#aedca9d7bf294d143f860d2f0ddcd528c">fbg_randf</a> (float min, float max)</td></tr>
 <tr class="memdesc:aedca9d7bf294d143f860d2f0ddcd528c"><td class="mdescLeft">&#160;</td><td class="mdescRight">pseudo random number between min / max  <a href="#aedca9d7bf294d143f860d2f0ddcd528c">More...</a><br /></td></tr>
 <tr class="separator:aedca9d7bf294d143f860d2f0ddcd528c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cbf3b72e1cc590b1efcbc18c724322b"><td class="memItemLeft" align="right" valign="top">unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fbgraphics_8h.html#a4cbf3b72e1cc590b1efcbc18c724322b">fbg_getBackBuffer</a> (struct <a class="el" href="struct__fbg.html">_fbg</a> *fbg)</td></tr>
-<tr class="memdesc:a4cbf3b72e1cc590b1efcbc18c724322b"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the current back buffer of a FB Graphics context  <a href="#a4cbf3b72e1cc590b1efcbc18c724322b">More...</a><br /></td></tr>
-<tr class="separator:a4cbf3b72e1cc590b1efcbc18c724322b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="struct__fbg__rgb" id="struct__fbg__rgb"></a>
@@ -317,7 +314,7 @@ Functions</h2></td></tr>
 <div class="textblock"><p class="">RGBA color data structure. </p>
 <p class="">Hold RGBA components [0,255] </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00073">73</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00075">75</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -362,7 +359,7 @@ r</td>
 <div class="textblock"><p class="">HSL color data structure. </p>
 <p class="">Hold HSL components S/L [0,1], HUE [0, 360] </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00082">82</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00084">84</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -401,7 +398,7 @@ s</td>
 <div class="textblock"><p class="">Image data structure. </p>
 <p class="">Hold images informations and data </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00090">90</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00092">92</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -440,7 +437,7 @@ Image width in pixels. </td></tr>
 <div class="textblock"><p class="">Bitmap font data structure. </p>
 <p class="">Hold bitmap font informations and associated image </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00102">102</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00104">104</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Data Fields</th></tr>
 <tr><td class="fieldtype">
@@ -502,7 +499,7 @@ Width of a glyph. </td></tr>
 
 <p>convert a degree angle to radians </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00861">861</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00859">859</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -534,7 +531,7 @@ Width of a glyph. </td></tr>
 
 <p>integer MAX Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00854">854</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00852">852</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -566,7 +563,7 @@ Width of a glyph. </td></tr>
 
 <p>integer MIN Math function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00856">856</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00854">854</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -588,7 +585,7 @@ Width of a glyph. </td></tr>
 
 <p>convert a radian angle to degree </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00863">863</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00861">861</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -610,7 +607,7 @@ Width of a glyph. </td></tr>
 
 <p>integer SIGN function </p>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00858">858</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00856">856</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -635,7 +632,7 @@ Width of a glyph. </td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;fbg_fade_down(fbg, fade_amount)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e">fbg_fadeDown</a>(fbg, fade_amount)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -650,7 +647,7 @@ Width of a glyph. </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a19d56a111248b7f7d52f4bc6392d3743" title="background fade to white with controllable factor ">fbg_fadeUp()</a>, <a class="el" href="fbgraphics_8h.html#ab18823ca0e95ca51c5d6c69a48af8d0e" title="background fade to black with controllable factor ">fbg_fadeDown()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00829">829</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00827">827</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -718,7 +715,7 @@ Width of a glyph. </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a1e3ebfcc75e055a24f1a0f5765936d16" title="create an empty image ">fbg_createImage()</a>, <a class="el" href="fbgraphics_8h.html#a4be92c5b1376fb7f06de1529b0a43f7f" title="load a PNG image from a file (lodePNG library) ">fbg_loadPNG()</a>, <a class="el" href="fbgraphics_8h.html#ad05affc24eed0b9f906d6926b8f02fec" title="load a JPEG image from a file (NanoJPEG library) ">fbg_loadJPEG()</a>, <a class="el" href="fbgraphics_8h.html#a731ce4c5439d16555aa6ec48751ecea6" title="load an image (PNG or JPEG) ">fbg_loadImage()</a>, <a class="el" href="fbgraphics_8h.html#a3610bf730319af99045283ea66955741" title="draw a clipped image ">fbg_imageClip()</a>, <a class="el" href="fbgraphics_8h.html#a737482b6170ea3273d6679fdca63a27c" title="free the memory associated with an image ">fbg_freeImage()</a>, <a class="el" href="fbgraphics_8h.html#a600d896c04feec33d001662ca23e50ad" title="draw an image ">fbg_image()</a>, <a class="el" href="fbgraphics_8h.html#a728d5bc6d1ee11e127db8722fe3cbc18" title="flip an image vertically ">fbg_imageFlip()</a>, <a class="el" href="fbgraphics_8h.html#ad0c3a773dcab62f514726b03e54ad692" title="draw an image with support for clipping and scaling ">fbg_imageEx()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00851">851</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00849">849</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -740,7 +737,7 @@ Width of a glyph. </td></tr>
 <p>initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a728d7c5d9eaf556fa9286dbe3d922794" title="initialize a FB Graphics context with &#39;/dev/fb0&#39; as framebuffer device and no page flipping ...">fbg_init()</a>, <a class="el" href="fbgraphics_8h.html#ac2b04a31a81e6257c7e6be35c8ba5109" title="initialize a FB Graphics context with a custom rendering backend ">fbg_customSetup()</a>, <a class="el" href="fbgraphics_8h.html#a390cd3fb535cbad76856700a035ed401" title="free up the memory associated with a FB Graphics context and close the framebuffer device ...">fbg_close()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00821">821</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00819">819</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -795,7 +792,7 @@ Width of a glyph. </td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#ac1ccfb0069d4567313391dc819ada76b" title="set the current font ">fbg_textFont()</a>, <a class="el" href="fbgraphics_8h.html#acae7a4ff39407371a52ebf9ae4c260c1" title="set the current text color ">fbg_textColor()</a>, <a class="el" href="fbgraphics_8h.html#a3233e3de8fc3ad06391641241c77a1ea" title="draw a text ">fbg_text()</a>, fbg_textColorkey(), <a class="el" href="fbgraphics_8h.html#a2e82acd949a5c12a1fa494fb4c028ff1" title="set the current text background color (based on colorkey value!) ">fbg_textBackground()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00839">839</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="fbgraphics_8h_source.html#l00837">837</a> of file <a class="el" href="fbgraphics_8h_source.html">fbgraphics.h</a>.</p>
 
 </div>
 </div>
@@ -1551,33 +1548,6 @@ Width of a glyph. </td></tr>
 
 </div>
 </div>
-<a id="a4cbf3b72e1cc590b1efcbc18c724322b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cbf3b72e1cc590b1efcbc18c724322b">&#9670;&nbsp;</a></span>fbg_getBackBuffer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned char* fbg_getBackBuffer </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="struct__fbg.html">_fbg</a> *&#160;</td>
-          <td class="paramname"><em>fbg</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>get the current back buffer of a FB Graphics context </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fbg</td><td>pointer to a FBG context / data structure </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>back buffer pointer </dd></dl>
-
-</div>
-</div>
 <a id="a8125b5b37979f803c4640d9864fadbab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8125b5b37979f803c4640d9864fadbab">&#9670;&nbsp;</a></span>fbg_getFramerate()</h2>
 
@@ -1788,7 +1758,7 @@ Width of a glyph. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a2b89c989d4bedd173affaa8bf2dd6b54" title="convert RGB values to HSL color ">rgbToHsl()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>rgbToHsl() </dd></dl>
 
 </div>
 </div>
@@ -2857,6 +2827,58 @@ Width of a glyph. </td></tr>
 
 </div>
 </div>
+<a id="aaf344cf56286931ee7a4a0e5fce920fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf344cf56286931ee7a4a0e5fce920fc">&#9670;&nbsp;</a></span>fbg_rgbToHsl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fbg_rgbToHsl </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__hsl">_fbg_hsl</a> *&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>convert RGB values to HSL color </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">color</td><td>pointer to a <a class="el" href="fbgraphics_8h.html#struct__fbg__hsl" title="HSL color data structure. ">_fbg_hsl</a> data structure </td></tr>
+    <tr><td class="paramname">r</td><td></td></tr>
+    <tr><td class="paramname">g</td><td></td></tr>
+    <tr><td class="paramname">b</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#ac037925696a8bfab4163e011731a76a4" title="convert HSL values to RGB color ">fbg_hslToRGB()</a> </dd></dl>
+
+</div>
+</div>
 <a id="a70e747dee4eda4a434b746e2bbd14386"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70e747dee4eda4a434b746e2bbd14386">&#9670;&nbsp;</a></span>fbg_setResizeCallback()</h2>
 
@@ -3272,58 +3294,6 @@ Width of a glyph. </td></tr>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#a0558e4513da1d844526d54afea4d1531" title="draw a horizontal line ">fbg_hline</a>, <a class="el" href="fbgraphics_8h.html#a46f7354a04a7bfb7467d25394ce38303" title="draw a line from two points (Bresenham algorithm) ">fbg_line()</a> </dd></dl>
-
-</div>
-</div>
-<a id="a2b89c989d4bedd173affaa8bf2dd6b54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b89c989d4bedd173affaa8bf2dd6b54">&#9670;&nbsp;</a></span>rgbToHsl()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rgbToHsl </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="fbgraphics_8h.html#struct__fbg__hsl">_fbg_hsl</a> *&#160;</td>
-          <td class="paramname"><em>color</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>g</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>convert RGB values to HSL color </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">color</td><td>pointer to a <a class="el" href="fbgraphics_8h.html#struct__fbg__hsl" title="HSL color data structure. ">_fbg_hsl</a> data structure </td></tr>
-    <tr><td class="paramname">r</td><td></td></tr>
-    <tr><td class="paramname">g</td><td></td></tr>
-    <tr><td class="paramname">b</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="fbgraphics_8h.html#ac037925696a8bfab4163e011731a76a4" title="convert HSL values to RGB color ">fbg_hslToRGB()</a> </dd></dl>
 
 </div>
 </div>

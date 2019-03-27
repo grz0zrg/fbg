@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
     do {
         fragment(fbg, user_data);
 
-        fbg_draw(fbg, 1, selectiveMixing);
+        fbg_draw(fbg, selectiveMixing);
 
         fbg_write(fbg, "FBGraphics: Flags of the world", 4, 2);
 

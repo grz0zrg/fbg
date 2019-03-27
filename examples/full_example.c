@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
 
         //fbg_fadeDown(fbg, 2);
 
-        fbg_draw(fbg, 1, NULL);
+        fbg_draw(fbg, NULL);
 
         // we just draw texts from this thread
         fbg_write(fbg, "FBGraphics", 4, 2);

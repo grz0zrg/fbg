@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
         fbg_glfwClear();
         
         fbg_clear(fbg, 0);
-        fbg_draw(fbg, 0, fbg_XORMixing);
+        fbg_draw(fbg, fbg_XORMixing);
 
         for (int j = 0; j < fbg->parallel_tasks; j += 1) {
             fbg_write(fbg, fbg->fps_char, 2, 2 + j * 10);

@@ -3,10 +3,11 @@ FBGraphics : Lightweight C 2D graphics API agnostic library with parallelism sup
 
 FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library with parallelism and custom rendering backend support (graphics API agnostic).
 
-The library come with three backend : 
+The library come with four backend : 
  * a Linux framebuffer rendering backend (bundled)
  * OpenGL backend which use the [GLFW](http://www.glfw.org/) library (available aside)
  * OpenGL ES 2.0 backend for fbdev or Raspberry PI
+ * dispmanx backend (Video Core IV; Raspberry PI)
 
 Features :
 
@@ -17,6 +18,7 @@ Features :
     * 16, 24 (BGR/RGB), 32 bpp support
  * OpenGL rendering backend through GLFW
  * OpenGL ES 2.0 rendering backend for Raspberry PI or through fbdev (tested on Nano PI Fire 3 board)
+ * dispmanx rendering backend (Video Core IV; Raspberry PI)
  * Optional : Full parallelism, execute graphics code on multiple CPU cores **with a single function**
  * PNG/JPEG images loading (provided by [LodePNG](https://lodev.org/lodepng/) and [NanoJPEG](http://keyj.emphy.de/nanojpeg/))
  * Bitmap fonts for drawing texts
@@ -39,6 +41,7 @@ Table of Contents
    * [Benchmark](#benchmark)
    * [Documentation](#documentation)
    * [Building](#building)
+   * [Rendering backend](#Rendering-backend)
    * [GLFW backend](#GLFW-backend)
    * [OpenGL ES 2.0 backend](#OpenGL-ES-2-backend)
    * [Screenshots](#screenshots)
@@ -241,10 +244,10 @@ And finally you just have to make a call to your fragment function in your drawi
 
 ```c
 fragment(fbg, NULL);
-fbg_draw(fbg, 1, NULL);
+fbg_draw(fbg, NULL);
 ```
 
-The second argument to `fbg_draw` tell FBG to synchronize with all the threads, it will wait until all the data are received from all the threads, if disabled, data from some threads may not arrive in time and make it into the second frame.
+`fbg_draw` will wait until all the data are received from all the threads then draw to screen
 
 **Note** : This example will use 4 threads (including your app one) for drawing things on the screen but calling the fragment function in your drawing loop is totally optional, you could for example make use of threads for intensive drawing tasks and just use the main thread to draw the GUI or the inverse etc. it is up to you!
 
@@ -270,7 +273,7 @@ void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
 Then you just have to specify it to the `fbg_draw` function :
 
 ```c
-fbg_draw(fbg, 1, additiveMixing);
+fbg_draw(fbg, additiveMixing);
 ```
 
 By using the mixing function, you can have different layers handled by different cores with different compositing rule, see `compositing.c` for an example of alpha blending compositing 2 layers running on their own cores.
@@ -281,13 +284,25 @@ By using the mixing function, you can have different layers handled by different
 
 FBGraphics threads come with their own fbg context data which is essentialy a copy of the actual fbg context, they make use of C atomic types.
 
-Each threads begin by fetching a pre-allocated buffer from a freelist, then the fragment function is called to fill that buffer, the thread wait (using a pthread barrier) for all others to finish their drawing task and then place the buffer into a ringbuffer data structure which will be fetched upon calling `fbg_draw`, the buffers are then mixed into the main back buffer and put back into the freelist.
+Initially parallelism was implemented using [liblfds](http://liblfds.org/) library for its Ringbuffer and Freelist data structure.
 
-FBGraphics parallelism make use of the [liblfds](http://liblfds.org/) library for the Ringbuffer and Freelist data structure.
+Now parallelism has two implementation, liblfds and a custom synchronization mechanism which has the advantage to not require additional libraries and thus execute on more platforms.
+
+You can still use the liblfds implementation using the `FBG_LFDS` define, it may be faster.
+
+#### With liblfds
+
+Each threads begin by fetching a pre-allocated buffer from a freelist, then the fragment function is called to fill that buffer, the thread then place the buffer into a ringbuffer data structure which will be fetched upon calling `fbg_draw`, the buffers are then mixed into the main back buffer and put back into the freelist.
+
+#### Without liblfds
+
+Each threads fragment function is called to fill the local buffer, each threads then wait till that buffer is consumed by the main thread upon calling `fbg_draw`, the buffers are then mixed into the main back buffer and `fbg_draw` wake up all threads.
 
 ## Benchmark (framebuffer)
 
 A simple unoptimized per pixels screen clearing with 4 cores on a Raspberry PI 3B :  30 FPS @ 1280x768 and 370 FPS @ 320x240
+
+Note : Using the dispmanx backend a screen clearing + rectangle moving on a Raspberry PI 3B : 60 FPS @ 1920x1080
 
 ### Full example
 
@@ -342,9 +357,11 @@ All examples make use of the framebuffer device `/dev/fb0` and can be built by t
 
 All examples were tested on a Raspberry PI 3B with framebuffer settings : 320x240 24 bpp
 
-For the default build (no parallelism), FBGraphics come with a header file `fbgraphics.h` and a C file `fbgraphics.c` to be included / compiled with your program, you will also need to compile the `lodepng.c` library and `nanojpeg.c` library, see the examples directory for examples of Makefile.
+For the default build (no parallelism), FBGraphics come with a header file `fbgraphics.h` and a C file `fbgraphics.c` to be included / compiled / linked with your program, you will also need to compile the `lodepng.c` library and `nanojpeg.c` library, see the examples directory for examples of Makefile.
 
-For parallelism support, `FBG_PARALLEL` need to be defined and you will need the [liblfds](http://liblfds.org/) library :
+For parallelism support, `FBG_PARALLEL` need to be defined.
+
+If you need to use the slightly different parallelism implementation (see technical implementatio section) you will need the [liblfds](http://liblfds.org/) library :
 
  * Get latest liblfds 7.1.1 package on the official website
  * uncompress, go into the directory `liblfds711`
@@ -352,9 +369,23 @@ For parallelism support, `FBG_PARALLEL` need to be defined and you will need the
  * type `make` in a terminal
  * `liblfds711.a` can now be found in the `bin` directory, you need to link against it when compiling (see examples)
 
-To compile parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make lfds711`.
+To compile liblfds parallel examples, just copy `liblfds711.a` / `liblfds711.h` file and `liblfds711` directory into the `examples` directory then type `make lfds711`.
 
-**Note** : FBGraphics work on ARM64 platforms but you will need liblfds720 which is not yet released.
+**Note** : FBGraphics with liblfds work on ARM64 platforms but you will need liblfds720 which is not yet released.
+
+### Executable size optimization
+
+This library may be used for size optimized executable for things like [demos](https://en.wikipedia.org/wiki/Demoscene)
+
+PNG and JPEG support can be disabled with the `WITHOUT_JPEG` and `WITHOUT_PNG` define.
+
+See `tiny` makefile rule inside the `custom_backend` or `examples` folder for some compiler optimizations related to executable size.
+
+Under Linux [sstrip](https://github.com/BR903/ELFkickers/tree/master/sstrip) and [UPX](https://upx.github.io/) can be used to bring the size down even futher.
+
+## Rendering backend
+
+See `README` into `custom_backend` folder
 
 ## GLFW backend
 

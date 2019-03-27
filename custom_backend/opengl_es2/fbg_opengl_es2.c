@@ -20,9 +20,6 @@ const char *fbg_gles2SimpleFs = "varying vec2 uv; \
         gl_FragColor = texture2D(t0, uv); \
     }";
 
-struct _fbg **fbg_contexts = NULL;
-int fbg_contexts_count = 0;
-
 void fbg_gles2Draw(struct _fbg *fbg);
 void fbg_gles2Flip(struct _fbg *fbg);
 void fbg_gles2Free(struct _fbg *fbg);
@@ -43,12 +40,13 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
     int fd = open(fb_device, O_RDWR);
     if (fd == -1) {
         printf("fbg_gles2Setup: cannot open %s device\n", fb_device);
+        free(gles2_context);
         return NULL;
     }
 
     if (ioctl(fd, FBIOGET_VSCREENINFO, &gles2_context->vinfo)) {
         printf("fbg_gles2Setup: ioctl FBIOGET_VSCREENINFO failed\n");
-
+        free(gles2_context);
         close(fd);
         return NULL;
     }
@@ -74,7 +72,7 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
     egl_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
     if (egl_display == EGL_NO_DISPLAY) {
         printf("fbg_gles2Setup: eglGetDisplay failed with EGL_NO_DISPLAY\n");
-
+        free(gles2_context);
 #ifndef FBG_RPI
         close(fd);
 #endif
@@ -83,7 +81,7 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
  
     if (!eglInitialize(egl_display, NULL, NULL)) {
         printf("fbg_gles2Setup: eglInitialize failed\n");
-
+        free(gles2_context);
 #ifndef FBG_RPI
         close(fd);
 #endif
@@ -123,6 +121,7 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
     if (!eglChooseConfig(egl_display, attr, &eglconf, 1, &num_config)) {
         printf("fbg_gles2Setup: eglChooseConfig failed\n");
         eglTerminate(egl_display);
+        free(gles2_context);
         close(fd);
         return NULL;
     }
@@ -130,6 +129,7 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
     if (!eglSaneChooseConfigBRCM(egl_display, attr, &eglconf, 1, &num_config)) {
         printf("fbg_gles2Setup: eglSaneChooseConfigBRCM failed\n");
         eglTerminate(egl_display);
+        free(gles2_context);
         return NULL;
     }
 #endif
@@ -139,6 +139,7 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
     if (result == EGL_FALSE || result == EGL_BAD_PARAMETER) {
         printf("fbg_gles2Setup: eglCreateContext failed with EGL_NO_CONTEXT\n");
         eglTerminate(egl_display);
+        free(gles2_context);
         return NULL;
     }
 #endif
@@ -151,6 +152,7 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
     if (egl_context == EGL_NO_CONTEXT) {
         printf("fbg_gles2Setup: eglCreateContext failed with EGL_NO_CONTEXT\n");
         eglTerminate(egl_display);
+        free(gles2_context);
 #ifndef FBG_RPI
         close(fd);
 #endif
@@ -200,6 +202,7 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
         printf("fbg_gles2Setup: eglCreateWindowSurface failed with EGL_NO_SURFACE\n");
         eglDestroyContext(egl_display, egl_context);
         eglTerminate(egl_display);
+        free(gles2_context);
 #ifndef FBG_RPI
         close(fd);
 #endif
@@ -224,26 +227,6 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     struct _fbg *fbg = fbg_customSetup(render_width, render_height, (void *)gles2_context, fbg_gles2Draw, fbg_gles2Flip, NULL, fbg_gles2Free);
-
-    fbg_contexts_count += 1;
-
-    // we keep track of fbg contexts globally; may be uneeded for this wrapper
-    // NOTE : must refactor this, may cause conflicts...
-    if (fbg_contexts == NULL) {
-        fbg_contexts = (struct _fbg **)calloc(1, sizeof(struct _fbg *));
-        if (!fbg_contexts) {
-            fprintf(stderr, "fbg_gles2Setup: fbg_contexts calloc failed!\n");
-        } else {
-            fbg_contexts[0] = fbg;
-        }
-    } else {
-        fbg_contexts = (struct _fbg **)realloc(fbg_contexts, sizeof(struct _fbg *) * fbg_contexts_count);
-        if (!fbg_contexts) {
-            fprintf(stderr, "fbg_gles2Setup: fbg_contexts realloc failed!\n");
-        } else {
-            fbg_contexts[fbg_contexts_count - 1] = fbg;
-        }
-    }
 
     return fbg;
 }
@@ -289,34 +272,6 @@ void fbg_gles2Flip(struct _fbg *fbg) {
 
 void fbg_gles2Free(struct _fbg *fbg) {
     struct _fbg_gles2_context *gles2_context = fbg->user_context;
-
-    // remove the fbg context in our own contexts list
-    struct _fbg **fbg_contexts_tmp = NULL;
-
-    fbg_contexts_count -= 1;
-    if (fbg_contexts_count == 0) {
-        free(fbg_contexts);
-        fbg_contexts = NULL;
-    } else {
-        fbg_contexts_tmp = (struct _fbg **)calloc(fbg_contexts_count, sizeof(struct _fbg *));
-        if (!fbg_contexts) {
-            fprintf(stderr, "fbg_gles2Free: fbg_contexts calloc failed!\n");
-        }
-    }
-
-    int i = 0, k = 0;
-    for (i = 0; i < fbg_contexts_count; i += 1) {
-        struct _fbg *ctx = fbg_contexts[i];
-        if (ctx != fbg) {
-            fbg_contexts_tmp[k] = ctx;
-
-            k += 1;
-        }
-    }
-
-    free(fbg_contexts);
-    fbg_contexts = fbg_contexts_tmp;
-    //
 
     glDeleteTextures(1, &gles2_context->fbg_texture);
 
