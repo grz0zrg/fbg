@@ -21,11 +21,15 @@ See `opengl_es2_parallel.c`
 
 ## dispmanx
 
-FBG dispmanx double buffering rendering backend, allow fast blitting of the buffers on Video Core IV GPU (as used in Raspberry PI)
+FBG dispmanx double buffering rendering backend, allow fast blitting of the software buffers on Video Core IV GPU (as used in Raspberry PI)
 
 Note : All drawing is still done in software, dispmanx is just used for fast CPU -> GPU buffer transfer aka blitting... the single core example run at full fps at 1920x1080.
 
-Parallelism is trickier because FBG mix the fragments buffer on the main CPU and at 1080p with 3 threads there is alot of pixels to mix... the example still run at 8 fps at 1920x1080 (and 30 fps at 720p) with 3 threads by doing the compositing on dispmanx, without dispmanx compositing the example run at around 2 fps at 1080p.
+FBG Parallelism is trickier because FBG mix the fragments buffer on the main CPU and at 1080p with 3 threads there is alot of pixels to mix... the example still run at 8 fps at 1920x1080 (and 30 fps at 720p) with 3 threads by doing the compositing on dispmanx, without dispmanx compositing the example run at around 2 fps at 1080p.
+
+Because of that an example using pthread parallelism is available see `dispmanx_pure_parallel.c`, each threads are tasked to push specific pixels, it doesn't need to mix buffers, it only use a pthread barrier to keep everything in sync. It run at 20 fps @ 1080p doing a fullscreen colored clear, 50 fps @ 1080p without barrier and 60 fps @ 720p with alot of room to play with pixels. (so 720p is probably the best resolution for this)
+
+Note : This example may have some room for optimizations, especially in respect to RPI CPU caches so i guess bit more FPS could be gained!
 
 ### Compiling
 
@@ -34,6 +38,8 @@ See examples `makefile` `dispman` rule to compile
 ### Examples
 
 See `dispmanx_example.c`
+
+See `dispmanx_pure_parallel.c`
 
 See `dispmanx_parallel.c`
 

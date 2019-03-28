@@ -4,10 +4,10 @@ FBGraphics : Lightweight C 2D graphics API agnostic library with parallelism sup
 FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library with parallelism and custom rendering backend support (graphics API agnostic).
 
 The library come with four backend : 
- * a Linux framebuffer rendering backend (bundled)
- * OpenGL backend which use the [GLFW](http://www.glfw.org/) library (available aside)
- * OpenGL ES 2.0 backend for fbdev or Raspberry PI
- * dispmanx backend (Video Core IV; Raspberry PI)
+ * a Linux framebuffer rendering backend (bundled; optional)
+ * OpenGL backend which use the [GLFW](http://www.glfw.org/) library (see `custom_backend` folder)
+ * OpenGL ES 2.0 backend for fbdev or Raspberry PI (see `custom_backend` folder)
+ * dispmanx backend (Video Core IV; Raspberry PI) (see `custom_backend` folder)
 
 Features :
 
@@ -55,7 +55,9 @@ FBGraphics was also extended to support any numbers of custom rendering backend;
 
 An OpenGL rendering backend which use the [GLFW library](http://www.glfw.org/) was created to demonstrate the custom backend feature, it allow to draw the non-accelerated FB Graphics buffer into an OpenGL context through a texture and thus allow to interwine 3D or 2D graphics produced with standard OpenGL calls with CPU-only graphics produced by FBGraphics draw calls.
 
-An OpenGL ES 2.0 backend is also available with similar features, it target platforms with support for OpenGL ES 2.0 through fbdev (tested on Nano PI Fire 3 SBC) or Raspberry PI and similar platforms, it wouldn't be hard to extend this for more OpenGL ES 2.0 platforms...
+An OpenGL ES 2.0 backend is also available with similar features, it target platforms with support for OpenGL ES 2.0 through fbdev (tested on Nano PI Fire 3 SBC) or Raspberry PI dispmanx and similar platforms, it wouldn't be hard to extend this for more OpenGL ES 2.0 platforms...
+
+There is also a dispmanx backend targeting Raspberry PI, it have better performances than the OpenGL ES 2 backend on this platform and is recommended if you don't need 3D stuff.
 
 FBGraphics was built so that it is possible to create any number of rendering context using different backend running at the same time while exploiting multi-core processors... the content of any rendering context can be transfered into other context through images when calling `fbg_drawInto`
 
@@ -279,6 +281,8 @@ fbg_draw(fbg, additiveMixing);
 By using the mixing function, you can have different layers handled by different cores with different compositing rule, see `compositing.c` for an example of alpha blending compositing 2 layers running on their own cores.
 
 **Note** : You can only create one Fragment per fbg instance, another call to `fbg_createFragment` will stop all tasks for the passed fbg context and will create a new set of tasks.
+
+**Note** : On low performances platforms you may encounter performance issues at high resolution and with a high number of fragments, this is because all the threads buffer need to be mixed back onto the main thread before being displayed and at high resolution / threads count that is alot of pixels to process! You can see an alternative implementation using pure pthread in the `custom_backend` folder and `dispmanx_pure_parallel.c` but it doesn't have compositing.
 
 ### Technical implementation
 
