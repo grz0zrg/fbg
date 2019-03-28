@@ -35,7 +35,7 @@ void int_handler(int dummy) {
     keep_running = 0;
 }
 
-void compute(int id, float motion1) {
+void compute(int id) {
     int n = 4;// threads
 
     int xx = 0, yy = 0, w3 = fbg->width * fbg->components;
@@ -46,7 +46,6 @@ void compute(int id, float motion1) {
 
     for (yy = 0; yy < fbg->height / n; yy += 1) {
         for (xx = 0; xx < fbg->width; xx += 1) {
-            float norm_xx = (float)xx / (float)fbg->width;
             *pix_pointer++ = id == 1 ? 255 : 0;
             *pix_pointer++ = id == 2 ? 255 : 0;
             *pix_pointer++ = id == 3 ? 255 : 0;
