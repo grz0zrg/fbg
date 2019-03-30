@@ -84,8 +84,15 @@ struct _fbg *fbg_customSetup(
     fbg->width = width;
     fbg->height = height;
 
+#ifdef FBG_RGBA
+    fbg->components = 4;
+    
+    fbg->comp_offset = 1;
+#else
     fbg->components = 3;
+
     fbg->comp_offset = 0;
+#endif
 
     fbg->line_length = fbg->width * fbg->components;
 

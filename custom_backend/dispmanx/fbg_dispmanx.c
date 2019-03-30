@@ -3,9 +3,16 @@
 
 #include "fbg_dispmanx.h"
 
+#include "Simd/SimdLib.h"
+
 void fbg_dispmanxDraw(struct _fbg *fbg);
 void fbg_dispmanxFlip(struct _fbg *fbg);
 void fbg_dispmanxFree(struct _fbg *fbg);
+
+static void callback_vr_input(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
+{
+    mmal_buffer_header_release(buffer);
+}
 
 struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
     bcm_host_init();
@@ -32,9 +39,18 @@ struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
         return NULL;  
     }
 
+#ifdef FBG_MMAL
+    vc_dispmanx_display_close(dispmanx_context->display);
+#else
+    // dispmanx setup
     uint32_t vc_image_ptr;
 
+#ifdef FBG_RGBA
+    dispmanx_context->resource_type = VC_IMAGE_RGBA32;
+#else
     dispmanx_context->resource_type = VC_IMAGE_RGB888;
+#endif
+
     dispmanx_context->back_resource = vc_dispmanx_resource_create(dispmanx_context->resource_type, info.width, info.height, &vc_image_ptr);
     if (dispmanx_context->back_resource == 0) {
         fprintf(stderr, "fbg_dispmanxSetup: vc_dispmanx_resource_create failed for display %i\n", displayNumber);
@@ -101,9 +117,55 @@ struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
     }
 
     result = vc_dispmanx_update_submit_sync(dispmanx_context->update);
+#endif
 
     struct _fbg *fbg = fbg_customSetup(info.width, info.height, (void *)dispmanx_context, fbg_dispmanxDraw, fbg_dispmanxFlip, NULL, fbg_dispmanxFree);
 
+#ifdef FBG_MMAL
+    mmal_component_create("vc.ril.video_render", &dispmanx_context->render);
+    MMAL_COMPONENT_T *render = dispmanx_context->render;
+    dispmanx_context->input = render->input[0];
+    MMAL_PORT_T *input = dispmanx_context->input;
+#ifdef FBG_RGBA
+    input->format->encoding = MMAL_ENCODING_RGB24;
+#else
+    input->format->encoding = MMAL_ENCODING_RGBA;
+#endif
+    input->format->es->video.width  = VCOS_ALIGN_UP(fbg->width,  32);
+    input->format->es->video.height = VCOS_ALIGN_UP(fbg->height, 16);
+    input->format->es->video.crop.x = 0;
+    input->format->es->video.crop.y = 0;
+    input->format->es->video.crop.width  = fbg->width;
+    input->format->es->video.crop.height = fbg->height;
+    mmal_port_format_commit(input); 
+    mmal_component_enable(render);
+    mmal_port_parameter_set_boolean(input, MMAL_PARAMETER_ZERO_COPY, MMAL_TRUE);
+    input->buffer_size = input->buffer_size_recommended;
+    input->buffer_num = input->buffer_num_recommended;
+    if (input->buffer_num < 2)
+    input->buffer_num = 2;
+    dispmanx_context->pool = mmal_port_pool_create(input, input->buffer_num, input->buffer_size);
+    {
+        MMAL_DISPLAYREGION_T param;
+        param.hdr.id = MMAL_PARAMETER_DISPLAYREGION;
+        param.hdr.size = sizeof(MMAL_DISPLAYREGION_T);
+
+        param.set = MMAL_DISPLAY_SET_LAYER;
+        param.layer = 128;    //On top of most things
+
+        param.set |= MMAL_DISPLAY_SET_ALPHA;
+        param.alpha = 255;    //0 = transparent, 255 = opaque
+
+        param.set |= (MMAL_DISPLAY_SET_DEST_RECT | MMAL_DISPLAY_SET_FULLSCREEN);
+        param.fullscreen = MMAL_FALSE;
+        param.dest_rect.x = 0;
+        param.dest_rect.y = 0;
+        param.dest_rect.width = fbg->width;
+        param.dest_rect.height = fbg->height;
+        mmal_port_parameter_set(input, &param.hdr);
+    }
+    mmal_port_enable(input, callback_vr_input);
+#endif
     return fbg;
 }
 
@@ -116,12 +178,22 @@ void fbg_dispmanxOnFlip(struct _fbg *fbg, void (*opt_flip)(struct _fbg *fbg)) {
 void fbg_dispmanxDraw(struct _fbg *fbg) {
     struct _fbg_dispmanx_context *dispmanx_context = fbg->user_context;
 
+#ifdef FBG_MMAL
+    MMAL_BUFFER_HEADER_T *buffer = mmal_queue_wait(dispmanx_context->pool->queue);
+
+    memcpy(buffer->data, fbg->back_buffer, fbg->size);
+
+    buffer->length = buffer->alloc_size;
+    mmal_port_send_buffer(dispmanx_context->input, buffer);
+#else
     int ret = vc_dispmanx_resource_write_data(dispmanx_context->back_resource, dispmanx_context->resource_type, dispmanx_context->pitch, fbg->disp_buffer, dispmanx_context->dst_rect);
+#endif
 }
 
 void fbg_dispmanxFlip(struct _fbg *fbg) {
     struct _fbg_dispmanx_context *dispmanx_context = fbg->user_context;
 
+#ifndef FBG_MMAL
     dispmanx_context->update = vc_dispmanx_update_start(0);
 
     vc_dispmanx_element_change_source(dispmanx_context->update, dispmanx_context->elem, dispmanx_context->back_resource);
@@ -135,6 +207,7 @@ void fbg_dispmanxFlip(struct _fbg *fbg) {
     }
 
     vc_dispmanx_update_submit_sync(dispmanx_context->update);
+#endif
 }
 
 void fbg_dispmanxFree(struct _fbg *fbg) {
@@ -142,6 +215,10 @@ void fbg_dispmanxFree(struct _fbg *fbg) {
 
     int result;
 
+#ifdef FBG_MMAL
+    mmal_port_disable(dispmanx_context->input);
+    mmal_component_destroy(dispmanx_context->render);
+#else
     dispmanx_context->update = vc_dispmanx_update_start(0);
     result = vc_dispmanx_element_remove(dispmanx_context->update, dispmanx_context->elem);
     if (result != 0) {
@@ -167,4 +244,5 @@ void fbg_dispmanxFree(struct _fbg *fbg) {
     if (result != 0) {
         fprintf(stderr, "fbg_dispmanxFree: vc_dispmanx_display_close failed\n");
     }
+#endif
 }

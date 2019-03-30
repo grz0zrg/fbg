@@ -200,7 +200,11 @@ int fbg_glfwShouldClose(struct _fbg *fbg) {
 }
 
 void fbg_glfwUpdateBuffer(struct _fbg *fbg) {
+#ifdef FBG_RGBA
+	glReadPixels(0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+#else
 	glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+#endif
 }
 
 void fbg_glfwClear() {
@@ -214,7 +218,11 @@ void fbg_glfwDraw(struct _fbg *fbg) {
 	glUseProgram(glfw_context->simple_program);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, glfw_context->fbg_texture);
+#ifdef FBG_RGBA
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+#else
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+#endif
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0);
@@ -272,7 +280,11 @@ void fbg_glfwFree(struct _fbg *fbg) {
 GLuint fbg_glfwCreateTextureFromImage(struct _fbg_img *img) {
     GLuint texture = fbg_glfwCreateTexture(img->width, img->height);
 
+#ifdef FBG_RGBA
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->width, img->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
+#else
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data);
+#endif
 
     return texture;
 }
@@ -283,8 +295,12 @@ GLuint fbg_glfwCreateTexture(GLuint width, GLuint height) {
 
     glBindTexture(GL_TEXTURE_2D, texture);
     
+#ifdef FBG_RGBA
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+#else
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-    
+#endif
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

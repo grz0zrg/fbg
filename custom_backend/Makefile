@@ -58,8 +58,8 @@ rpies2:
 
 dispman:
 	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_example.c -I ../src/ $(STANDARD_FLAGS) -I/opt/vc/include/ -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_example
-	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_pure_parallel.c -I ../src/ $(STANDARD_FLAGS) -o2 -I/opt/vc/include/ -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_pure_parallel
-	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_parallel.c -I ../src/ $(STANDARD_FLAGS) $(DEFP) -DFBG_LFDS -I. -Iliblfds720 -I/opt/vc/include/ -L/opt/vc/lib/ ~/liblfds7.2.0/src/liblfds720/bin/liblfds720.a -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_parallel
+	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_pure_parallel.c -I ../src/ $(STANDARD_FLAGS) -DFBG_RGBA -o2 -I/opt/vc/include/ -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_pure_parallel
+	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_parallel.c -I ../src/ $(STANDARD_FLAGS) $(DEFP) -DFBG_RGBA -DFBG_LFDS -I. -Iliblfds720 -I/opt/vc/include/ -L/opt/vc/lib/ ~/liblfds7.2.0/src/liblfds720/bin/liblfds720.a -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_parallel
 
 
 clean:

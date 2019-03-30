@@ -41,8 +41,23 @@
 
     #include "fbgraphics.h"
 
+#ifdef MMAL
+    #include <interface/mmal/mmal.h>
+    #include <interface/mmal/util/mmal_util.h>
+    #include <interface/mmal/util/mmal_connection.h>
+    #include <interface/mmal/util/mmal_util_params.h>
+#endif
+
     //! dispmanx wrapper data structure
     struct _fbg_dispmanx_context {
+#ifdef MMAL
+      //! MMAL component
+      MMAL_COMPONENT_T *render;
+      //! MMAL input port
+      MMAL_PORT_T *input;
+      //! MMAL pool
+      MMAL_POOL_T *pool;
+#endif
       //! dispmanx display
       DISPMANX_DISPLAY_HANDLE_T display;
       //! dispmanx back resource

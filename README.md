@@ -7,7 +7,7 @@ The library come with four backend :
  * a Linux framebuffer rendering backend (bundled; optional)
  * OpenGL backend which use the [GLFW](http://www.glfw.org/) library (see `custom_backend` folder)
  * OpenGL ES 2.0 backend for fbdev or Raspberry PI (see `custom_backend` folder)
- * dispmanx backend (Video Core IV; Raspberry PI) (see `custom_backend` folder)
+ * fast dispmanx backend (Video Core IV; Raspberry PI) (see `custom_backend` folder)
 
 Features :
 
@@ -282,7 +282,7 @@ By using the mixing function, you can have different layers handled by different
 
 **Note** : You can only create one Fragment per fbg instance, another call to `fbg_createFragment` will stop all tasks for the passed fbg context and will create a new set of tasks.
 
-**Note** : On low performances platforms you may encounter performance issues at high resolution and with a high number of fragments, this is because all the threads buffer need to be mixed back onto the main thread before being displayed and at high resolution / threads count that is alot of pixels to process! You can see an alternative implementation using pure pthread in the `custom_backend` folder and `dispmanx_pure_parallel.c` but it doesn't have compositing.
+**Note** : On low performances platforms you may encounter performance issues at high resolution and with a high number of fragments, this is because all the threads buffer need to be mixed back onto the main thread before being displayed and at high resolution / threads count that is alot of pixels to process! You can see an alternative implementation using pure pthread in the `custom_backend` folder and `dispmanx_pure_parallel.c` but it doesn't have compositing. If you platform support some sort of SIMD instructions you could also do all the compositing using SIMD which should result in a 5x or more speed increase!
 
 ### Technical implementation
 
