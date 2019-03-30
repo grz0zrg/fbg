@@ -3,16 +3,15 @@
 
 #include "fbg_dispmanx.h"
 
-#include "Simd/SimdLib.h"
-
 void fbg_dispmanxDraw(struct _fbg *fbg);
 void fbg_dispmanxFlip(struct _fbg *fbg);
 void fbg_dispmanxFree(struct _fbg *fbg);
 
-static void callback_vr_input(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
-{
+#ifdef FBG_MMAL
+static void callback_vr_input(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer) {
     mmal_buffer_header_release(buffer);
 }
+#endif
 
 struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
     bcm_host_init();
