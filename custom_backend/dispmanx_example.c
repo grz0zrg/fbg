@@ -27,11 +27,12 @@ int main(int argc, char* argv[]) {
 
     do {
         fbg_clear(fbg, 0);
-        fbg_draw(fbg);
 
         fbg_rect(fbg, x, y, 40, 40, 255, 0, 0);
 
         fbg_write(fbg, fbg->fps_char, 2, 2);
+
+        fbg_draw(fbg);
 
         fbg_flip(fbg);
 

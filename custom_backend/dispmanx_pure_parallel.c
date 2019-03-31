@@ -118,13 +118,13 @@ int main(int argc, char* argv[]) {
 
     do {
         //fbg_clear(fbg, 0);
-        fbg_draw(fbg);
-
         compute(0);
 
         fbg_write(fbg, fbg->fps_char, 2, 2);
 
         pthread_barrier_wait(&sync_barrier);
+
+        fbg_draw(fbg);
 
         fbg_flip(fbg);
     } while (keep_running);

@@ -197,7 +197,7 @@ int main(int argc, char* argv[]) {
 
     do {
         fbg_clear(fbg, 0);
-        fbg_draw(fbg, fbg_mixing);
+        
         // regular mixing, slow at high resolution / use much main thread resources
         //fbg_draw(fbg, fbg_XORMixing);
 
@@ -205,6 +205,8 @@ int main(int argc, char* argv[]) {
             fbg_write(fbg, fbg->fps_char, 2, 2 + j * 10);
         }
 
+        fbg_draw(fbg, fbg_mixing);
+        
         fbg_flip(fbg);
     } while (keep_running);
 

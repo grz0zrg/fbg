@@ -49,8 +49,8 @@ lfds711:
 	$(CC) $(SRC4) $(INCS2) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS3) libluajit.a -ldl -DFBG_LFDS -DLFDS711 $(DEFP) -o $(OUT4)
 
 fbdeves2:
-	$(CC) $(SRC_LIBS) opengl_es2/fbg_opengl_es2.c opengl_es2_example.c -I ../src/ $(STANDARD_FLAGS) -lEGL -lm -lpthread -o opengl_es2_example
-	$(CC) $(SRC_LIBS) opengl_es2/fbg_opengl_es2.c opengl_es2_parallel.c -I ../src/ $(STANDARD_FLAGS) -I. -Iliblfds720 -DFBG_LFDS $(DEFP) ~/liblfds7.2.0/src/liblfds720/bin/liblfds720.a -lEGL -lm -lpthread -o opengl_es2_parallel
+	$(CC) $(SRC_LIBS) opengl_es2/fbg_opengl_es2.c opengl_es2_example.c -I ../src/ $(STANDARD_FLAGS) -DFBG_FBDEV -lEGL -lm -lpthread -o opengl_es2_example
+	$(CC) $(SRC_LIBS) opengl_es2/fbg_opengl_es2.c opengl_es2_parallel.c -I ../src/ $(STANDARD_FLAGS) -DFBG_FBDEV -I. -Iliblfds720 -DFBG_LFDS $(DEFP) ~/liblfds7.2.0/src/liblfds720/bin/liblfds720.a -lEGL -lm -lpthread -o opengl_es2_parallel
 
 rpies2:
 	$(CC) $(SRC_LIBS) opengl_es2/fbg_opengl_es2.c opengl_es2_example.c -I ../src/ $(STANDARD_FLAGS) -DFBG_RPI -I/opt/vc/include/ -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o opengl_es2_example

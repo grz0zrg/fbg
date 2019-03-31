@@ -109,9 +109,12 @@ void fbg_XORMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
 
 int main(int argc, char* argv[]) {
     // fbdev version
-    //struct _fbg *fbg = fbg_gles2Setup("/dev/fb0");
+#ifdef FBG_FBDEV
+    struct _fbg *fbg = fbg_gles2Setup("/dev/fb0");
+#else
     // rpi version
     struct _fbg *fbg = fbg_gles2Setup();
+#endif
     if (fbg == NULL) {
         return 0;
     }

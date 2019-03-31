@@ -9,6 +9,8 @@ FBG OpenGL ES 2.0 rendering backend with GL utilities, similar to the GLFW backe
 
 Support rendering through fbdev (tested on Nano PI Fire 3 board) and / or dispmanx on Raspberry PI.
 
+On Nano PI Fire 3 with fbdev we get 20 fps @ 720p without paralellism and 28 fps @ 720p with 7 threads (and the main thread doing nothing but SIMD buffers copy / blitting), compared to 24 fps @ 720p with paralellism but without OpenGL ES 2, main bottleneck with OpenGL ES 2 is due to CPU -> GPU buffer transfer (through `glTexSubImage2D`),
+
 ### Compiling
 
 See examples `makefile` `rpies2` / `fbdeves2` rule to compile
@@ -27,9 +29,9 @@ FBG dispmanx double buffering rendering backend, allow fast blitting of the soft
 
 Note : All drawing is still done in software, dispmanx is just used for fast CPU -> GPU buffer transfer aka blitting... the single core example run at full fps at 1920x1080.
 
-Good FBG Parallelism performances is tricky because FBG mix the fragments buffer on the main CPU and at 1080p with 3 threads there is alot of pixels to mix soyou get 2 fps at 1080p... but the parallel example use dispmanx compositing and output at 8 fps at 1920x1080 (and 30 fps at 720p) with 3 threads by doing all the compositing with dispmanx layers, this has some disadvantages since you are more restricted in compositing operations.
+Good FBG Parallelism performances is tricky because FBG mix the fragments buffer on the main CPU and at 1080p with 3 threads there is alot of pixels to mix so you get 2 fps at 1080p... the parallel example use another approach by using dispmanx compositing and output at 8 fps at 1920x1080 (and 30 fps at 720p) with 3 threads by doing all the compositing with dispmanx layers, this has some disadvantages since you are more restricted in compositing operations.
 
-Another way to optimize this without doing dispmanx compositing is to simply integrate a simple SIMD / Neon library like [this one](http://ermig1979.github.io/Simd/index.html) and let it mix the buffers, i have achieved 15 fps @ 1080p (instead of 2 fps when mixing on CPU without Neon!!!) for the parallel example (with LFDS and 12 fps without) by replacing the mixing function body by one line of code :
+Another way to optimize this without doing dispmanx compositing is to simply integrate a simple SIMD / Neon library like [this one](http://ermig1979.github.io/Simd/index.html) and let it mix the buffers, i have achieved 15 fps @ 1080p (instead of 2 fps when doing the compositing on CPU without Neon!!!) for the parallel example (with LFDS and 12 fps without) by replacing the mixing function body by one line of code :
 
 ```c
 void fbg_mixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
@@ -37,7 +39,7 @@ void fbg_mixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
 }
 ```
 
-Another way and probably the fastest way to do efficient paralellim is to use MMAL / OpenMax so that FBG do zero copy transfer to GPU, you just have to define `FBG_MMAL` when compiling, it only use dispmanx to get the display resolution, the only disadvantage of that method is that *screen tearing may happen because there is no true VSYNC yet*.
+Another way and probably the fastest way (with SIMD compositing) to do efficient paralellim is to use MMAL / OpenMax so that FBG do zero copy transfer to GPU, you just have to define `FBG_MMAL` when compiling, it only use dispmanx to get the display resolution, the only disadvantage of that method is that *screen tearing may happen because there is no true VSYNC yet*.
 
 There is also a pure pthread parallelism example, see `dispmanx_pure_parallel.c`, each threads are tasked to push specific pixels, it doesn't need to mix buffers, it only use a pthread barrier to keep everything in sync. It run at 20 fps @ 1080p doing a fullscreen color clear, 50 fps @ 1080p without barrier and 60 fps @ 720p. (720p is probably the best compromise resolution / efficiency on RPI)
 

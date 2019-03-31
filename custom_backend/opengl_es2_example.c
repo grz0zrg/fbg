@@ -13,9 +13,12 @@ void int_handler(int dummy) {
 
 int main(int argc, char* argv[]) {
     // fbdev version
-    //struct _fbg *fbg = fbg_gles2Setup("/dev/fb0");
+#ifdef FBG_FBDEV
+    struct _fbg *fbg = fbg_gles2Setup("/dev/fb0");
+#else
     // rpi version
     struct _fbg *fbg = fbg_gles2Setup();
+#endif
     if (fbg == NULL) {
         return 0;
     }
@@ -32,12 +35,14 @@ int main(int argc, char* argv[]) {
         fbg_gles2Clear();
         
         fbg_clear(fbg, 128);
-        fbg_draw(fbg);
+        
 
         fbg_rect(fbg, x, y, 40, 40, 255, 0, 0);
 
         fbg_write(fbg, fbg->fps_char, 2, 2);
 
+        fbg_draw(fbg);
+        
         fbg_flip(fbg);
 
         x += velx;

@@ -185,7 +185,7 @@ void fbg_dispmanxDraw(struct _fbg *fbg) {
     buffer->length = buffer->alloc_size;
     mmal_port_send_buffer(dispmanx_context->input, buffer);
 #else
-    int ret = vc_dispmanx_resource_write_data(dispmanx_context->back_resource, dispmanx_context->resource_type, dispmanx_context->pitch, fbg->disp_buffer, dispmanx_context->dst_rect);
+    int ret = vc_dispmanx_resource_write_data(dispmanx_context->back_resource, dispmanx_context->resource_type, dispmanx_context->pitch, fbg->back_buffer, dispmanx_context->dst_rect);
 #endif
 }
 

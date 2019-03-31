@@ -1157,12 +1157,12 @@ void fbg_flip(struct _fbg *fbg) {
         }
     }
 
-    unsigned char *tmp_buffer = fbg->disp_buffer;
-    fbg->disp_buffer = fbg->back_buffer;
-    fbg->back_buffer = tmp_buffer;
-
     if (fbg->user_flip) {
         fbg->user_flip(fbg);
+    } else {
+        unsigned char *tmp_buffer = fbg->disp_buffer;
+        fbg->disp_buffer = fbg->back_buffer;
+        fbg->back_buffer = tmp_buffer;
     }
 
     fbg_computeFramerate(fbg, 1);

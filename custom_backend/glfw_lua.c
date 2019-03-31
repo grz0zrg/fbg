@@ -232,12 +232,12 @@ int program() {
         lua_pcall(main_sketch->lua_state, 0, 0, 0);
 
         //fbg_clear(fbg, 0);
-        fbg_draw(fbg, fbg_compositing);
 
         for (int j = 0; j < fbg->parallel_tasks; j += 1) {
             fbg_write(fbg, fbg->fps_char, 2, 2 + j * 10);
         }
 
+        fbg_draw(fbg, fbg_compositing);
         fbg_flip(fbg);
     } while (keep_running && !fbg_glfwShouldClose(fbg));
 

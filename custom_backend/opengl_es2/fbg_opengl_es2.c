@@ -14,7 +14,8 @@ const char *fbg_gles2SimpleVs = "attribute vec3 vp; \
         gl_Position = vec4(vp, 1.0); \
     }";
 
-const char *fbg_gles2SimpleFs = "varying vec2 uv; \
+const char *fbg_gles2SimpleFs = "precision mediump float; \
+    varying vec2 uv; \
     uniform sampler2D t0; \
     void main() { \
         gl_FragColor = texture2D(t0, uv); \
@@ -233,9 +234,9 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
 
 void fbg_gles2UpdateBuffer(struct _fbg *fbg) {
 #ifdef FBG_RGBA
-    glReadPixels(0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+    glReadPixels(0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
 #else
-    glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+    glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
 #endif
 }
 
@@ -258,9 +259,9 @@ void fbg_gles2Draw(struct _fbg *fbg) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, gles2_context->fbg_texture);
 #ifdef FBG_RGBA
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
 #else
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->disp_buffer);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
 #endif
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

@@ -25,10 +25,11 @@ int main(int argc, char* argv[]) {
         fbg_glfwClear();
         
         fbg_clear(fbg, 0);
-        fbg_draw(fbg);
+        
 
         fbg_rect(fbg, x, y, 40, 40, 255, 0, 0);
 
+        fbg_draw(fbg);
         fbg_flip(fbg);
 
         x += velx;
