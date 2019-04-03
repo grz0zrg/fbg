@@ -126,9 +126,9 @@ struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
     dispmanx_context->input = render->input[0];
     MMAL_PORT_T *input = dispmanx_context->input;
 #ifdef FBG_RGBA
-    input->format->encoding = MMAL_ENCODING_RGB24;
-#else
     input->format->encoding = MMAL_ENCODING_RGBA;
+#else
+    input->format->encoding = MMAL_ENCODING_RGB24;
 #endif
     input->format->es->video.width  = VCOS_ALIGN_UP(fbg->width,  32);
     input->format->es->video.height = VCOS_ALIGN_UP(fbg->height, 16);
@@ -141,8 +141,11 @@ struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
     mmal_port_parameter_set_boolean(input, MMAL_PARAMETER_ZERO_COPY, MMAL_TRUE);
     input->buffer_size = input->buffer_size_recommended;
     input->buffer_num = input->buffer_num_recommended;
-    if (input->buffer_num < 2)
-    input->buffer_num = 2;
+    
+    if (input->buffer_num < 2) {
+        input->buffer_num = 2;
+    }
+
     dispmanx_context->pool = mmal_port_pool_create(input, input->buffer_num, input->buffer_size);
     {
         MMAL_DISPLAYREGION_T param;

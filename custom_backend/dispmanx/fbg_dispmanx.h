@@ -41,7 +41,7 @@
 
     #include "fbgraphics.h"
 
-#ifdef MMAL
+#ifdef FBG_MMAL
     #include <interface/mmal/mmal.h>
     #include <interface/mmal/util/mmal_util.h>
     #include <interface/mmal/util/mmal_connection.h>
@@ -50,7 +50,7 @@
 
     //! dispmanx wrapper data structure
     struct _fbg_dispmanx_context {
-#ifdef MMAL
+#ifdef FBG_MMAL
       //! MMAL component
       MMAL_COMPONENT_T *render;
       //! MMAL input port
