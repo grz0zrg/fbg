@@ -65,7 +65,7 @@ FBGraphics framebuffer settings support 16, 24 (BGR/RGB), 32 bpp, 16 bpp mode is
 
 FBGraphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing computer graphics right away with or without multi-core support.
 
-If you want to use the parallelism features with more advanced graphics primitives, take a look at great libraries such as [libgd](http://libgd.github.io/) or [Adafruit GFX library](https://github.com/adafruit/Adafruit-GFX-Library) which should be easy to integrate.
+If you want to use the parallelism features with more advanced graphics primitives, take a look at great libraries such as [libgd](http://libgd.github.io/), [Adafruit GFX library](https://github.com/adafruit/Adafruit-GFX-Library) or even [ImageMagick](https://imagemagick.org) which should be easy to integrate.
 
 FBGraphics is fast but should be used with caution, display bounds checking is not implemented on most primitives, this allow raw performances at the cost of crashs if not careful.
 

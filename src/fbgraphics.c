@@ -1602,7 +1602,7 @@ struct _fbg_img *fbg_loadImage(struct _fbg *fbg, const char *filename) {
 }
 
 void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y) {
-    unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (y * fbg->line_length));
+    unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (y * fbg->line_length) + x * fbg->components);
     unsigned char *img_pointer = img->data;
 
     int i = 0;
@@ -1621,7 +1621,7 @@ void fbg_imageColorkey(struct _fbg *fbg, struct _fbg_img *img, int x, int y, int
     int i = 0, j = 0;
     
     for (i = 0; i < img->height; i += 1) {
-        unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (i * fbg->line_length));
+        unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + ((y + i) * fbg->line_length) + x * fbg->components);
         for (j = 0; j < img->width; j += 1) {
             int ir = *img_pointer++,
                 ig = *img_pointer++,
