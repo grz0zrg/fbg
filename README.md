@@ -181,6 +181,8 @@ int main(int argc, char* argv[]) {
 
 **Note** : Functions like `fbg_clear` or `fbg_fpixel` are fast functions, there is slower equivalent (but more parametrable) such as `fbg_background` or `fbg_pixel`, some functions variant also support transparency such as ``fbg_pixela` or `fbg_recta`.
 
+**Note** : You can generate monospace bitmap fonts to be used with `fbg_createFont` function by using my [monoBitmapFontCreator](https://github.com/grz0zrg/monoBitmapFontCreator) tool available [here](https://fbg-bitmap-font-creator.netlify.com/)
+
 ### Parallelism
 
 Exploiting multiple cores with FBGraphics is really easy, first you have to prepare 3 functions (of which two are optional if you don't have any allocations to do) of the following definition :
