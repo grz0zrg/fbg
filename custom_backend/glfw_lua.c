@@ -30,7 +30,7 @@ void int_handler(int dummy) {
 }
 
 // fbg specific LUA code that we add automatically to any loaded LUA scripts
-// this actually expose all the C fbg library to the LUA script with short function names matching the Processing language
+// this actually expose a sample of the C fbg library to the LUA script with short function name matching the Processing language
 const char *fbg_lua_header = "local ffi = require(\"ffi\")\n"
                              "local fbg = ffi.load(\"libfbg.so\")\n"
                              "ffi.cdef[[\n"
@@ -109,6 +109,7 @@ struct _fragment_user_data *loadSketch(const char *sketch_filename) {
     struct _file_data *sketch_content = loadFileInBuffer(sketch_filename, header_size);
     if (sketch_content == NULL) {
         printf("Couldn't load file: %s\n", lua_tostring(user_data->lua_state, -1));
+        fflush(stdout);
 
         lua_close(user_data->lua_state);
 
@@ -124,6 +125,7 @@ struct _fragment_user_data *loadSketch(const char *sketch_filename) {
     int status = luaL_loadbuffer(user_data->lua_state, sketch_content->buffer, sketch_content->numbytes + header_size, "sketch_filename");
     if (status) {
         printf("luaL_loadbuffer failed: %s\n", lua_tostring(user_data->lua_state, -1));
+        fflush(stdout);
 
         free(sketch_content->buffer);
         free(sketch_content);
