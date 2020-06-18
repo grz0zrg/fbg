@@ -13,7 +13,17 @@ static void callback_vr_input(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer) {
 }
 #endif
 
-struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
+struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber, VC_IMAGE_TYPE_T image_type) {
+    int components = 3;
+    if (image_type == VC_IMAGE_RGBA32) {
+        components = 4;
+    } else if (image_type == VC_IMAGE_RGB888) {
+        components = 3;
+    } else {
+        fprintf(stderr, "fbg_dispmanxSetup: only VC_IMAGE_RGBA32 / VC_IMAGE_RGB888 is supported.\n");
+        return NULL;
+    }
+
     bcm_host_init();
 
     struct _fbg_dispmanx_context *dispmanx_context = (struct _fbg_dispmanx_context *)calloc(1, sizeof(struct _fbg_dispmanx_context));
@@ -44,11 +54,7 @@ struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
     // dispmanx setup
     uint32_t vc_image_ptr;
 
-#ifdef FBG_RGBA
-    dispmanx_context->resource_type = VC_IMAGE_RGBA32;
-#else
-    dispmanx_context->resource_type = VC_IMAGE_RGB888;
-#endif
+    dispmanx_context->resource_type = image_type;
 
     dispmanx_context->back_resource = vc_dispmanx_resource_create(dispmanx_context->resource_type, info.width, info.height, &vc_image_ptr);
     if (dispmanx_context->back_resource == 0) {
@@ -118,18 +124,32 @@ struct _fbg *fbg_dispmanxSetup(uint32_t displayNumber) {
     result = vc_dispmanx_update_submit_sync(dispmanx_context->update);
 #endif
 
-    struct _fbg *fbg = fbg_customSetup(info.width, info.height, (void *)dispmanx_context, fbg_dispmanxDraw, fbg_dispmanxFlip, NULL, fbg_dispmanxFree);
+    struct _fbg *fbg = fbg_customSetup(info.width, info.height, components, 1, 1, (void *)dispmanx_context, fbg_dispmanxDraw, fbg_dispmanxFlip, NULL, fbg_dispmanxFree);
+    if (!fbg) {
+        fprintf(stderr, "fbg_dispmanxSetup: fbg_customSetup failed\n");
+
+        vc_dispmanx_resource_delete(dispmanx_context->back_resource);
+        vc_dispmanx_resource_delete(dispmanx_context->front_resource);
+        vc_dispmanx_display_close(dispmanx_context->display);
+        free(dispmanx_context->src_rect);
+        free(dispmanx_context->dst_rect);
+        free(dispmanx_context);
+
+        return NULL;
+    }
 
 #ifdef FBG_MMAL
     mmal_component_create("vc.ril.video_render", &dispmanx_context->render);
     MMAL_COMPONENT_T *render = dispmanx_context->render;
     dispmanx_context->input = render->input[0];
     MMAL_PORT_T *input = dispmanx_context->input;
-#ifdef FBG_RGBA
-    input->format->encoding = MMAL_ENCODING_RGBA;
-#else
-    input->format->encoding = MMAL_ENCODING_RGB24;
-#endif
+
+    if (image_type == VC_IMAGE_RGBA32) {
+        input->format->encoding = MMAL_ENCODING_RGBA;
+    else if (image_type == VC_IMAGE_RGB888) {
+        input->format->encoding = MMAL_ENCODING_RGB24;
+    }
+
     input->format->es->video.width  = VCOS_ALIGN_UP(fbg->width,  32);
     input->format->es->video.height = VCOS_ALIGN_UP(fbg->height, 16);
     input->format->es->video.crop.x = 0;

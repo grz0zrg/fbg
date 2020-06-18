@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2018, 2019, Julien Verneuil
+    Copyright (c) 2018, 2019, 2020 Julien Verneuil
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -28,11 +28,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <sys/ioctl.h>
-#include <linux/kd.h>
 
 #ifndef WITHOUT_PNG
 #include "lodepng/lodepng.h"
@@ -64,6 +59,9 @@ void fbg_ringbufferCleanup(struct lfds720_ringbuffer_n_state *rs, void *key, voi
 
 struct _fbg *fbg_customSetup(
         int width, int height,
+        int components,
+        int initialize_buffers,
+        int allow_resizing,
         void *user_context,
         void (*user_draw)(struct _fbg *fbg),
         void (*user_flip)(struct _fbg *fbg),
@@ -84,217 +82,37 @@ struct _fbg *fbg_customSetup(
     fbg->width = width;
     fbg->height = height;
 
-#ifdef FBG_RGBA
-    fbg->components = 4;
-    
-    fbg->comp_offset = 1;
-#else
-    fbg->components = 3;
-
-    fbg->comp_offset = 0;
-#endif
+    fbg->components = components;
+    fbg->comp_offset = components - 3;
 
     fbg->line_length = fbg->width * fbg->components;
 
     fbg->width_n_height = fbg->width * fbg->height;
 
-    fbg->vinfo.xres = fbg->width;
-    fbg->vinfo.yres = fbg->height;
-
-    fbg->size = fbg->vinfo.xres * fbg->vinfo.yres * fbg->components;
+    fbg->size = fbg->width * fbg->height * fbg->components;
 
     fbg->user_context = user_context;
 
-    fbg->back_buffer = calloc(1, fbg->size * sizeof(char));
-    if (!fbg->back_buffer) {
-        fprintf(stderr, "fbg_customSetup: back_buffer calloc failed!\n");
-
-        user_free(fbg);
-
-        free(fbg);
-
-        return NULL;
-    }
-
-    fbg->disp_buffer = calloc(1, fbg->size * sizeof(char));
-    if (!fbg->disp_buffer) {
-        fprintf(stderr, "fbg_customSetup: disp_buffer calloc failed!\n");
-
-        user_free(fbg);
-
-        free(fbg->back_buffer);
-        free(fbg);
-
-        return NULL;
-    }
-
-    gettimeofday(&fbg->fps_start, NULL);
-
-    fbg_textColor(fbg, 255, 255, 255);
-
-#ifdef FBG_PARALLEL
-    fbg->state = 1;
-    fbg->frame = 0;
-    fbg->fps = 0;
-
-    fbg->fragment_queue_size = 7;
-#endif
-
-    fbg->new_width = 0;
-    fbg->new_height = 0;
-
-    return fbg;
-}
-
-struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
-    struct _fbg *fbg = (struct _fbg *)calloc(1, sizeof(struct _fbg));
-    if (!fbg) {
-        fprintf(stderr, "fbg_init: fbg calloc failed!\n");
-        return NULL;
-    }
-
-    char *default_fb_device = "/dev/fb0";
-    char *fb_device = user_fb_device ? user_fb_device : default_fb_device;
-
-    fbg->fd = open(fb_device, O_RDWR);
-
-    if (fbg->fd == -1) {
-        fprintf(stderr, "fbg_init: Cannot open '%s'!\n", fb_device);
-
-        return NULL;
-    }
-
-    if (ioctl(fbg->fd, FBIOGET_VSCREENINFO, &fbg->vinfo) == -1) {
-        fprintf(stderr, "fbg_init: '%s' Cannot obtain framebuffer FBIOGET_VSCREENINFO informations!\n", fb_device);
-
-        close(fbg->fd);
-
-        return NULL;
-    }
-
-    if (ioctl(fbg->fd, FBIOGET_FSCREENINFO, &fbg->finfo) == -1) {
-        fprintf(stderr, "fbg_init: '%s' Cannot obtain framebuffer FBIOGET_FSCREENINFO informations!\n", fb_device);
-
-        close(fbg->fd);
-
-        return NULL;
-    }
-
-    fprintf(stdout, "fbg_init: '%s' (%dx%d (%dx%d virtual) %d bpp (%d/%d, %d/%d, %d/%d) (%d smen_len) %d line_length)\n",
-        fb_device,
-        fbg->vinfo.xres, fbg->vinfo.yres,
-        fbg->vinfo.xres_virtual, fbg->vinfo.yres_virtual,
-        fbg->vinfo.bits_per_pixel,
-        fbg->vinfo.red.length,
-        fbg->vinfo.red.offset,
-        fbg->vinfo.green.length,
-        fbg->vinfo.green.offset,
-        fbg->vinfo.blue.length,
-        fbg->vinfo.blue.offset,
-        fbg->finfo.smem_len,
-        fbg->finfo.line_length);
-
-    if (fbg->vinfo.bits_per_pixel != 16 && fbg->vinfo.bits_per_pixel != 24 && fbg->vinfo.bits_per_pixel != 32) {
-        fprintf(stderr, "fbg_init: '%s' Unsupported format (only 16, 24 or 32 bits framebuffer is supported)!\n", fb_device);
-
-        close(fbg->fd);
-
-        return NULL;
-    }
-
-    if (fbg->vinfo.bits_per_pixel == 16) {
-        fprintf(stdout, "fbg_init: 16 bpp framebuffer detected; page flipping option not supported; all graphics operations will be managed in 24 bits then converted to 16 bpp before drawing.\n");
-
-        fbg->components = 3;
-
-        page_flipping = 0;
-    } else {
-        fbg->components = fbg->vinfo.bits_per_pixel / 8;
-        fbg->comp_offset = fbg->components - 3;
-    }
-
-    fbg->width = fbg->vinfo.xres;
-    fbg->height = fbg->vinfo.yres;
-
-    fbg->line_length = fbg->width * fbg->components;
-
-    fbg->width_n_height = fbg->width * fbg->height;
-
-    fbg->size = fbg->vinfo.xres * fbg->vinfo.yres * fbg->components;
-
-    if ((fbg->vinfo.bits_per_pixel == 24 || fbg->vinfo.bits_per_pixel == 32) &&
-        fbg->vinfo.red.length == 8 &&
-        fbg->vinfo.red.offset == 16 &&
-        fbg->vinfo.green.length == 8 &&
-        fbg->vinfo.blue.length == 8 &&
-        fbg->vinfo.blue.offset == 0 &&
-        fbg->vinfo.green.offset == 8) {
-        fbg->bgr = 1;
-    }
-
-    if (fbg->vinfo.bits_per_pixel == 16 &&
-        fbg->vinfo.red.offset == 11) {
-        fbg->bgr = 1;
-    }
-
-    if (page_flipping) {
-        // check for page flipping support
-        if (ioctl(fbg->fd, FBIOPAN_DISPLAY, &fbg->vinfo) == -1) {
-            fprintf(stderr, "fbg_init: '%s' FBIOPAN_DISPLAY / page flipping not supported!\n", fb_device);
-        } else {
-            // double the virtual height
-            fbg->vinfo.yres_virtual = fbg->vinfo.yres_virtual * 2;
-            if (ioctl(fbg->fd, FBIOPUT_VSCREENINFO, &fbg->vinfo) == -1) {
-                fprintf(stderr, "fbg_init: '%s' FBIOPUT_VSCREENINFO failed, page flipping disabled!\n", fb_device);
-            } else {
-                fbg->page_flipping = 1;
-
-                fprintf(stdout, "fbg_init: '%s' Page flipping enabled (virtual height was doubled)!\n", fb_device);
-
-                if (ioctl(fbg->fd, FBIOGET_FSCREENINFO, &fbg->finfo) == -1) {
-                    fprintf(stderr, "fbg_init: '%s' Cannot obtain framebuffer FBIOGET_FSCREENINFO informations!\n", fb_device);
-
-                    close(fbg->fd);
-
-                    return NULL;
-                }
-            }
-        }
-
-        if (!fbg->page_flipping) {
-            fprintf(stderr, "fbg_init: '%s' FBIOPAN_DISPLAY / page flipping not supported!\n", fb_device);
-        }
-    }
-
-    // initialize framebuffer
-    fbg->buffer = (unsigned char *)mmap(0, fbg->finfo.smem_len,
-        PROT_WRITE,
-        MAP_SHARED,
-        fbg->fd, 0);
-
-    memset(fbg->buffer, 0, fbg->finfo.smem_len);
-
-    // setup page flipping
-    if (fbg->page_flipping) {
-        fbg->disp_buffer = fbg->buffer;
-        fbg->back_buffer = fbg->buffer + fbg->width * fbg->components * fbg->height;
-    } else {
-        // setup front & back buffers
+    if (initialize_buffers) {
         fbg->back_buffer = calloc(1, fbg->size * sizeof(char));
         if (!fbg->back_buffer) {
-            fprintf(stderr, "fbg_init: back_buffer calloc failed!\n");
+            fprintf(stderr, "fbg_customSetup: back_buffer calloc failed!\n");
 
-            close(fbg->fd);
+            user_free(fbg);
+
+            free(fbg);
 
             return NULL;
         }
 
         fbg->disp_buffer = calloc(1, fbg->size * sizeof(char));
         if (!fbg->disp_buffer) {
-            fprintf(stderr, "fbg_init: disp_buffer calloc failed!\n");
+            fprintf(stderr, "fbg_customSetup: disp_buffer calloc failed!\n");
+
+            user_free(fbg);
 
             free(fbg->back_buffer);
-            close(fbg->fd);
+            free(fbg);
 
             return NULL;
         }
@@ -303,6 +121,8 @@ struct _fbg *fbg_setup(char *user_fb_device, int page_flipping) {
     gettimeofday(&fbg->fps_start, NULL);
 
     fbg_textColor(fbg, 255, 255, 255);
+
+    fbg->allow_resizing = allow_resizing;
 
 #ifdef FBG_PARALLEL
     fbg->state = 1;
@@ -327,8 +147,7 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
         fbg->backend_resize(fbg, new_width, new_height);
     }
 
-    // we don't allow resizing in framebuffer mode
-    if (fbg->buffer == NULL) {
+    if (fbg->allow_resizing) {
         int new_size = new_width * new_height * fbg->components;
 
         unsigned char *back_buffer = calloc(1, new_size * sizeof(char));
@@ -359,9 +178,6 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
         fbg->line_length = fbg->width * fbg->components;
 
         fbg->width_n_height = fbg->width * fbg->height;
-
-        fbg->vinfo.xres = fbg->width;
-        fbg->vinfo.yres = fbg->height;
 
         fbg->size = new_size;
 
@@ -464,16 +280,6 @@ void fbg_close(struct _fbg *fbg) {
 
     if (fbg->user_free) {
         fbg->user_free(fbg);
-    }
-
-    if (!fbg->page_flipping) {
-        free(fbg->back_buffer);
-        free(fbg->disp_buffer);
-    }
-
-    if (fbg->buffer) {
-        munmap(fbg->buffer, fbg->finfo.smem_len);
-        close(fbg->fd);
     }
 
     free(fbg);
@@ -691,7 +497,7 @@ void fbg_createFragment(struct _fbg *fbg,
 
     fbg->sync_barrier = sync_barrier;
 
-    int i = 0, j = 0;
+    int i = 0;
     int created_tasks = 0;
     for (i = 0; i < fbg->parallel_tasks; i += 1) {
         // create a task fbg structure for each threads
@@ -701,21 +507,21 @@ void fbg_createFragment(struct _fbg *fbg,
             continue;
         }
 
-        memcpy(&task_fbg->vinfo, &fbg->vinfo, sizeof(struct fb_var_screeninfo));
-        memcpy(&task_fbg->finfo, &fbg->finfo, sizeof(struct fb_fix_screeninfo));
+        //memcpy(&task_fbg->vinfo, &fbg->vinfo, sizeof(struct fb_var_screeninfo));
+        //memcpy(&task_fbg->finfo, &fbg->finfo, sizeof(struct fb_fix_screeninfo));
 
         task_fbg->components = fbg->components;
         task_fbg->comp_offset = fbg->comp_offset;
         task_fbg->line_length = fbg->line_length;
 
-        task_fbg->width = fbg->vinfo.xres;
-        task_fbg->height = fbg->vinfo.yres;
+        task_fbg->width = fbg->width;
+        task_fbg->height = fbg->height;
 
         task_fbg->parallel_tasks = fbg->parallel_tasks;
 
         task_fbg->width_n_height = task_fbg->width * task_fbg->height;
 
-        task_fbg->size = task_fbg->vinfo.xres * task_fbg->vinfo.yres * task_fbg->components;
+        task_fbg->size = task_fbg->width * task_fbg->height * task_fbg->components;
 
         struct _fbg_fragment *frag = (struct _fbg_fragment *)calloc(1, sizeof(struct _fbg_fragment));
         if (!frag) {
@@ -782,6 +588,7 @@ void fbg_createFragment(struct _fbg *fbg,
         }
 
         // allocate buffers
+        int j = 0;
         for (j = 0; j < fbg->fragment_queue_size; j += 1) {
             frag->fbg_freelist_data[j].buffer = calloc(1, sizeof(unsigned char) * task_fbg->size);
 
@@ -1107,31 +914,8 @@ void fbg_draw(struct _fbg *fbg, void (*user_mixing)(struct _fbg *fbg, unsigned c
 #else
 void fbg_draw(struct _fbg *fbg) {
 #endif
-#ifdef FBIO_WAITFORVSYNC
-    static int dummy = 0;
-    ioctl(fbg->fd, FBIO_WAITFORVSYNC, &dummy);
-#endif
-
     if (fbg->user_draw) {
         fbg->user_draw(fbg);
-    } else if (fbg->page_flipping == 0) {
-        if (fbg->vinfo.bits_per_pixel == 16) {
-            unsigned char *pix_pointer_src = fbg->disp_buffer;
-            unsigned char *pix_pointer_dst = fbg->buffer;
-
-            int i = 0;
-
-            for (i = 0; i < fbg->width_n_height; i += 1) {
-                unsigned int v = ((*pix_pointer_src++ >> 3) & 0x1f);
-                v |= ((*pix_pointer_src++ >> 2) & 0x3f) << 5;
-                v |= ((*pix_pointer_src++ >> 3) & 0x1f) << 11;
-
-                *pix_pointer_dst++ = v;
-                *pix_pointer_dst++ = v >> 8;;
-            }
-        } else {
-            memcpy(fbg->buffer, fbg->disp_buffer, fbg->size);
-        }
     }
 
     // resize the context (registered) by fbg_pushResize if needed
@@ -1145,18 +929,6 @@ void fbg_draw(struct _fbg *fbg) {
 }
 
 void fbg_flip(struct _fbg *fbg) {
-    if (fbg->page_flipping) {
-        if (fbg->vinfo.yoffset == 0) {
-            fbg->vinfo.yoffset = fbg->height;
-        } else {
-            fbg->vinfo.yoffset = 0;
-        }
-
-        if (ioctl(fbg->fd, FBIOPAN_DISPLAY, &fbg->vinfo) == -1) {
-            fprintf(stderr, "fbg_flip: FBIOPAN_DISPLAY failed!\n");
-        }
-    }
-
     if (fbg->user_flip) {
         fbg->user_flip(fbg);
     } else {

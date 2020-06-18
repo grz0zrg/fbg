@@ -209,7 +209,7 @@ void fbg_compositing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
 }
 
 int program() {
-    struct _fbg *fbg = fbg_glfwSetup(800, 600, "glfw example", 0, 0);
+    struct _fbg *fbg = fbg_glfwSetup(800, 600, 3, "glfw example", 0, 0);
     if (fbg == NULL) {
         return 0;
     }

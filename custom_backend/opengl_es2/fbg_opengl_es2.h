@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2019, Julien Verneuil
+    Copyright (c) 2019, 2020 Julien Verneuil
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -95,12 +95,13 @@
     //! initialize a FB Graphics OpenGL ES 2 (fbdev or RPI direct) context
     /*!
       \param fb_device framebuffer device; example : /dev/fb0
+      \param components fbg context color components (4 for RGBA or 3 for RGB)
       \return FBG data structure pointer
     */
 #ifdef FBG_RPI
-    extern struct _fbg *fbg_gles2Setup();
+    extern struct _fbg *fbg_gles2Setup(int components);
 #else
-    extern struct _fbg *fbg_gles2Setup(const char *fb_device);
+    extern struct _fbg *fbg_gles2Setup(const char *fb_device, int components);
 #endif
 
     //! OpenGL clear
@@ -121,19 +122,21 @@
 
     //! create a non-interpolated (NEAREST) GL texture from a FBG image
     /*!
+      \param fbg pointer to a FBG context / data structure
       \param img image structure pointer
       \return GL texture id
     */
-    GLuint fbg_gles2CreateTextureFromImage(struct _fbg_img *img);
+    GLuint fbg_gles2CreateTextureFromImage(struct _fbg *fbg, struct _fbg_img *img);
 
     //-- A SET OF RAW OPENGL UTILITY FUNCTIONS --
     //! create an empty non-interpolated (NEAREST) GL texture
     /*!
       \param width width of the requested texture
       \param height height of the requested texture
+      \param internal_format OpenGL format (GL_RGBA etc.)
       \return GL texture id
     */
-    extern GLuint fbg_gles2CreateTexture(GLuint width, GLuint height);
+    extern GLuint fbg_gles2CreateTexture(GLuint width, GLuint height, GLint internal_format);
 
     //! create a VBO from indexed data, support for vertices, UVs, normals and colors
     /*!

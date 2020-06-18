@@ -51,7 +51,7 @@ void fbg_glfwFramebufferResizeCb(GLFWwindow* window, int new_width, int new_heig
 	}
 }
 
-struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor_id, int fullscreen) {
+struct _fbg *fbg_glfwSetup(int width, int height, int components, const char *title, int monitor_id, int fullscreen) {
     struct _fbg_glfw_context *glfw_context = (struct _fbg_glfw_context *)calloc(1, sizeof(struct _fbg_glfw_context));
     if (!glfw_context) {
         fprintf(stderr, "fbg_glfwSetup: glfw context calloc failed!\n");
@@ -122,7 +122,6 @@ struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor
 	glfw_context->monitor = monitor;
 	glfw_context->simple_program = fbg_glfwCreateProgramFromString(fbg_glfwSimpleVs, fbg_glfwSimpleFs, 0);
 	glfw_context->fbg_vao = fbg_glfwCreateVAOvu(12, &fbg_glfwQuad[0]);
-	glfw_context->fbg_texture = fbg_glfwCreateTexture(width, height);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glPixelStorei(GL_PACK_ALIGNMENT, 1); 
@@ -132,7 +131,9 @@ struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor
 	glDebugMessageCallback(fbg_debugGlCb, 0);
 #endif
 
-	struct _fbg *fbg = fbg_customSetup(width, height, (void *)glfw_context, fbg_glfwDraw, fbg_glfwFlip, fbg_glfwResize, fbg_glfwFree);
+	struct _fbg *fbg = fbg_customSetup(width, height, components, 1, 1, (void *)glfw_context, fbg_glfwDraw, fbg_glfwFlip, fbg_glfwResize, fbg_glfwFree);
+
+	glfw_context->fbg_texture = fbg_glfwCreateTexture(width, height, fbg->components == 4 ? GL_RGBA : GL_RGB);
 
 	fbg_contexts_count += 1;
 
@@ -182,7 +183,7 @@ void fbg_glfwResize(struct _fbg *fbg, unsigned int new_width, unsigned new_heigh
     glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &twrap_mode); 
 
 	glDeleteTextures(1, &glfw_context->fbg_texture);
-	glfw_context->fbg_texture = fbg_glfwCreateTexture(new_width, new_height);
+	glfw_context->fbg_texture = fbg_glfwCreateTexture(new_width, new_height, fbg->components == 4 ? GL_RGBA : GL_RGB);
 
 	// and we restore its user defined parameters again (if any)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag_filter);
@@ -200,11 +201,11 @@ int fbg_glfwShouldClose(struct _fbg *fbg) {
 }
 
 void fbg_glfwUpdateBuffer(struct _fbg *fbg) {
-#ifdef FBG_RGBA
-	glReadPixels(0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
-#else
-	glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
-#endif
+	if (fbg->components == 4) {
+		glReadPixels(0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
+	} else if (fbg->components == 3) {
+		glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
+	}
 }
 
 void fbg_glfwClear() {
@@ -218,11 +219,13 @@ void fbg_glfwDraw(struct _fbg *fbg) {
 	glUseProgram(glfw_context->simple_program);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, glfw_context->fbg_texture);
-#ifdef FBG_RGBA
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
-#else
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
-#endif
+
+	if (fbg->components == 4) {
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
+	} else if (fbg->components == 3) {
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
+	}
+
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0);
@@ -277,29 +280,25 @@ void fbg_glfwFree(struct _fbg *fbg) {
     glfwTerminate();
 }
 
-GLuint fbg_glfwCreateTextureFromImage(struct _fbg_img *img) {
-    GLuint texture = fbg_glfwCreateTexture(img->width, img->height);
+GLuint fbg_glfwCreateTextureFromImage(struct _fbg *fbg, struct _fbg_img *img) {
+    GLuint texture = fbg_glfwCreateTexture(img->width, img->height, fbg->components == 4 ? GL_RGBA : GL_RGB);
 
-#ifdef FBG_RGBA
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->width, img->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
-#else
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data);
-#endif
+	if (fbg->components == 4) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->width, img->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
+	} else if (fbg->components == 3) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data);
+	}
 
     return texture;
 }
 
-GLuint fbg_glfwCreateTexture(GLuint width, GLuint height) {
+GLuint fbg_glfwCreateTexture(GLuint width, GLuint height, GLint internal_format) {
     GLuint texture;
     glGenTextures(1, &texture);
 
     glBindTexture(GL_TEXTURE_2D, texture);
-    
-#ifdef FBG_RGBA
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-#else
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-#endif
+
+    glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, internal_format, GL_UNSIGNED_BYTE, 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

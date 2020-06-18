@@ -12,7 +12,7 @@ void int_handler(int dummy) {
 }
 
 int main(int argc, char* argv[]) {
-    struct _fbg *fbg = fbg_dispmanxSetup(0);
+    struct _fbg *fbg = fbg_dispmanxSetup(0, VC_IMAGE_RGB888);
     if (fbg == NULL) {
         return 0;
     }

@@ -29,7 +29,7 @@ void fbg_gles2Free(struct _fbg *fbg);
 struct _fbg *fbg_gles2Setup() {
     bcm_host_init();
 #else // fbdev
-struct _fbg *fbg_gles2Setup(const char *fb_device) {
+struct _fbg *fbg_gles2Setup(const char *fb_device, int components) {
 #endif
     struct _fbg_gles2_context *gles2_context = (struct _fbg_gles2_context *)calloc(1, sizeof(struct _fbg_gles2_context));
     if (!gles2_context) {
@@ -218,7 +218,7 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
 
     gles2_context->simple_program = fbg_gles2CreateProgramFromString(fbg_gles2SimpleVs, fbg_gles2SimpleFs);
     gles2_context->fbg_vbo = fbg_gles2CreateVBOvu(12, &fbg_gles2Quad[0]);
-    gles2_context->fbg_texture = fbg_gles2CreateTexture(render_width, render_height);
+    gles2_context->fbg_texture = fbg_gles2CreateTexture(render_width, render_height, components == 4 ? GL_RGBA : GL_RGB);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glPixelStorei(GL_PACK_ALIGNMENT, 1); 
@@ -227,17 +227,17 @@ struct _fbg *fbg_gles2Setup(const char *fb_device) {
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    struct _fbg *fbg = fbg_customSetup(render_width, render_height, (void *)gles2_context, fbg_gles2Draw, fbg_gles2Flip, NULL, fbg_gles2Free);
+    struct _fbg *fbg = fbg_customSetup(render_width, render_height, components, 1, 1, (void *)gles2_context, fbg_gles2Draw, fbg_gles2Flip, NULL, fbg_gles2Free);
 
     return fbg;
 }
 
 void fbg_gles2UpdateBuffer(struct _fbg *fbg) {
-#ifdef FBG_RGBA
-    glReadPixels(0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
-#else
-    glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
-#endif
+    if (fbg->components == 4) {
+        glReadPixels(0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
+    } else if (fbg->components == 3) {
+        glReadPixels(0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
+    }
 }
 
 void fbg_gles2Clear() {
@@ -258,11 +258,12 @@ void fbg_gles2Draw(struct _fbg *fbg) {
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, gles2_context->fbg_texture);
-#ifdef FBG_RGBA
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
-#else
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
-#endif
+
+    if (fbg->components == 4) {
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGBA, GL_UNSIGNED_BYTE, fbg->back_buffer);
+    } else if (fbg->components == 3) {
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, fbg->width, fbg->height, GL_RGB, GL_UNSIGNED_BYTE, fbg->back_buffer);
+    }
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -297,29 +298,25 @@ void fbg_gles2Free(struct _fbg *fbg) {
 #endif
 }
 
-GLuint fbg_gles2CreateTextureFromImage(struct _fbg_img *img) {
-    GLuint texture = fbg_gles2CreateTexture(img->width, img->height);
+GLuint fbg_gles2CreateTextureFromImage(struct _fbg *fbg, struct _fbg_img *img) {
+    GLuint texture = fbg_gles2CreateTexture(img->width, img->height, fbg->components == 4 ? GL_RGBA : GL_RGB);
 
-#ifdef FBG_RGBA
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->width, img->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
-#else
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data);
-#endif
+    if (fbg->components == 4) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->width, img->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->data);
+    } else if (fbg->components == 3) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->data);
+    }
 
     return texture;
 }
 
-GLuint fbg_gles2CreateTexture(GLuint width, GLuint height) {
+GLuint fbg_gles2CreateTexture(GLuint width, GLuint height, GLint internal_format) {
     GLuint texture;
     glGenTextures(1, &texture);
 
     glBindTexture(GL_TEXTURE_2D, texture);
     
-#ifdef FBG_RGBA
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-#else
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-#endif
+    glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, internal_format, GL_UNSIGNED_BYTE, 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

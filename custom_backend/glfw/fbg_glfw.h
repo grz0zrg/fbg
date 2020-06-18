@@ -62,12 +62,13 @@
     /*!
       \param width window width
       \param height window height
+      \param components fbg context color components (4 for RGBA or 3 for RGB)
       \param title window title
       \param monitor monitor id (0 = primary display)
       \param fullscreen 0 = windowed, 1 = fullscreen, 2 = windowed full screen
       \return FBG data structure pointer
     */
-    extern struct _fbg *fbg_glfwSetup(int width, int height, const char *title, int monitor, int fullscreen);
+    extern struct _fbg *fbg_glfwSetup(int width, int height, int components, const char *title, int monitor, int fullscreen);
 
     //! OpenGL clear
     extern void fbg_glfwClear();
@@ -102,19 +103,21 @@
 
     //! create a non-interpolated (NEAREST) GL texture from a FBG image
     /*!
+      \param fbg pointer to a FBG context / data structure
       \param img image structure pointer
       \return GL texture id
     */
-    GLuint fbg_glfwCreateTextureFromImage(struct _fbg_img *img);
+    GLuint fbg_glfwCreateTextureFromImage(struct _fbg *fbg, struct _fbg_img *img);
 
     //-- A SET OF RAW OPENGL UTILITY FUNCTIONS --
     //! create an empty non-interpolated (NEAREST) GL texture
     /*!
       \param width width of the requested texture
       \param height height of the requested texture
+      \param internal_format OpenGL format (GL_RGBA etc.)
       \return GL texture id
     */
-    extern GLuint fbg_glfwCreateTexture(GLuint width, GLuint height);
+    extern GLuint fbg_glfwCreateTexture(GLuint width, GLuint height, GLint internal_format);
 
     //! create a VAO from indexed data, support for vertices, UVs, normals and colors
     /*!

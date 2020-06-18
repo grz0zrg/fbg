@@ -94,7 +94,7 @@ void *process(void *t) {
 }
 
 int main(int argc, char* argv[]) {
-    fbg = fbg_dispmanxSetup(0);
+    fbg = fbg_dispmanxSetup(0, VC_IMAGE_RGB888);
     if (fbg == NULL) {
         return 0;
     }

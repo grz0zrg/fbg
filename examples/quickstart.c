@@ -2,6 +2,7 @@
 #include <signal.h>
 
 #include "fbgraphics.h"
+#include "fbg_fbdev.h" // insert any backends from ../custom_backend/backend_name folder
 
 int keep_running = 1;
 
@@ -12,8 +13,9 @@ void int_handler(int dummy) {
 int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 
-    // open "/dev/fb0" by default, use fbg_setup("/dev/fb1", 0) if you want to use another framebuffer
-    struct _fbg *fbg = fbg_init();
+    // open "/dev/fb0" by default, use fbg_fbdevSetup("/dev/fb1", 0) if you want to use another framebuffer
+    // note : fbg_fbdevInit is the linux framebuffer backend, you can use a different backend easily by including the proper header and compiling with the appropriate backend file found in ../custom_backend/backend_name
+    struct _fbg *fbg = fbg_fbdevInit();
     if (fbg == NULL) {
         return 0;
     }

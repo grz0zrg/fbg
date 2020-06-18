@@ -1,8 +1,6 @@
 FBGraphics : Custom rendering backend
 =====
 
-Note : By default FBG custom backend use RGB format (24 bits buffers), `FBG_RGBA` need to be defined when compiling for RGBA format (32 bits buffers)
-
 ## OpenGL ES 2.0
 
 FBG OpenGL ES 2.0 rendering backend with GL utilities, similar to the GLFW backend.
@@ -65,6 +63,20 @@ FBG OpenGL 3.x+ rendering backend with GL utilities, multi-platform, use the [GL
 
 It is also possible to modify the way the FBG display buffer is rendered through a shader, see the advanced example where the software rendered background is actually the FBG buffer with a fragment shader applied to it.
 
+## GBA
+
+Very simple Game Boy Advance backend written as a proof of concept for targeting low memory hardware. It is slow due to 24/32 bpp -> 16 bpp conversion upon fbg_draw() calls.
+
+### Compiling
+
+There is no makefile provided to compile this example but this can be used as a base (devkitpro / devkitarm) : [GBA_VSCode_Basic](https://github.com/JamieDStewart/GBA_VSCode_Basic)
+
+Note : May need to define `-DWITHOUT_PNG -DWITHOUT_JPEG` when compiling, `-lm` should also be linked.
+
+### Examples
+
+see `gba_example.c`
+
 ### Documentation
 
 See the FB Graphics documentation.
@@ -117,7 +129,7 @@ void int_handler(int dummy) {
 }
 
 int main(int argc, char* argv[]) {
-    struct _fbg *fbg = fbg_glfwSetup(800, 600, "glfw example", 0, 0);
+    struct _fbg *fbg = fbg_glfwSetup(800, 600, 3, "glfw example", 0, 0);
     if (fbg == NULL) {
         return 0;
     }

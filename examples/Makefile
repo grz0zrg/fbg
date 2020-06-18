@@ -3,7 +3,7 @@ STANDARD_FLAGS=-std=c11 -pedantic -D_GNU_SOURCE -D_POSIX_SOURCE -Wno-unused-valu
 DEBUG_FLAGS=-DDEBUG -g -Wall
 RELEASE_FLAGS=-O2 -Wall
 DEFP=-DFBG_PARALLEL
-SRC_LIBS=../src/lodepng/lodepng.c ../src/nanojpeg/nanojpeg.c ../src/fbgraphics.c
+SRC_LIBS=../src/lodepng/lodepng.c ../src/nanojpeg/nanojpeg.c ../src/fbgraphics.c ../custom_backend/fbdev/fbg_fbdev.c
 SRC1=$(SRC_LIBS) quickstart.c
 SRC2=$(SRC_LIBS) simple_parallel_example.c
 SRC3=$(SRC_LIBS) perlin.c full_example.c
@@ -23,13 +23,13 @@ LIBS2=-lm -lpthread
 LIBS3=-lm -lpthread
 LIBS_LFDS_711=liblfds711.a
 LIBS_LFDS_720=liblfds720.a
-INCS=-I ../src/ -I.
-INCS3=-I ../src/ -I.
+INCS=-I ../src/ -I. -I ../custom_backend/fbdev
+INCS3=-I ../src/ -I. -I ../custom_backend/fbdev
 INCS_LFDS_711=-Iliblfds711
 INCS_LFDS_720=-Iliblfds720
 
 tiny:
-	$(CC) ../src/fbgraphics.c simple_parallel_example.c $(INCS) $(STANDARD_FLAGS) $(DEFP) -fdata-sections -ffunction-sections -flto -DFBG_LIGHT -Os -lpthread -o $(OUT2) -Wl,--gc-sections,-flto
+	$(CC) ../custom_backend/fbdev/fbg_fbdev.c ../src/fbgraphics.c simple_parallel_example.c $(INCS) $(STANDARD_FLAGS) $(DEFP) -fdata-sections -ffunction-sections -flto -DFBG_LIGHT -Os -lpthread -o $(OUT2) -Wl,--gc-sections,-flto
 
 all:
 	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS1) -o $(OUT1)

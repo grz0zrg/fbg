@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "fbgraphics.h"
+#include "fbg_fbdev.h"
 
 int keep_running = 1;
 
@@ -83,7 +83,7 @@ void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
 }
 
 int main(int argc, char* argv[]) {
-    struct _fbg *fbg = fbg_init();
+    struct _fbg *fbg = fbg_fbdevInit();
     if (fbg == NULL) {
         return 0;
     }

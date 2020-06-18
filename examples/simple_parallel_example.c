@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "fbgraphics.h"
+#include "fbg_fbdev.h"
 
 int keep_running = 1;
 
@@ -58,7 +58,7 @@ void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
 int main() {
     signal(SIGINT, int_handler);
 
-    struct _fbg *fbg = fbg_init();
+    struct _fbg *fbg = fbg_fbdevInit();
     if (fbg == NULL) {
         return 0;
     }

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "fbgraphics.h"
+#include "fbg_fbdev.h"
 
 #include "perlin.h"
 
@@ -77,7 +77,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
 int main(int argc, char* argv[]) {
     srand(time(NULL));
 
-    struct _fbg *fbg = fbg_init();
+    struct _fbg *fbg = fbg_fbdevInit();
     if (fbg == NULL) {
         return 0;
     }

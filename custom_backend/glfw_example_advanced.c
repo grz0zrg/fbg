@@ -63,7 +63,7 @@ void onResize(struct _fbg *fbg, unsigned int new_width, unsigned int new_height)
 }
 
 int main(int argc, char* argv[]) {
-    struct _fbg *fbg = fbg_glfwSetup(800, 600, "glfw example", 0, 0);
+    struct _fbg *fbg = fbg_glfwSetup(800, 600, 3, "glfw example", 0, 0);
     if (fbg == NULL) {
         return 0;
     }
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
     struct _fbg_img *bb_font_img = fbg_loadPNG(fbg, "../examples/bbmode1_8x8.png");
     struct _fbg_img *bone_image = fbg_loadPNG(fbg, "bone.png");
 
-    GLuint bone_texture = fbg_glfwCreateTextureFromImage(bone_image);
+    GLuint bone_texture = fbg_glfwCreateTextureFromImage(fbg, bone_image);
     glBindTexture(GL_TEXTURE_2D, bone_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

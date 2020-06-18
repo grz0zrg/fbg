@@ -12,7 +12,7 @@ void int_handler(int dummy) {
 }
 
 int main(int argc, char* argv[]) {
-    struct _fbg *fbg = fbg_glfwSetup(800, 600, "glfw example", 0, 0);
+    struct _fbg *fbg = fbg_glfwSetup(800, 600, 3, "glfw example", 0, 0);
     if (fbg == NULL) {
         return 0;
     }

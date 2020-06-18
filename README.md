@@ -1,21 +1,25 @@
 FBGraphics : Lightweight C 2D graphics API agnostic library with parallelism support
 =====
 
-FBGraphics (FBG) is a simple C 16, 24, 32 bpp graphics library with parallelism and custom rendering backend support (graphics API agnostic).
+FBGraphics (FBG) is a simple C 24, 32 bpp (internal format) graphics library with parallelism and custom rendering backend support (graphics API agnostic).
 
-The library come with four backend : 
- * a Linux framebuffer rendering backend (bundled; optional)
- * OpenGL backend which use the [GLFW](http://www.glfw.org/) library (see `custom_backend` folder)
- * OpenGL ES 2.0 backend for fbdev or Raspberry PI (see `custom_backend` folder)
- * fast dispmanx backend (Video Core IV; Raspberry PI) (see `custom_backend` folder)
+The library is only two .c files on most use cases, the renderer agnostic library `fbgraphics.c` and one of the rendering backend found in `custom_backend` directory.
+
+The library come with five backend (see `custom_backend` folder) : 
+ * a Linux framebuffer rendering backend (with 16 bpp support through 24/32 bpp conversion)
+ * OpenGL backend which use the [GLFW](http://www.glfw.org/) library
+ * OpenGL ES 2.0 backend for fbdev or Raspberry PI
+ * fast dispmanx backend (Video Core IV; Raspberry PI)
+ * GBA backend (slow due to 24/32 bpp -> 16 bpp support, mostly done as a proof of concept for portability on low memory embedded example)
 
 Features :
 
- * Easy custom rendering backend support
+ * Easy custom rendering backend support powerfull enough to target low memory hardware!
  * Cross-platform with the GLFW backend (some examples may need to be adapted to the target OS)
- * Bundled framebuffer rendering backend support (optional)
+ * Linux framebuffer (fbdev) rendering backend support
     * Double buffering (with optional page flipping mechanism)
     * 16, 24 (BGR/RGB), 32 bpp support
+ * GBA rendering backend
  * OpenGL rendering backend through GLFW
  * OpenGL ES 2.0 rendering backend for Raspberry PI or through fbdev (tested on Nano PI Fire 3 board)
  * dispmanx rendering backend (Video Core IV; Raspberry PI)
@@ -51,7 +55,9 @@ Table of Contents
 
 FBGraphics was built to produce fullscreen pixels effects easily (think of Processing-like creative coding etc.) with non-accelerated framebuffer by leveraging multi-core processors, it is a bit like a software GPU but much less complex and featured, the initial target platform was a Raspberry PI 3B / NanoPI.
 
-FBGraphics was also extended to support any numbers of custom rendering backend; all graphics calls manipulate internal buffers and a simple interface allow to draw the result the way you want to.
+FBGraphics was extended to support any numbers of custom rendering backend; all graphics calls manipulate internal buffers and a simple interface allow to draw the result the way you want to.
+
+FBGraphics can support low memory hardware such as GBA by writing a specific backend. It should be noted that all internal buffers are manipulated in 24/32 bpp which is why the GBA backend is slow since it has to convert to 16bpp.
 
 An OpenGL rendering backend which use the [GLFW library](http://www.glfw.org/) was created to demonstrate the custom backend feature, it allow to draw the non-accelerated FB Graphics buffer into an OpenGL context through a texture and thus allow to interwine 3D or 2D graphics produced with standard OpenGL calls with CPU-only graphics produced by FBGraphics draw calls.
 
@@ -63,7 +69,7 @@ FBGraphics was built so that it is possible to create any number of rendering co
 
 FBGraphics framebuffer settings support 16, 24 (BGR/RGB), 32 bpp, 16 bpp mode is handled by converting from 24 bpp to 16 bpp upon drawing, page flipping mechanism is disabled in 16 bpp mode, **24 bpp is the fastest mode**.
 
-FBGraphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing computer graphics right away with or without multi-core support.
+FBGraphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing computer graphics anywhere right away with or without multi-core support.
 
 If you want to use the parallelism features with more advanced graphics primitives, take a look at great libraries such as [libgd](http://libgd.github.io/), [Adafruit GFX library](https://github.com/adafruit/Adafruit-GFX-Library) or even [ImageMagick](https://imagemagick.org) which should be easy to integrate.
 
@@ -71,7 +77,7 @@ FBGraphics is fast but should be used with caution, display bounds checking is n
 
 Multi-core support is optional and is only enabled when `FBG_PARALLEL` C definition is present.
 
-FBGraphics framebuffer backend support a mechanism known as page flipping, it allow fast double buffering by doubling the framebuffer virtual area, it is disabled by default because it is actually slower on some devices. You can enable it with a `fbg_setup` call.
+FBGraphics framebuffer backend support a mechanism known as page flipping, it allow fast double buffering by doubling the framebuffer virtual area, it is disabled by default because it is actually slower on some devices. You can enable it with a `fbg_fbdevSetup` call.
 
 VSync is automatically enabled if supported.
 
@@ -92,6 +98,7 @@ The simplest example (no parallelism, without texts and images) :
 #include <sys/stat.h>
 #include <signal.h>
 
+#include "fbg_fbdev.h"
 #include "fbgraphics.h"
 
 int keep_running = 1;
@@ -103,7 +110,7 @@ void int_handler(int dummy) {
 int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 
-    struct _fbg *fbg = fbg_setup("/dev/fb0", 0); // you can also directly use fbg_init(); for "/dev/fb0", last argument mean that will not use page flipping mechanism  for double buffering (it is actually slower on some devices!)
+    struct _fbg *fbg = fbg_fbdevSetup("/dev/fb0", 0); // you can also directly use fbg_fbdevInit(); for "/dev/fb0", last argument mean that will not use page flipping mechanism  for double buffering (it is actually slower on some devices!)
 
     do {
         fbg_clear(fbg, 0); // can also be replaced by fbg_fill(fbg, 0, 0, 0);
@@ -131,6 +138,7 @@ A simple quickstart example with most features (but no parallelism, see below) :
 #include <sys/stat.h>
 #include <signal.h>
 
+#include "fbg_fbdev.h"
 #include "fbgraphics.h"
 
 int keep_running = 1;
@@ -142,7 +150,7 @@ void int_handler(int dummy) {
 int main(int argc, char* argv[]) {
     signal(SIGINT, int_handler);
 
-    struct _fbg *fbg = fbg_init();
+    struct _fbg *fbg = fbg_fbdevInit();
 
     struct _fbg_img *texture = fbg_loadImage(fbg, "texture.png");
     struct _fbg_img *bb_font_img = fbg_loadImage(fbg, "bbmode1_8x8.png");
@@ -238,7 +246,7 @@ fbg_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3);
 
 Where :
 
-* `fbg` is the main library data structure returned by `fbg_init` or `fbg_setup`
+* `fbg` is the main library data structure returned by `fbg_customSetup` and any backend `fbg_backendnameSetup` calls (see available backends in `custom_backend` directory)
 * `fragmentStart`is a C function which will be executed when the thread start (can be NULL)
 * `fragment`is a C function which will be executed indefinitly for each threads and where all the draw code will happen
 * `fragmentStop` is a C function which will be executed when the thread end  (can be NULL)
@@ -264,7 +272,7 @@ See `simple_parallel_example.c` and `full_example.c` for more informations.
 ```c
 // function called for each tasks in the fbg_draw function
 void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
-    // fbg is the main fbg structure defined by fbg_setup or fbg_init
+    // fbg is the main fbg structure returned by fbg_customSetup calls and any backend setup calls
     // buffer is the current task buffer
     // task_id is the current task id
     int j = 0;
@@ -359,15 +367,15 @@ Some effects come from [my Open Processing sketches](https://www.openprocessing.
 
 C11 standard should be supported by the C compiler.
 
-All examples make use of the framebuffer device `/dev/fb0` and can be built by typing `make` into the examples directory then run them by typing `./run_quickstart` for example (this handle the framebuffer setup prior launch), you will need to compile liblfds for the parallelism features. (see below)
+All examples found in `examples` directory make use of the framebuffer device `/dev/fb0` and can be built by typing `make` into the examples directory then run them by typing `./run_quickstart` for example (this handle the framebuffer setup prior launch), you will need to compile liblfds for the parallelism features. (see below)
 
 All examples were tested on a Raspberry PI 3B with framebuffer settings : 320x240 24 bpp
 
-For the default build (no parallelism), FBGraphics come with a header file `fbgraphics.h` and a C file `fbgraphics.c` to be included / compiled / linked with your program, you will also need to compile the `lodepng.c` library and `nanojpeg.c` library, see the examples directory for examples of Makefile.
+For the default build (no parallelism), FBGraphics come with a header file `fbgraphics.h` and a C file `fbgraphics.c` to be included / compiled / linked with your program plus one of the rendering backend found in `custom_backend` directory, you will also need to compile the `lodepng.c` library and `nanojpeg.c` library, see the examples directory for examples of Makefile.
 
 For parallelism support, `FBG_PARALLEL` need to be defined.
 
-If you need to use the slightly different parallelism implementation (see technical implementatio section) you will need the [liblfds](http://liblfds.org/) library :
+If you need to use the slightly different parallelism implementation (see technical implementation section) you will need the [liblfds](http://liblfds.org/) library :
 
  * Get latest liblfds 7.1.1 package on the official website
  * uncompress, go into the directory `liblfds711`
@@ -402,6 +410,10 @@ The GLFW backend was made to demonstrate how to write a backend but it is comple
 The GLFW backend has a cool lightweight Lua example which setup a Processing-like environment making use of the parallelism feature of the library, allowing the user to prototype multithreaded graphical stuff without C code compilation through the Lua language.
 
 ## OpenGL ES 2 backend
+
+See `README` into `custom_backend` folder
+
+## GBA backend
 
 See `README` into `custom_backend` folder
 

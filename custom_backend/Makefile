@@ -24,10 +24,10 @@ INCS2=-I ../src/ -I. -IIluajit `pkg-config --cflags glfw3 glu`
 INCS_LFDS_711=-Iliblfds711
 INCS_LFDS_720=-Iliblfds720
 
-tiny:
-	$(CC) $(SRC_LIB1) $(INCS) $(STANDARD_FLAGS) -O1 -fPIC -shared -o libfbg.so
-	$(CC) ../src/fbgraphics.c glfw/fbg_glfw.c glfw_example.c $(INCS) $(STANDARD_FLAGS) -fdata-sections -ffunction-sections -flto -DWITHOUT_PNG -DWITHOUT_JPEG -Os -lpthread `pkg-config --static --libs glfw3` `pkg-config --libs glew` -o $(OUT1) -Wl,--gc-sections,-flto
-	$(CC) ../src/fbgraphics.c glfw/fbg_glfw.c glfw_parallel.c $(INCS) $(STANDARD_FLAGS) -fdata-sections -ffunction-sections -flto -DWITHOUT_PNG -DWITHOUT_JPEG -Os -lpthread `pkg-config --static --libs glfw3` `pkg-config --libs glew` $(DEFP) -o $(OUT3) -Wl,--gc-sections,-flto
+#tiny:
+#	$(CC) $(SRC_LIB1) $(INCS) $(STANDARD_FLAGS) -O1 -fPIC -shared -o libfbg.so
+#	$(CC) ../src/fbgraphics.c glfw/fbg_glfw.c glfw_example.c $(INCS) $(STANDARD_FLAGS) -fdata-sections -ffunction-sections -flto -DWITHOUT_PNG -DWITHOUT_JPEG -Os -lpthread `pkg-config --static --libs glfw3` `pkg-config --libs glew` -o $(OUT1) -Wl,--gc-sections,-flto
+#	$(CC) ../src/fbgraphics.c glfw/fbg_glfw.c glfw_parallel.c $(INCS) $(STANDARD_FLAGS) -fdata-sections -ffunction-sections -flto -DWITHOUT_JPEG -Os -lpthread `pkg-config --static --libs glfw3` `pkg-config --libs glew` $(DEFP) -o $(OUT3) -Wl,--gc-sections,-flto
 
 all:
 	$(CC) $(SRC_LIB1) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) -fPIC -shared -o libfbg.so
@@ -58,9 +58,8 @@ rpies2:
 
 dispman:
 	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_example.c -I ../src/ $(STANDARD_FLAGS) -I/opt/vc/include/ -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_example
-	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_pure_parallel.c -I ../src/ $(STANDARD_FLAGS) -DFBG_RGBA -o2 -I/opt/vc/include/ -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_pure_parallel
-	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_parallel.c -I ../src/ $(STANDARD_FLAGS) $(DEFP) -DFBG_RGBA -DFBG_LFDS -I. -Iliblfds720 -I/opt/vc/include/ -L/opt/vc/lib/ ~/liblfds7.2.0/src/liblfds720/bin/liblfds720.a -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_parallel
-
+	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_pure_parallel.c -I ../src/ $(STANDARD_FLAGS) -o2 -I/opt/vc/include/ -L/opt/vc/lib/ -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_pure_parallel
+	$(CC) $(SRC_LIBS) dispmanx/fbg_dispmanx.c dispmanx_parallel.c -I ../src/ $(STANDARD_FLAGS) $(DEFP) -DFBG_LFDS -I. -Iliblfds720 -I/opt/vc/include/ -L/opt/vc/lib/ ~/liblfds7.2.0/src/liblfds720/bin/liblfds720.a -lbrcmGLESv2 -lbrcmEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm -o dispmanx_parallel
 
 clean:
 	rm -f *.o $(OUT1) $(OUT2) $(OUT3) $(OUT4)

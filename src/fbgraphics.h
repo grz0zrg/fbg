@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2018, 2019, Julien Verneuil
+    Copyright (c) 2018, 2019, 2020 Julien Verneuil
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,6 @@
 #ifndef FB_GRAPHICS_H
 #define FB_GRAPHICS_H
 
-    #include <linux/fb.h>
     #include <time.h>
     #include <sys/time.h>
     #include <stdint.h>
@@ -122,19 +121,9 @@
     //! FB Graphics context data structure
     /*! Hold all data related to a FBG context */
     struct _fbg {
-        //! Framebuffer device file descriptor
-        int fd;
-
-        //! Framebuffer device var. informations
-        struct fb_var_screeninfo vinfo;
-        //! Framebuffer device fix. informations
-        struct fb_fix_screeninfo finfo;
-
         //! Framebuffer real data length (with BPP)
         int size;
 
-        //! Memory-mapped framebuffer
-        unsigned char *buffer;
         //! Front / display buffer
         unsigned char *disp_buffer;
         //! Back buffer
@@ -142,6 +131,9 @@
         unsigned char *back_buffer;
         //! Temporary buffer
         unsigned char *temp_buffer;
+
+        //! Wether to allow context resize.
+        int allow_resizing;
 
         //! Current fill color
         /*! Default to black. */
@@ -205,8 +197,6 @@
 
         //! Flag indicating a BGR framebuffer
         int bgr;
-        //! Flag indicating that page flipping is enabled
-        int page_flipping;
 
         //! Backend resize function
         void (*backend_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height);
@@ -302,33 +292,27 @@
 
 // ### Library functions
 
-    //! initialize a FB Graphics context (framebuffer)
-    /*!
-      \param fb_device framebuffer device (example : /dev/fb0)
-      \param page_flipping wether to use page flipping mechanism for double buffering (slow on some devices)
-      \return _fbg structure pointer to pass to any FBG library functions
-      \sa fbg_close(), fbg_init(), fbg_customSetup()
-    */
-    extern struct _fbg *fbg_setup(char *fb_device, int page_flipping);
-
     //! initialize a FB Graphics context with a custom rendering backend
     /*!
       \param width render width
       \param height render height
+      \param components image components (3 = RGB, 4 = RGBA etc.)
+      \param initialize_buffers wether internal buffers should be initialized
+      \param allow_resizing wether to allow internal context resize (any registered callbacks will still be called)
       \param user_context user rendering data storage (things like window context etc.)
       \param user_draw function to call upon fbg_draw()
       \param user_flip function to call upon fbg_flip()
       \param backend_resize function to call upon fbg_resize()
       \param user_free function to call upon fbg_close()
       \return _fbg structure pointer to pass to any FBG library functions
-      \sa fbg_close(), fbg_init(), fbg_setup()
+      \sa fbg_close()
     */
-    extern struct _fbg *fbg_customSetup(int width, int height, void *user_context, void (*user_draw)(struct _fbg *fbg), void (*user_flip)(struct _fbg *fbg), void (*backend_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height), void (*user_free)(struct _fbg *fbg));
+    extern struct _fbg *fbg_customSetup(int width, int height, int components, int initialize_buffers, int allow_resizing, void *user_context, void (*user_draw)(struct _fbg *fbg), void (*user_flip)(struct _fbg *fbg), void (*backend_resize)(struct _fbg *fbg, unsigned int new_width, unsigned int new_height), void (*user_free)(struct _fbg *fbg));
 
     //! free up the memory associated with a FB Graphics context and close the framebuffer device
     /*!
       \param fbg pointer to a FBG context / data structure
-      \sa fbg_setup(), fbg_init(), fbg_customSetup()
+      \sa fbg_customSetup()
     */
     extern void fbg_close(struct _fbg *fbg);
 
@@ -819,12 +803,6 @@
 #endif
 
 // ### Helper functions
-    //! initialize a FB Graphics context with '/dev/fb0' as framebuffer device and no page flipping
-    /*!
-      \sa fbg_init(), fbg_customSetup(), fbg_close()
-    */
-    #define fbg_init() fbg_setup(NULL, 0)
-
     //! background fade to black with controllable factor
     /*!
       \param fbg pointer to a FBG context / data structure
