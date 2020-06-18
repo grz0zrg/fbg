@@ -10,11 +10,11 @@ The library come with five backend (see `custom_backend` folder) :
  * OpenGL backend which use the [GLFW](http://www.glfw.org/) library
  * OpenGL ES 2.0 backend for fbdev or Raspberry PI
  * fast dispmanx backend (Video Core IV; Raspberry PI)
- * GBA backend (slow due to 24/32 bpp -> 16 bpp support, mostly done as a proof of concept for portability on low memory embedded example)
+ * GBA backend (slow due to 24/32 bpp -> 16 bpp support, mostly done as a proof of concept for portability on low memory hardware)
 
 Features :
 
- * Easy custom rendering backend support powerfull enough to target low memory hardware!
+ * Easy to write / use custom rendering backend support flexible enough to target low memory hardware!
  * Cross-platform with the GLFW backend (some examples may need to be adapted to the target OS)
  * Linux framebuffer (fbdev) rendering backend support
     * Double buffering (with optional page flipping mechanism)
@@ -57,7 +57,7 @@ FBGraphics was built to produce fullscreen pixels effects easily (think of Proce
 
 FBGraphics was extended to support any numbers of custom rendering backend; all graphics calls manipulate internal buffers and a simple interface allow to draw the result the way you want to.
 
-FBGraphics can support low memory hardware such as GBA by writing a specific backend. It should be noted that all internal buffers are manipulated in 24/32 bpp which is why the GBA backend is slow since it has to convert to 16bpp.
+FBGraphics can support low memory hardware such as GBA. It should be noted that all internal buffers are manipulated in 24/32 bpp so it has to convert to 16bpp on GBA.
 
 An OpenGL rendering backend which use the [GLFW library](http://www.glfw.org/) was created to demonstrate the custom backend feature, it allow to draw the non-accelerated FB Graphics buffer into an OpenGL context through a texture and thus allow to interwine 3D or 2D graphics produced with standard OpenGL calls with CPU-only graphics produced by FBGraphics draw calls.
 
@@ -71,7 +71,7 @@ FBGraphics framebuffer settings support 16, 24 (BGR/RGB), 32 bpp, 16 bpp mode is
 
 FBGraphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing computer graphics anywhere right away with or without multi-core support.
 
-If you want to use the parallelism features with more advanced graphics primitives, take a look at great libraries such as [libgd](http://libgd.github.io/), [Adafruit GFX library](https://github.com/adafruit/Adafruit-GFX-Library) or even [ImageMagick](https://imagemagick.org) which should be easy to integrate.
+If you want to use the parallelism features with advanced graphics primitives, take a look at great libraries such as [libgd](http://libgd.github.io/), [Adafruit GFX library](https://github.com/adafruit/Adafruit-GFX-Library) or even [ImageMagick](https://imagemagick.org) which should be easy to integrate.
 
 FBGraphics is fast but should be used with caution, display bounds checking is not implemented on most primitives, this allow raw performances at the cost of crashs if not careful.
 
