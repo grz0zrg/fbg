@@ -24,8 +24,10 @@ void *fragmentStart(struct _fbg *fbg) {
     return user_data;
 }
 
-void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
-    float offset_x = 8.f;//abs(sin(user_data->offset_x * 8.f)) * 8.f;
+void fragment(struct _fbg *fbg, void *user_data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)user_data;
+
+    //float offset_x = 8.f;//abs(sin(ud->offset_x * 8.f)) * 8.f;
 
     // this function will be executed by each threads
     // you are free to call any FBG graphics primitive here
@@ -48,11 +50,13 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
     // simple graphics primitive (4 blue rectangle which will be handled by different threads)
     //fbg_rect(fbg, fbg->width / 2 - 32 + fbg->task_id * 32 + offset_x, 0, 32, 32, 255, 0, 0);
 
-    user_data->offset_x += 0.01f;
+    ud->offset_x += 0.01f;
 }
 
-void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
-    free(data);
+void fragmentStop(struct _fbg *fbg, void *data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)data;
+
+    free(ud);
 }
 
 int main() {
@@ -73,7 +77,7 @@ int main() {
     // also need to call fragmentStart and fragmentStop for this thread
     struct _fragment_user_data *user_data = fragmentStart(fbg);
 
-    int i = 0;
+    //int i = 0;
     do {
         //fbg_clear(fbg, 0);
 

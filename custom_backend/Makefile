@@ -1,5 +1,5 @@
 CC=gcc
-STANDARD_FLAGS=-std=c11 -pedantic -D_GNU_SOURCE -D_POSIX_SOURCE -Wno-unused-value -Wno-unknown-pragmas
+STANDARD_FLAGS=-Werror -std=c11 -pedantic -D_GNU_SOURCE -D_POSIX_SOURCE
 DEBUG_FLAGS=-DDEBUG -g -Wall
 RELEASE_FLAGS=-O2 -Wall
 DEFP=-DFBG_PARALLEL

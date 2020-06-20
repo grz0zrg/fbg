@@ -158,21 +158,6 @@ int main(int argc, char* argv[]) {
             float x = points[i];
             float y = points[i + 1];
 
-            float vx = points[i + 2];
-            float vy = points[i + 3];
-
-            fbg_hslToRGB(&color, abs(sin(x / (float)fbg->width * 3.1415 / 2) * 360), fbg_randf(0.5f, 1), 0.5f);
-
-            fbg_getPixel(fbg, x + fbg_randf(-1, 1), y + fbg_randf(-1, 1), &color2);
-
-            fbg_recta(fbg, x, y, 1, 1, (color.r + color2.r) / 2, (color.g + color2.g) / 2, (color.b + color2.b) / 2, i % 255);
-
-            points[i] += vx;
-            points[i + 1] += vy;
-
-            x = points[i];
-            y = points[i + 1];
-
             if (x <= 0) {
                 points[i] = fbg->width - 1;
             }
@@ -189,6 +174,18 @@ int main(int argc, char* argv[]) {
                 points[i + 1] = 0;
             }
 
+            float vx = points[i + 2];
+            float vy = points[i + 3];
+
+            fbg_hslToRGB(&color, abs(sin(x / (float)fbg->width * 3.1415 / 2) * 360), fbg_randf(0.5f, 1), 0.5f);
+
+            fbg_getPixel(fbg, x, y, &color2);
+
+            fbg_recta(fbg, x, y, 1, 1, (color.r + color2.r) / 2, (color.g + color2.g) / 2, (color.b + color2.b) / 2, i % 255);
+
+            points[i] += vx;
+            points[i + 1] += vy;
+            
             c += 1;
         }
 

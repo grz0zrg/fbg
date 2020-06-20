@@ -278,6 +278,8 @@ void fbg_glfwFree(struct _fbg *fbg) {
 	glDeleteProgram(glfw_context->simple_program);
 
     glfwTerminate();
+
+	free(glfw_context);
 }
 
 GLuint fbg_glfwCreateTextureFromImage(struct _fbg *fbg, struct _fbg_img *img) {

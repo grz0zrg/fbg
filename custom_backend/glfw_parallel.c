@@ -42,63 +42,67 @@ void *fragmentStart(struct _fbg *fbg) {
     return user_data;
 }
 
-void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
+void fragment(struct _fbg *fbg, void *user_data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)user_data;
+
     float c = (float)fbg->task_id / fbg->parallel_tasks * 255;
 
     fbg_recta(fbg,
-        user_data->offset_x,
-        user_data->offset_y, 32, 32,
+        ud->offset_x,
+        ud->offset_y, 32, 32,
         c,
         255 - c,
         abs(128 - c),
         fbg_randf(0, 255));
 
     fbg_recta(fbg,
-        fbg->width - user_data->offset_x,
-        fbg->height - user_data->offset_y, 32, 32,
+        fbg->width - ud->offset_x,
+        fbg->height - ud->offset_y, 32, 32,
         c,
         255 - c,
         abs(128 - c),
         fbg_randf(0, 255));
         
     fbg_recta(fbg,
-        fbg->width - user_data->offset_x,
-        user_data->offset_y, 32, 32,
+        fbg->width - ud->offset_x,
+        ud->offset_y, 32, 32,
         c,
         255 - c,
         abs(128 - c),
         fbg_randf(0, 255));
 
     fbg_recta(fbg,
-        user_data->offset_x,
-        fbg->height - user_data->offset_y, 32, 32,
+        ud->offset_x,
+        fbg->height - ud->offset_y, 32, 32,
         c,
         255 - c,
         abs(128 - c),
         fbg_randf(0, 255));
 
-    user_data->offset_x += user_data->velx;
-    user_data->offset_y += user_data->vely;
+    ud->offset_x += ud->velx;
+    ud->offset_y += ud->vely;
 
-    if (user_data->offset_x <= 32) {
-        user_data->velx = -user_data->velx;
-        user_data->offset_x = 32;
-    } else if (user_data->offset_x > fbg->width - 32) {
-        user_data->velx = -user_data->velx;
-        user_data->offset_x = fbg->width - 32;
+    if (ud->offset_x <= 32) {
+        ud->velx = -ud->velx;
+        ud->offset_x = 32;
+    } else if (ud->offset_x > fbg->width - 32) {
+        ud->velx = -ud->velx;
+        ud->offset_x = fbg->width - 32;
     }
 
-    if (user_data->offset_y <= 32) {
-        user_data->vely = -user_data->vely;
-        user_data->offset_y = 32;
-    } else if (user_data->offset_y > fbg->height - 32) {
-        user_data->vely = -user_data->vely;
-        user_data->offset_y = fbg->height - 32;
+    if (ud->offset_y <= 32) {
+        ud->vely = -ud->vely;
+        ud->offset_y = 32;
+    } else if (ud->offset_y > fbg->height - 32) {
+        ud->vely = -ud->vely;
+        ud->offset_y = fbg->height - 32;
     }
 }
 
-void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
-    free(data);
+void fragmentStop(struct _fbg *fbg, void *data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)data;
+
+    free(ud);
 }
 
 void fbg_XORMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {

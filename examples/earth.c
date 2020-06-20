@@ -30,11 +30,15 @@ void *fragmentStart(struct _fbg *fbg) {
     return user_data;
 }
 
-void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
-    free(data);
+void fragmentStop(struct _fbg *fbg, void *data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)data;
+
+    free(ud);
 }
 
-void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
+void fragment(struct _fbg *fbg, void *user_data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)user_data;
+    
     if (fbg->task_id > 0) {
         fbg_clear(fbg, 0);
     }
@@ -59,7 +63,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         int yyd = (((int)(de * (earth_texture->height * yrepeat))%earth_texture->height)) * earth_texture->width;
         
         float tyrepeat = 4.0f;
-        int yyd2 = (((int)(de * (earth_text_texture->height * tyrepeat) + user_data->xmotion)%earth_text_texture->height)) * earth_text_texture->width;
+        int yyd2 = (((int)(de * (earth_text_texture->height * tyrepeat) + ud->xmotion)%earth_text_texture->height)) * earth_text_texture->width;
         
         int yydc = (((int)(de * (earth_cycle_texture->height * yrepeat))%earth_cycle_texture->height)) * earth_cycle_texture->width;
         
@@ -69,7 +73,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         float xc_off = sqrtf(sphere_radius_squared - sh_radius*sh_radius);
         
         float final_x;
-        float final_y = yoff + de * (sphere_radius * 2); // flabby planet bonus : + sin((de * 360 + 180) * (PI / 180) + user_data->ymotion / 24.) * 4;
+        float final_y = yoff + de * (sphere_radius * 2); // flabby planet bonus : + sin((de * 360 + 180) * (PI / 180) + ud->ymotion / 24.) * 4;
         
         for (int e = 0; e <= (int)xc_off / 2; e += dots_step) {
             float dd = (float)e / xc_off;
@@ -88,7 +92,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             
             // apply colormaps
             float xrepeat = 0.5f;
-            int xxd = ((earth_texture->width - 1) - (int)(yc_off * (earth_texture->width * xrepeat) + user_data->xmotion)%earth_texture->width);
+            int xxd = ((earth_texture->width - 1) - (int)(yc_off * (earth_texture->width * xrepeat) + ud->xmotion)%earth_texture->width);
         
             int cl = (int)(xxd + yyd) * fbg->components;
             
@@ -99,7 +103,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             // second texture (text mask)
             float txrepeat = 1.;
             
-            int xxd2 = fmaxf(0, ((earth_text_texture->width - 1) - (int)(yc_off * (earth_text_texture->width * txrepeat) + user_data->xmotion)%earth_text_texture->width));
+            int xxd2 = fmaxf(0, ((earth_text_texture->width - 1) - (int)(yc_off * (earth_text_texture->width * txrepeat) + ud->xmotion)%earth_text_texture->width));
         
             int cl2 = (int)(xxd2 + yyd2) * fbg->components;
             
@@ -113,7 +117,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             int bn = (int)((float)earth_night_texture->data[cl + 2]);
             
             // fourth texture (cycle mask), only use single component since it is black/white
-            int xxdc = ((earth_cycle_texture->width - 1) - (int)(yc_off * (earth_cycle_texture->width * xrepeat) + user_data->xmotion * 4)%earth_cycle_texture->width);
+            int xxdc = ((earth_cycle_texture->width - 1) - (int)(yc_off * (earth_cycle_texture->width * xrepeat) + ud->xmotion * 4)%earth_cycle_texture->width);
             int clc = (int)(xxdc + yydc) * fbg->components;
             float rc = (float)earth_cycle_texture->data[clc] / 255.0f;
             
@@ -141,7 +145,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             
             // apply colormaps
             float xrepeat = 0.5;
-            int xxd = ((earth_texture->width - 1) - (int)(yc_off * (earth_texture->width * xrepeat) + user_data->xmotion)%earth_texture->width);
+            int xxd = ((earth_texture->width - 1) - (int)(yc_off * (earth_texture->width * xrepeat) + ud->xmotion)%earth_texture->width);
         
             int cl = (int)(xxd + yyd) * fbg->components;
             
@@ -152,7 +156,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             // second texture (text mask)
             float txrepeat = 1.;
             
-            int xxd2 = fmaxf(0, ((earth_text_texture->width - 1) - (int)(yc_off * (earth_text_texture->width * txrepeat) + user_data->xmotion)%earth_text_texture->width));
+            int xxd2 = fmaxf(0, ((earth_text_texture->width - 1) - (int)(yc_off * (earth_text_texture->width * txrepeat) + ud->xmotion)%earth_text_texture->width));
         
             int cl2 = (int)(xxd2 + yyd2) * fbg->components;
             
@@ -166,7 +170,7 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             int bn = (int)((float)earth_night_texture->data[cl + 2]);
             
             // fourth texture (cycle mask), only use single component since it is black/white
-            int xxdc = ((earth_cycle_texture->width - 1) - (int)(yc_off * (earth_cycle_texture->width * xrepeat) + user_data->xmotion * 4)%earth_cycle_texture->width);
+            int xxdc = ((earth_cycle_texture->width - 1) - (int)(yc_off * (earth_cycle_texture->width * xrepeat) + ud->xmotion * 4)%earth_cycle_texture->width);
             int clc = (int)(xxdc + yydc) * fbg->components;
             float rc = (float)earth_cycle_texture->data[clc] / 255.0f;
             
@@ -179,8 +183,8 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         }
     }
     
-    user_data->xmotion += 0.5;
-    user_data->ymotion -= 0.25;
+    ud->xmotion += 0.5;
+    ud->ymotion -= 0.25;
 }
 
 void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {

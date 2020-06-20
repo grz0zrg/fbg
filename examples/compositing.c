@@ -23,7 +23,7 @@ void border_rectangle(struct _fbg *fbg, int x, int y, int w, int h, int br, int 
     fbg_frect(fbg, x, y, w, h);
 }
 
-void fragment(struct _fbg *fbg, struct _fragment_user_data *data) {
+void fragment(struct _fbg *fbg, void *data) {
     fbg_clear(fbg, 0);
 
     if (fbg->task_id == 1) {

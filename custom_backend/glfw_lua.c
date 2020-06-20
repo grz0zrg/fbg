@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 #include "glfw/fbg_glfw.h"
 
@@ -32,7 +33,7 @@ void int_handler(int dummy) {
 // fbg specific LUA code that we add automatically to any loaded LUA scripts
 // this actually expose a sample of the C fbg library to the LUA script with short function name matching the Processing language
 const char *fbg_lua_header = "local ffi = require(\"ffi\")\n"
-                             "local fbg = ffi.load(\"libfbg.so\")\n"
+                             "local fbg = ffi.load(\"./libfbg.so\")\n"
                              "ffi.cdef[[\n"
                              "void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned char b);\n"
                              "void fbg_frect(struct _fbg *fbg, int x, int y, int w, int h);\n"
@@ -88,7 +89,15 @@ struct _file_data *loadFileInBuffer(const char *filename, size_t header_size) {
         return NULL;
     }
 
-    fread(&fd->buffer[header_size], sizeof(char), numbytes, f);
+    int br = fread(&fd->buffer[header_size], sizeof(char), numbytes, f);
+    if (br != numbytes) {
+        free(fd->buffer);
+        fclose(f);
+
+        free(fd);
+
+        return NULL;
+    }
     fclose(f);
 
     return fd;
@@ -182,18 +191,22 @@ void *fragmentStart(struct _fbg *fbg) {
     return sketch;
 }
 
-void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
-    if (!user_data) {
+void fragment(struct _fbg *fbg, void *user_data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)user_data;
+    
+    if (!ud) {
         return;
     }
 
     // evaluate sketch draw function
-    lua_getglobal(user_data->lua_state, "draw");
-    lua_pcall(user_data->lua_state, 0, 0, 0);
+    lua_getglobal(ud->lua_state, "draw");
+    lua_pcall(ud->lua_state, 0, 0, 0);
 }
 
-void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
-    freeSketch(data);
+void fragmentStop(struct _fbg *fbg, void *user_data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)user_data;
+
+    freeSketch(ud);
 }
 
 struct _fragment_user_data *main_sketch = NULL;

@@ -135,6 +135,9 @@
         //! Wether to allow context resize.
         int allow_resizing;
 
+        //! Wether to allow FBG to allocate its internal buffers
+        int initialize_buffers;
+
         //! Current fill color
         /*! Default to black. */
         struct _fbg_rgb fill_color;
@@ -292,12 +295,12 @@
 
 // ### Library functions
 
-    //! initialize a FB Graphics context with a custom rendering backend
+    //! initialize a FB Graphics context (typically used by a custom rendering backend)
     /*!
       \param width render width
       \param height render height
       \param components image components (3 = RGB, 4 = RGBA etc.)
-      \param initialize_buffers wether internal buffers should be initialized
+      \param initialize_buffers wether internal buffers should be allocated / freed
       \param allow_resizing wether to allow internal context resize (any registered callbacks will still be called)
       \param user_context user rendering data storage (things like window context etc.)
       \param user_draw function to call upon fbg_draw()
@@ -775,7 +778,7 @@
     */
     extern int fbg_getFramerate(struct _fbg *fbg, int task);
 
-    //! set an offscreen target for all subsequent fbg context draw calls, it is important to reset back to display target once done by calling fbg_drawInto(NULL)
+    //! set an offscreen target for all subsequent fbg context draw calls, it is important to reset back to display target once done by calling fbg_drawInto(NULL) otherwise you may have segfaults / memory leaks upon resizing and other actions
     /*!
       \param fbg pointer to a FBG context / data structure
       \param buffer a buffer to render to, it should be the format of the display, target is the display if NULL

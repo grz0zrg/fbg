@@ -41,20 +41,23 @@
 #include "fbgraphics.h"
 
 #ifdef FBG_PARALLEL
-#ifdef FBG_LFDS
-void fbg_freelistCleanup(struct lfds720_freelist_n_state *fs, struct lfds720_freelist_n_element *fe) {
-    struct _fbg_freelist_data *freelist_data;
-    freelist_data = LFDS720_FREELIST_N_GET_VALUE_FROM_ELEMENT(*fe);
+    void fbg_terminateFragments(struct _fbg *fbg);
+    void fbg_freeTasks(struct _fbg *fbg);
 
-    free(freelist_data->buffer);
+    #ifdef FBG_LFDS
+    void fbg_freelistCleanup(struct lfds720_freelist_n_state *fs, struct lfds720_freelist_n_element *fe) {
+        struct _fbg_freelist_data *freelist_data;
+        freelist_data = LFDS720_FREELIST_N_GET_VALUE_FROM_ELEMENT(*fe);
 
-    freelist_data->buffer = NULL;
-}
+        free(freelist_data->buffer);
 
-void fbg_ringbufferCleanup(struct lfds720_ringbuffer_n_state *rs, void *key, void *value, enum lfds720_misc_flag unread_flag) {
+        freelist_data->buffer = NULL;
+    }
 
-}
-#endif
+    void fbg_ringbufferCleanup(struct lfds720_ringbuffer_n_state *rs, void *key, void *value, enum lfds720_misc_flag unread_flag) {
+
+    }
+    #endif
 #endif
 
 struct _fbg *fbg_customSetup(
@@ -118,6 +121,8 @@ struct _fbg *fbg_customSetup(
         }
     }
 
+    fbg->initialize_buffers = initialize_buffers;
+
     gettimeofday(&fbg->fps_start, NULL);
 
     fbg_textColor(fbg, 255, 255, 255);
@@ -128,6 +133,8 @@ struct _fbg *fbg_customSetup(
     fbg->state = 1;
     fbg->frame = 0;
     fbg->fps = 0;
+
+    fbg->tasks = 0;
 
     fbg->fragment_queue_size = 7;
 #endif
@@ -148,29 +155,60 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
     }
 
     if (fbg->allow_resizing) {
+#ifdef FBG_PARALLEL
+        int create_fragments = 0;
+        int parallel_tasks = fbg->parallel_tasks;
+
+        void *(*user_fragment_start)(struct _fbg *fbg) = NULL;
+        void (*user_fragment)(struct _fbg *fbg, void *user_data) = NULL;
+        void (*user_fragment_stop)(struct _fbg *fbg, void *user_data) = NULL;
+#endif
+
         int new_size = new_width * new_height * fbg->components;
 
-        unsigned char *back_buffer = calloc(1, new_size * sizeof(char));
-        if (!back_buffer) {
-            fprintf(stderr, "fbg_resize: back_buffer realloc failed!\n");
+        if (fbg->initialize_buffers) {
+            unsigned char *back_buffer = calloc(1, new_size * sizeof(char));
+            if (!back_buffer) {
+                fprintf(stderr, "fbg_resize: back_buffer realloc failed!\n");
 
-            return;
+                return;
+            }
+
+            unsigned char *disp_buffer = calloc(1, new_size * sizeof(char));
+            if (!disp_buffer) {
+                fprintf(stderr, "fbg_resize: disp_buffer realloc failed!\n");
+
+                free(back_buffer);
+
+                return;
+            }
+
+#ifdef FBG_PARALLEL
+            if (fbg->tasks) {
+                parallel_tasks = fbg->parallel_tasks;
+
+                // save user fragments function to restore them later
+                user_fragment_start = fbg->fragments[0]->user_fragment_start;
+                user_fragment = fbg->fragments[0]->user_fragment;
+                user_fragment_stop = fbg->fragments[0]->user_fragment_stop;
+
+                fbg_terminateFragments(fbg);
+                
+                fbg_freeTasks(fbg);
+
+                create_fragments = 1;
+            }
+#endif
+
+            unsigned char *old_back_buffer = fbg->back_buffer;
+            unsigned char *old_disp_buffer = fbg->disp_buffer;
+
+            fbg->back_buffer = back_buffer;
+            fbg->disp_buffer = disp_buffer;
+
+            free(old_back_buffer);
+            free(old_disp_buffer);
         }
-
-        unsigned char *disp_buffer = calloc(1, new_size * sizeof(char));
-        if (!disp_buffer) {
-            fprintf(stderr, "fbg_resize: disp_buffer realloc failed!\n");
-
-            free(back_buffer);
-
-            return;
-        }
-
-        free(fbg->back_buffer);
-        free(fbg->disp_buffer);
-
-        fbg->back_buffer = back_buffer;
-        fbg->disp_buffer = disp_buffer;
 
         fbg->width = new_width;
         fbg->height = new_height;
@@ -182,8 +220,20 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
         fbg->size = new_size;
 
 #ifdef FBG_PARALLEL
-        if (fbg->tasks) {
-            fbg_createFragment(fbg, fbg->fragments[0]->user_fragment_start, fbg->fragments[0]->user_fragment, fbg->fragments[0]->user_fragment_stop, fbg->parallel_tasks);
+        if (fbg->tasks || create_fragments) {
+            if (!user_fragment_start) {
+                user_fragment_start = fbg->fragments[0]->user_fragment_start;
+            }
+
+            if (!user_fragment) {
+                user_fragment = fbg->fragments[0]->user_fragment;
+            }
+
+            if (!user_fragment_stop) {
+                user_fragment_stop = fbg->fragments[0]->user_fragment_stop;
+            }
+
+            fbg_createFragment(fbg, user_fragment_start, user_fragment, user_fragment_stop, parallel_tasks);
         }
 #endif
     }
@@ -235,6 +285,9 @@ void fbg_freeTasks(struct _fbg *fbg) {
 
         struct _fbg_fragment *frag = fbg->fragments[i];
 
+#ifndef FBG_LFDS
+        free(frag->fbg->back_buffer);
+#endif
         free(frag->fbg);
 
 #ifdef FBG_LFDS
@@ -246,8 +299,6 @@ void fbg_freeTasks(struct _fbg *fbg) {
         free(frag->ringbuffer_state);
         free(frag->freelist_state);
         free(frag->fbg_freelist_data);
-#else
-        free(frag->fbg->back_buffer);
 #endif
 
         free(frag);
@@ -280,6 +331,11 @@ void fbg_close(struct _fbg *fbg) {
 
     if (fbg->user_free) {
         fbg->user_free(fbg);
+    }
+
+    if (fbg->initialize_buffers) {
+        free(fbg->back_buffer);
+        free(fbg->disp_buffer);
     }
 
     free(fbg);
@@ -951,11 +1007,11 @@ void fbg_fadeDown(struct _fbg *fbg, unsigned char rgb_fade_amount) {
 
     for (i = 0; i < fbg->width_n_height; i += 1) {
         *pix_pointer = _FBG_MAX(*pix_pointer - rgb_fade_amount, 0);
-        *pix_pointer++;
+        pix_pointer++;
         *pix_pointer = _FBG_MAX(*pix_pointer - rgb_fade_amount, 0);
-        *pix_pointer++;
+        pix_pointer++;
         *pix_pointer = _FBG_MAX(*pix_pointer - rgb_fade_amount, 0);
-        *pix_pointer++;
+        pix_pointer++;
         pix_pointer += fbg->comp_offset;
     }
 }
@@ -967,11 +1023,11 @@ void fbg_fadeUp(struct _fbg *fbg, unsigned char rgb_fade_amount) {
 
     for (i = 0; i < fbg->width_n_height; i += 1) {
         *pix_pointer = _FBG_MIN(*pix_pointer + rgb_fade_amount, 255);
-        *pix_pointer++;
+        pix_pointer++;
         *pix_pointer = _FBG_MIN(*pix_pointer + rgb_fade_amount, 255);
-        *pix_pointer++;
+        pix_pointer++;
         *pix_pointer = _FBG_MIN(*pix_pointer + rgb_fade_amount, 255);
-        *pix_pointer++;
+        pix_pointer++;
         pix_pointer += fbg->comp_offset;
     }
 }
@@ -983,11 +1039,11 @@ void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned
 
     for (i = 0; i < fbg->width_n_height; i += 1) {
         *pix_pointer = r;
-        *pix_pointer++;
+        pix_pointer++;
         *pix_pointer = g;
-        *pix_pointer++;
+        pix_pointer++;
         *pix_pointer = b;
-        *pix_pointer++;
+        pix_pointer++;
         pix_pointer += fbg->comp_offset;
     }
 }
@@ -1274,11 +1330,11 @@ struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename) {
         for (y = 0; y < height; y += 1) {
             for (x = 0; x < width; x += 1) {
                 int b = *pix_pointer2++;
-                *pix_pointer2++;
+                pix_pointer2++;
                 int r = *pix_pointer2++;
 
                 *pix_pointer++ = r;
-                *pix_pointer++;
+                pix_pointer++;
                 *pix_pointer++ = b;
             }
         }
@@ -1337,12 +1393,12 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
         for (y = 0; y < height; y += 1) {
             for (x = 0; x < width; x += 1) {
                 int b = *pix_pointer2++;
-                *pix_pointer2++;
+                pix_pointer2++;
                 int r = *pix_pointer2++;
                 pix_pointer2 += fbg->comp_offset;
 
                 *pix_pointer++ = r;
-                *pix_pointer++;
+                pix_pointer++;
                 *pix_pointer++ = b;
                 pix_pointer += fbg->comp_offset;
             }

@@ -29,11 +29,15 @@ void *fragmentStart(struct _fbg *fbg) {
     return user_data;
 }
 
-void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
-    free(data);
+void fragmentStop(struct _fbg *fbg, void *data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)data;
+
+    free(ud);
 }
 
-void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
+void fragment(struct _fbg *fbg, void *user_data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)user_data;
+
     if (fbg->task_id > 0) {
         fbg_clear(fbg, 0);
     }
@@ -64,11 +68,11 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         
         float bd = fminf(de * 4, 1.);
         
-        float ex = sin(de * 360.0f * (M_PI / 180.0f) + user_data->xmotion);
-        float ey = cos(de * 360.0f * (M_PI / 180.0f) + user_data->ymotion);
+        float ex = sin(de * 360.0f * (M_PI / 180.0f) + ud->xmotion);
+        float ey = cos(de * 360.0f * (M_PI / 180.0f) + ud->ymotion);
         
-        float xrad = e * xrad_step + bsize + sin(de * 360.0f * (M_PI / 180.0f) + user_data->xmotion) * xrmotion_size;
-        float yrad = e * yrad_step + bsize + cos(de * 360.0f * (M_PI / 180.0f) + user_data->xmotion) * yrmotion_size;
+        float xrad = e * xrad_step + bsize + sin(de * 360.0f * (M_PI / 180.0f) + ud->xmotion) * xrmotion_size;
+        float yrad = e * yrad_step + bsize + cos(de * 360.0f * (M_PI / 180.0f) + ud->xmotion) * yrmotion_size;
         
         float final_ex = xoff + ex * xdeform;
         
@@ -84,13 +88,13 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             float xp = dd * 360.0f * (M_PI / 180.0f);
             float yp = xp;
             
-            xp += xpp + user_data->rmotion;
-            yp += xpp + user_data->rmotion;
+            xp += xpp + ud->rmotion;
+            yp += xpp + ud->rmotion;
             
             float final_x = final_ex + sin(xp) * xrad;
             float final_y = fy + cos(yp) * yrad;
             
-            if (final_x >= (fbg->width-rect_size) || final_x <= rect_size || final_y >= (fbg->height-rect_size) | final_y <= rect_size) {
+            if (final_x >= (fbg->width-rect_size) || final_x <= rect_size || final_y >= (fbg->height-rect_size) || final_y <= rect_size) {
                 continue;
             }
             
@@ -107,9 +111,9 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         }
     }
     
-    user_data->xmotion += 0.011;
-    user_data->ymotion += 0.008;
-    user_data->rmotion += 0.006;
+    ud->xmotion += 0.011;
+    ud->ymotion += 0.008;
+    ud->rmotion += 0.006;
 }
 
 void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {

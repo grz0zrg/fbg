@@ -820,6 +820,9 @@ inline cwobj *cwobj_meshInit() {
 inline void cwobj_free(cwobj *mesh) {
     if (!mesh) return;
 
+    cwobj_geomFree(mesh->geometry);
+    cwobj_materialFree(mesh->material);
+
 	free(mesh->name);
 	free(mesh);
 }
@@ -1501,7 +1504,7 @@ inline cwobj_mtllib *cwobj_objLoadMtlib(const char *filename, unsigned int (*get
 
         int data_length = strlen(data);
 
-#ifdef DEBUG
+#ifdef DEBUG_CWOBJ
         fprintf(stdout, "cwobj_objLoadMtlib: '%s' L%lu parsing tag '%s' with value '%s'\n", filename, curr_line, tag, data);
 #endif
 
@@ -1703,7 +1706,7 @@ inline cwobj *cwobj_load(const char *filename, unsigned int (*get_texture)(const
 
         int data_length = strlen(data);
 
-#ifdef DEBUG
+#ifdef DEBUG_CWOBJ
         fprintf(stdout, "cwobj_load: '%s' L%lu parsing tag '%s' with value '%s'\n", filename, curr_line, tag, data);
 #endif
 

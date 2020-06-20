@@ -27,11 +27,15 @@ void *fragmentStart(struct _fbg *fbg) {
     return user_data;
 }
 
-void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
-    free(data);
+void fragmentStop(struct _fbg *fbg, void *data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)data;
+
+    free(ud);
 }
 
-void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
+void fragment(struct _fbg *fbg, void *user_data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)user_data;
+
     fbg_clear(fbg, 0);
     
     // https://www.openprocessing.org/sketch/560394
@@ -67,12 +71,12 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             
             float xxx = xx - 0.5;
 
-            fbg_rect(fbg, _FBG_MAX(_FBG_MIN(x + cosf(xxx*yyy * M_PI * 4 + user_data->xmotion) * 24, fbg->width - rect_size), 0), _FBG_MAX(_FBG_MIN(y + yoff / 2 + sinf(xxx*yyy * M_PI * 7 + user_data->ymotion) * 24, fbg->height - rect_size), 0), rect_size, rect_size, r, g, b);
+            fbg_rect(fbg, _FBG_MAX(_FBG_MIN(x + cosf(xxx*yyy * M_PI * 4 + ud->xmotion) * 24, fbg->width - rect_size), 0), _FBG_MAX(_FBG_MIN(y + yoff / 2 + sinf(xxx*yyy * M_PI * 7 + ud->ymotion) * 24, fbg->height - rect_size), 0), rect_size, rect_size, r, g, b);
         }
     }
     
-    user_data->xmotion += 0.0075;
-    user_data->ymotion += 0.05;
+    ud->xmotion += 0.0075;
+    ud->ymotion += 0.05;
 }
 
 void selectiveMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {

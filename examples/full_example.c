@@ -31,21 +31,25 @@ void *fragmentStart(struct _fbg *fbg) {
     return user_data;
 }
 
-void fragmentStop(struct _fbg *fbg, struct _fragment_user_data *data) {
-    free(data);
+void fragmentStop(struct _fbg *fbg, void *data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)data;
+
+    free(ud);
 }
 
-void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
+void fragment(struct _fbg *fbg, void *user_data) {
+    struct _fragment_user_data *ud = (struct _fragment_user_data *)user_data;
+
     fbg_clear(fbg, 0);
 
     // what we do here is use the perlin noise function and draw it fullscreen
     // we also mix in a fullscreen texture (which can be repeated along x/y axis if needed)
 
-    float perlin_freq = 0.03 + abs(sin(user_data->motion * 8.)) * 8.;
+    float perlin_freq = 0.03 + abs(sin(ud->motion * 8.)) * 8.;
 
     int x, y;
     for (y = fbg->task_id - 1; y < fbg->height; y += fbg->parallel_tasks) {
-        float perlin_x = user_data->xxm * fbg->height;
+        float perlin_x = ud->xxm * fbg->height;
 
         int rep = 4;
 
@@ -56,11 +60,11 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
             int g = p*255;
             int b = p*255;
 
-            int yy = fminf(fmaxf(y + user_data->pr * p, 0), fbg->height - 1);
+            int yy = fminf(fmaxf(y + ud->pr * p, 0), fbg->height - 1);
             int xx = x;
 
-            int ytl = (((yy * rep - (int)(user_data->motion * 4)) % texture->height) * fbg->components) * texture->width;
-            int xtl = ytl + (((x * rep + (int)(user_data->motion * 4)) % texture->width) * fbg->components);
+            int ytl = (((yy * rep - (int)(ud->motion * 4)) % texture->height) * fbg->components) * texture->width;
+            int xtl = ytl + (((x * rep + (int)(ud->motion * 4)) % texture->width) * fbg->components);
 
             r = texture->data[xtl] * (1. - p);
             g = texture->data[xtl + 1] * (1. - p);
@@ -70,8 +74,8 @@ void fragment(struct _fbg *fbg, struct _fragment_user_data *user_data) {
         }
     }
 
-    user_data->xxm += 0.001;
-    user_data->motion += 0.001;
+    ud->xxm += 0.001;
+    ud->motion += 0.001;
 }
 
 int main(int argc, char* argv[]) {

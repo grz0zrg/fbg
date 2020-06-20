@@ -1,5 +1,5 @@
 CC=gcc
-STANDARD_FLAGS=-std=c11 -pedantic -D_GNU_SOURCE -D_POSIX_SOURCE -Wno-unused-value -Wno-unknown-pragmas
+STANDARD_FLAGS=-Werror -std=c11 -pedantic -D_GNU_SOURCE -D_POSIX_SOURCE
 DEBUG_FLAGS=-DDEBUG -g -Wall
 RELEASE_FLAGS=-O2 -Wall
 DEFP=-DFBG_PARALLEL
@@ -28,9 +28,6 @@ INCS3=-I ../src/ -I. -I ../custom_backend/fbdev
 INCS_LFDS_711=-Iliblfds711
 INCS_LFDS_720=-Iliblfds720
 
-tiny:
-	$(CC) ../custom_backend/fbdev/fbg_fbdev.c ../src/fbgraphics.c simple_parallel_example.c $(INCS) $(STANDARD_FLAGS) $(DEFP) -fdata-sections -ffunction-sections -flto -DFBG_LIGHT -Os -lpthread -o $(OUT2) -Wl,--gc-sections,-flto
-
 all:
 	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(RELEASE_FLAGS) $(LIBS1) -o $(OUT1)
 	$(CC) $(SRC2) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT2)
@@ -39,6 +36,9 @@ all:
 	$(CC) $(SRC5) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT5)
 	$(CC) $(SRC6) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT6)
 	$(CC) $(SRC7) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT7)
+
+tiny:
+	$(CC) ../custom_backend/fbdev/fbg_fbdev.c ../src/fbgraphics.c simple_parallel_example.c $(INCS) $(STANDARD_FLAGS) $(DEFP) -fdata-sections -ffunction-sections -flto -DFBG_LIGHT -Os -lpthread -o $(OUT2) -Wl,--gc-sections,-flto
 
 debug:
 	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS1) -o $(OUT1)
