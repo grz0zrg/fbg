@@ -34,6 +34,8 @@ Features :
 
 The library is generic, most functions (including parallel ones) only manipulate buffers and you can build a custom rendering backend pretty easily with few functions call, see the `custom_backend` folder.
 
+Doxygen documentation : https://grz0zrg.github.io/fbg/
+
 Table of Contents
 =================
 
@@ -357,7 +359,7 @@ See screenshots below.
 
 All usable functions and structures are documented in the `fbgraphics.h` file with [Doxygen](http://www.stack.nl/~dimitri/doxygen/)
 
-The HTML documentation can be found in the `docs` directory.
+The HTML documentation can be found in the `docs` directory, it is also hosted on GitHub [here](https://grz0zrg.github.io/fbg/)
 
 Examples demonstrating all features are available in the `examples` directory.
 
