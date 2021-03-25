@@ -357,7 +357,7 @@ See screenshots below.
 
 All usable functions and structures are documented in the `fbgraphics.h` file with [Doxygen](http://www.stack.nl/~dimitri/doxygen/)
 
-The HTML documentation can be found in the `documentation/html` directory.
+The HTML documentation can be found in the `docs` directory.
 
 Examples demonstrating all features are available in the `examples` directory.
 

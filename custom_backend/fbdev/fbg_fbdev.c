@@ -13,7 +13,7 @@ void fbg_fbdevDraw(struct _fbg *fbg);
 void fbg_fbdevFlip(struct _fbg *fbg);
 void fbg_fbdevFree(struct _fbg *fbg);
 
-struct _fbg *fbg_fbdevSetup(char *user_fb_device, int page_flipping) {
+struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
     struct _fbg_fbdev_context *fbdev_context = (struct _fbg_fbdev_context *)calloc(1, sizeof(struct _fbg_fbdev_context));
     if (!fbdev_context) {
         fprintf(stderr, "fbg_fbdevSetup: fbdev context calloc failed!\n");
@@ -21,7 +21,7 @@ struct _fbg *fbg_fbdevSetup(char *user_fb_device, int page_flipping) {
     }
 
     char *default_fb_device = "/dev/fb0";
-    char *fb_device = user_fb_device ? user_fb_device : default_fb_device;
+    char *fb_device = fb_device ? fb_device : default_fb_device;
 
     fbdev_context->fd = open(fb_device, O_RDWR);
 

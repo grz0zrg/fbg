@@ -1,0 +1,61 @@
+\hypertarget{fbg__dispmanx_8h}{}\section{fbg\+\_\+dispmanx.\+h File Reference}
+\label{fbg__dispmanx_8h}\index{fbg\+\_\+dispmanx.\+h@{fbg\+\_\+dispmanx.\+h}}
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
+{\ttfamily \#include $<$linux/fb.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$G\+L\+E\+S2/gl2.\+h$>$}\newline
+{\ttfamily \#include $<$E\+G\+L/egl.\+h$>$}\newline
+{\ttfamily \#include $<$E\+G\+L/eglext.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}bcm\+\_\+host.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}fbgraphics.\+h\char`\"{}}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__fbg__dispmanx__context}{\+\_\+fbg\+\_\+dispmanx\+\_\+context}
+\begin{DoxyCompactList}\small\item\em dispmanx wrapper data structure \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$ \hyperlink{fbg__dispmanx_8h_a84447aff22c0387208aa478eafd983f7}{fbg\+\_\+dispmanx\+Setup} (uint32\+\_\+t display\+Number)
+\begin{DoxyCompactList}\small\item\em initialize a FB Graphics dispmanx context \end{DoxyCompactList}\item 
+void \hyperlink{fbg__dispmanx_8h_ac0a4c6e0821a33671fae87e7c5fb7fe2}{fbg\+\_\+dispmanx\+On\+Flip} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, void($\ast$opt\+\_\+flip)(struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg))
+\begin{DoxyCompactList}\small\item\em add additional flip content (will be executed between dispmanx start / sync) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{fbg__dispmanx_8h_ac0a4c6e0821a33671fae87e7c5fb7fe2}\label{fbg__dispmanx_8h_ac0a4c6e0821a33671fae87e7c5fb7fe2}} 
+\index{fbg\+\_\+dispmanx.\+h@{fbg\+\_\+dispmanx.\+h}!fbg\+\_\+dispmanx\+On\+Flip@{fbg\+\_\+dispmanx\+On\+Flip}}
+\index{fbg\+\_\+dispmanx\+On\+Flip@{fbg\+\_\+dispmanx\+On\+Flip}!fbg\+\_\+dispmanx.\+h@{fbg\+\_\+dispmanx.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+dispmanx\+On\+Flip()}{fbg\_dispmanxOnFlip()}}
+{\footnotesize\ttfamily void fbg\+\_\+dispmanx\+On\+Flip (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg,  }\item[{void($\ast$)(struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)}]{opt\+\_\+flip }\end{DoxyParamCaption})}
+
+
+
+add additional flip content (will be executed between dispmanx start / sync) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & F\+BG data structure pointer \\
+\hline
+{\em opt\+\_\+flip} & flip function executed between dispmanx start / sync upong \hyperlink{fbgraphics_8h_aedfec23bc4c51ff5ffb843bb289d448b}{fbg\+\_\+flip()} call \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fbg__dispmanx_8h_a84447aff22c0387208aa478eafd983f7}\label{fbg__dispmanx_8h_a84447aff22c0387208aa478eafd983f7}} 
+\index{fbg\+\_\+dispmanx.\+h@{fbg\+\_\+dispmanx.\+h}!fbg\+\_\+dispmanx\+Setup@{fbg\+\_\+dispmanx\+Setup}}
+\index{fbg\+\_\+dispmanx\+Setup@{fbg\+\_\+dispmanx\+Setup}!fbg\+\_\+dispmanx.\+h@{fbg\+\_\+dispmanx.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+dispmanx\+Setup()}{fbg\_dispmanxSetup()}}
+{\footnotesize\ttfamily struct \hyperlink{struct__fbg}{\+\_\+fbg}$\ast$ fbg\+\_\+dispmanx\+Setup (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{display\+Number }\end{DoxyParamCaption})}
+
+
+
+initialize a FB Graphics dispmanx context 
+
+
+\begin{DoxyParams}{Parameters}
+{\em display\+Number} & dispmanx display number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+F\+BG data structure pointer 
+\end{DoxyReturn}

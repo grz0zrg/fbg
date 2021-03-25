@@ -1,0 +1,58 @@
+\hypertarget{fbg__gba_8h}{}\section{fbg\+\_\+gba.\+h File Reference}
+\label{fbg__gba_8h}\index{fbg\+\_\+gba.\+h@{fbg\+\_\+gba.\+h}}
+{\ttfamily \#include \char`\"{}fbgraphics.\+h\char`\"{}}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{fbg__gba_8h_struct__fbg__gba__context}{\+\_\+fbg\+\_\+gba\+\_\+context}
+\begin{DoxyCompactList}\small\item\em fbdev wrapper data structure  \hyperlink{fbg__gba_8h_struct__fbg__gba__context}{More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$ \hyperlink{fbg__gba_8h_a6679b30ad162111859a3276397324a83}{fbg\+\_\+gba\+Setup} (int mode)
+\begin{DoxyCompactList}\small\item\em initialize a FB Graphics context \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Data Structure Documentation}
+\index{\+\_\+fbg\+\_\+gba\+\_\+context@{\+\_\+fbg\+\_\+gba\+\_\+context}}\label{struct__fbg__gba__context}
+\Hypertarget{fbg__gba_8h_struct__fbg__gba__context}
+\subsubsection{struct \+\_\+fbg\+\_\+gba\+\_\+context}
+fbdev wrapper data structure 
+
+Definition at line 34 of file fbg\+\_\+gba.\+h.
+
+\begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{fbg__gba_8h_aed8228182579172a6666619ee05e4dfe}\label{fbg__gba_8h_aed8228182579172a6666619ee05e4dfe}} 
+unsigned short $\ast$&
+buffer&
+\\
+\hline
+
+\mbox{\Hypertarget{fbg__gba_8h_abfb08c9ec453d0a38e1b4f78f0894faf}\label{fbg__gba_8h_abfb08c9ec453d0a38e1b4f78f0894faf}} 
+int&
+mode&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{fbg__gba_8h_a6679b30ad162111859a3276397324a83}\label{fbg__gba_8h_a6679b30ad162111859a3276397324a83}} 
+\index{fbg\+\_\+gba.\+h@{fbg\+\_\+gba.\+h}!fbg\+\_\+gba\+Setup@{fbg\+\_\+gba\+Setup}}
+\index{fbg\+\_\+gba\+Setup@{fbg\+\_\+gba\+Setup}!fbg\+\_\+gba.\+h@{fbg\+\_\+gba.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gba\+Setup()}{fbg\_gbaSetup()}}
+{\footnotesize\ttfamily struct \hyperlink{struct__fbg}{\+\_\+fbg}$\ast$ fbg\+\_\+gba\+Setup (\begin{DoxyParamCaption}\item[{int}]{mode }\end{DoxyParamCaption})}
+
+
+
+initialize a FB Graphics context 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & G\+BA bitmap modes (3 = 240x160x16, 4 = 240x160x8 page flip, 5 = 160x128x16 page flip) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{struct__fbg}{\+\_\+fbg} structure pointer to pass to any F\+BG library functions 
+\end{DoxyReturn}

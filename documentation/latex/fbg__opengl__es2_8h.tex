@@ -1,0 +1,490 @@
+\hypertarget{fbg__opengl__es2_8h}{}\section{fbg\+\_\+opengl\+\_\+es2.\+h File Reference}
+\label{fbg__opengl__es2_8h}\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
+{\ttfamily \#include $<$linux/fb.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$G\+L\+E\+S2/gl2.\+h$>$}\newline
+{\ttfamily \#include $<$E\+G\+L/egl.\+h$>$}\newline
+{\ttfamily \#include $<$E\+G\+L/eglext.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}fbgraphics.\+h\char`\"{}}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{fbg__opengl__es2_8h_struct__fbg__gles2__context}{\+\_\+fbg\+\_\+gles2\+\_\+context}
+\begin{DoxyCompactList}\small\item\em Open\+GL ES 2.\+0 wrapper data structure.  \hyperlink{fbg__opengl__es2_8h_struct__fbg__gles2__context}{More...}\end{DoxyCompactList}\item 
+struct \hyperlink{fbg__opengl__es2_8h_struct__fbg__vbo__data}{\+\_\+fbg\+\_\+vbo\+\_\+data}
+\begin{DoxyCompactList}\small\item\em struct which hold usual V\+BO data for 3D objects  \hyperlink{fbg__opengl__es2_8h_struct__fbg__vbo__data}{More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$ \hyperlink{fbg__opengl__es2_8h_aa6d3bab630c17f240843c2872b05d18a}{fbg\+\_\+gles2\+Setup} (const char $\ast$fb\+\_\+device, int components)
+\begin{DoxyCompactList}\small\item\em initialize a FB Graphics Open\+GL ES 2 (fbdev or R\+PI direct) context \end{DoxyCompactList}\item 
+void \hyperlink{fbg__opengl__es2_8h_a56535b156300a90cf5aa817fc4fdfe95}{fbg\+\_\+gles2\+Clear} ()
+\begin{DoxyCompactList}\small\item\em Open\+GL clear. \end{DoxyCompactList}\item 
+void \hyperlink{fbg__opengl__es2_8h_a74b92a4aab0207a1c15d7e8fc1b723dc}{fbg\+\_\+gles2\+Update\+Buffer} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)
+\begin{DoxyCompactList}\small\item\em this update F\+BG disp\+\_\+buffer with the actual rendered Open\+GL content \end{DoxyCompactList}\item 
+int \hyperlink{fbg__opengl__es2_8h_a182413439943678ce07ca310ccfded33}{fbg\+\_\+gles2\+Should\+Close} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)
+\begin{DoxyCompactList}\small\item\em Query the user requested (window close etc) close status. \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__opengl__es2_8h_a40a597d6ce20e0bbcd1009ae9fe7328e}{fbg\+\_\+gles2\+Create\+Texture\+From\+Image} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, struct \hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img} $\ast$img)
+\begin{DoxyCompactList}\small\item\em create a non-\/interpolated (N\+E\+A\+R\+E\+ST) GL texture from a F\+BG image \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__opengl__es2_8h_a78b04688484a4ff7ec9651f872d6d7c4}{fbg\+\_\+gles2\+Create\+Texture} (G\+Luint width, G\+Luint height, G\+Lint internal\+\_\+format)
+\begin{DoxyCompactList}\small\item\em create an empty non-\/interpolated (N\+E\+A\+R\+E\+ST) GL texture \end{DoxyCompactList}\item 
+struct \hyperlink{fbg__opengl__es2_8h_struct__fbg__vbo__data}{\+\_\+fbg\+\_\+vbo\+\_\+data} $\ast$ \hyperlink{fbg__opengl__es2_8h_ab7c677445f8e1853931f0d58bd53a9c0}{fbg\+\_\+gles2\+Create\+V\+BO} (G\+Lsizeiptr indices\+\_\+count, const G\+Lvoid $\ast$indices\+\_\+data, size\+\_\+t sizeof\+\_\+indice\+\_\+type, G\+Lsizeiptr vertices\+\_\+count, const G\+Lvoid $\ast$vertices\+\_\+data, G\+Lsizeiptr texcoords\+\_\+count, const G\+Lvoid $\ast$texcoords\+\_\+data, G\+Lsizeiptr normals\+\_\+count, const G\+Lvoid $\ast$normals\+\_\+data, G\+Lsizeiptr colors\+\_\+count, const G\+Lvoid $\ast$colors\+\_\+data)
+\begin{DoxyCompactList}\small\item\em create a V\+BO from indexed data, support for vertices, U\+Vs, normals and colors \end{DoxyCompactList}\item 
+void \hyperlink{fbg__opengl__es2_8h_a3ac6ebf34ab696d79368321eb231336e}{fbg\+\_\+gles2\+Free\+V\+B\+O\+Data} (struct \hyperlink{fbg__opengl__es2_8h_struct__fbg__vbo__data}{\+\_\+fbg\+\_\+vbo\+\_\+data} $\ast$vbo\+\_\+data)
+\begin{DoxyCompactList}\small\item\em free V\+BO data (created with fbg\+\_\+gles2\+Create\+V\+BO) \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__opengl__es2_8h_ad5ee72a7f71de24bdee26e09816c51a9}{fbg\+\_\+gles2\+Create\+V\+B\+Ovu} (G\+Lsizeiptr data\+\_\+count, const G\+Lvoid $\ast$data)
+\begin{DoxyCompactList}\small\item\em create a V\+BO from vertices + UV data packed into a single array \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__opengl__es2_8h_a6fecc8d59fce8fde2aa583d14d40e6c7}{fbg\+\_\+gles2\+Create\+Shader} (G\+Lenum type, const G\+Lchar $\ast$source)
+\begin{DoxyCompactList}\small\item\em create a F\+BO \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__opengl__es2_8h_a1e9bdd02d2bd4d842a037d89f160c97d}{fbg\+\_\+gles2\+Create\+Shader\+From\+File} (G\+Lenum type, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em create a shader from the content of a file \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__opengl__es2_8h_a99da9de6f427c8dfa282479526cab0d8}{fbg\+\_\+gles2\+Create\+Program} (G\+Luint vertex\+\_\+shader, G\+Luint fragment\+\_\+shader)
+\begin{DoxyCompactList}\small\item\em create a vertex and/or fragment program \end{DoxyCompactList}\item 
+G\+Lenum \hyperlink{fbg__opengl__es2_8h_aa40dcfe49b117e0cc56f0e37136d2e14}{fbg\+\_\+gles2\+Create\+Program\+From\+Files} (const char $\ast$vs, const char $\ast$fs)
+\begin{DoxyCompactList}\small\item\em create a vertex and/or fragment/geometry program from a file \end{DoxyCompactList}\item 
+G\+Lenum \hyperlink{fbg__opengl__es2_8h_a31d962efec67e4646f4e4d783f771f5b}{fbg\+\_\+gles2\+Create\+Program\+From\+String} (const char $\ast$vs, const char $\ast$fs)
+\begin{DoxyCompactList}\small\item\em create a vertex and/or fragment/geometry program from a string \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const G\+Lfloat \hyperlink{fbg__opengl__es2_8h_a9629d95895432370d9f324880289ad4d}{fbg\+\_\+gles2\+Quad} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Simple quad geometry (vertices + UV) \end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{fbg__opengl__es2_8h_a03be1f1cb0a92af8c8c6dc6fcd990b68}{fbg\+\_\+gles2\+Simple\+Vs}
+\begin{DoxyCompactList}\small\item\em Simple vertex shader (screen quad, vertices + UV) \end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{fbg__opengl__es2_8h_a6986e3484c0e218fd9d527643b74fe54}{fbg\+\_\+gles2\+Simple\+Fs}
+\begin{DoxyCompactList}\small\item\em Simple textured fragment shader. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Data Structure Documentation}
+\index{\+\_\+fbg\+\_\+gles2\+\_\+context@{\+\_\+fbg\+\_\+gles2\+\_\+context}}\label{struct__fbg__gles2__context}
+\Hypertarget{fbg__opengl__es2_8h_struct__fbg__gles2__context}
+\subsubsection{struct \+\_\+fbg\+\_\+gles2\+\_\+context}
+Open\+GL ES 2.\+0 wrapper data structure. 
+
+Definition at line 47 of file fbg\+\_\+opengl\+\_\+es2.\+h.
+
+\begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a2ca2f4f23e8b651ec11708d211ed765b}\label{fbg__opengl__es2_8h_a2ca2f4f23e8b651ec11708d211ed765b}} 
+EGLContext&
+egl\_context&
+E\+GL context. \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_affc02efb9ec2cda13d822b275e596f74}\label{fbg__opengl__es2_8h_affc02efb9ec2cda13d822b275e596f74}} 
+EGLDisplay&
+egl\_display&
+E\+GL display. \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a0937c99d8efac543926d5cee7708b147}\label{fbg__opengl__es2_8h_a0937c99d8efac543926d5cee7708b147}} 
+void $\ast$&
+egl\_image&
+E\+GL image. \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a82a71c25f8b378ca6d50bcfe9bde2228}\label{fbg__opengl__es2_8h_a82a71c25f8b378ca6d50bcfe9bde2228}} 
+EGLContext&
+egl\_surface&
+E\+GL surface. \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_af1ab819f45eb1407455cba90991c11e0}\label{fbg__opengl__es2_8h_af1ab819f45eb1407455cba90991c11e0}} 
+GLuint&
+fbg\_texture&
+F\+BG texture (updated at each frames) \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_ad91d53fa2f501b5ca598e7dfaef6c7a2}\label{fbg__opengl__es2_8h_ad91d53fa2f501b5ca598e7dfaef6c7a2}} 
+GLuint&
+fbg\_vbo&
+F\+BG V\+BO. \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_af4aca9e8f28ec07109a8c850d9e941f4}\label{fbg__opengl__es2_8h_af4aca9e8f28ec07109a8c850d9e941f4}} 
+int&
+fd&
+Framebuffer file descriptor. \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a6dbba5982fbf4db17d85f5587ee2afd4}\label{fbg__opengl__es2_8h_a6dbba5982fbf4db17d85f5587ee2afd4}} 
+GLenum&
+simple\_program&
+Simple G\+L\+SL program (screen-\/aligned textured quad) \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a2af2636ae98239c2cd1072e3cf9a5e26}\label{fbg__opengl__es2_8h_a2af2636ae98239c2cd1072e3cf9a5e26}} 
+int&
+update\_buffer&
+tell wether fbg\+\_\+gles2 should update fbg disp\+\_\+buffer after rendering \\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_adb624ccb30f3d6a3a4aea5c1cdb03592}\label{fbg__opengl__es2_8h_adb624ccb30f3d6a3a4aea5c1cdb03592}} 
+struct fb\_var\_screeninfo&
+vinfo&
+Framebuffer device var. informations. \\
+\hline
+
+\end{DoxyFields}
+\index{\+\_\+fbg\+\_\+vbo\+\_\+data@{\+\_\+fbg\+\_\+vbo\+\_\+data}}\label{struct__fbg__vbo__data}
+\Hypertarget{fbg__opengl__es2_8h_struct__fbg__vbo__data}
+\subsubsection{struct \+\_\+fbg\+\_\+vbo\+\_\+data}
+struct which hold usual V\+BO data for 3D objects 
+
+Definition at line 73 of file fbg\+\_\+opengl\+\_\+es2.\+h.
+
+\begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a14d3420112271942e23d0de0d3b53b20}\label{fbg__opengl__es2_8h_a14d3420112271942e23d0de0d3b53b20}} 
+GLuint&
+cbo&
+\\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_ad3d86948330c3e3887733228f8369a1d}\label{fbg__opengl__es2_8h_ad3d86948330c3e3887733228f8369a1d}} 
+GLuint&
+ibo&
+\\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a795cc9acb2bec510a4681aa824fe2560}\label{fbg__opengl__es2_8h_a795cc9acb2bec510a4681aa824fe2560}} 
+GLuint&
+nbo&
+\\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_ab4bd72ffd8ed50a3153ce8458eec0498}\label{fbg__opengl__es2_8h_ab4bd72ffd8ed50a3153ce8458eec0498}} 
+GLuint&
+tbo&
+\\
+\hline
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a8b13e18bbdd0085855c8bbfae453bdeb}\label{fbg__opengl__es2_8h_a8b13e18bbdd0085855c8bbfae453bdeb}} 
+GLuint&
+vbo&
+\\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a56535b156300a90cf5aa817fc4fdfe95}\label{fbg__opengl__es2_8h_a56535b156300a90cf5aa817fc4fdfe95}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Clear@{fbg\+\_\+gles2\+Clear}}
+\index{fbg\+\_\+gles2\+Clear@{fbg\+\_\+gles2\+Clear}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Clear()}{fbg\_gles2Clear()}}
+{\footnotesize\ttfamily void fbg\+\_\+gles2\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Open\+GL clear. 
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a99da9de6f427c8dfa282479526cab0d8}\label{fbg__opengl__es2_8h_a99da9de6f427c8dfa282479526cab0d8}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+Program@{fbg\+\_\+gles2\+Create\+Program}}
+\index{fbg\+\_\+gles2\+Create\+Program@{fbg\+\_\+gles2\+Create\+Program}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+Program()}{fbg\_gles2CreateProgram()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+gles2\+Create\+Program (\begin{DoxyParamCaption}\item[{G\+Luint}]{vertex\+\_\+shader,  }\item[{G\+Luint}]{fragment\+\_\+shader }\end{DoxyParamCaption})}
+
+
+
+create a vertex and/or fragment program 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertex\+\_\+shader} & vertex shader id, can be 0 \\
+\hline
+{\em fragment\+\_\+shader} & fragment shader id, can be 0 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_aa40dcfe49b117e0cc56f0e37136d2e14}\label{fbg__opengl__es2_8h_aa40dcfe49b117e0cc56f0e37136d2e14}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+Program\+From\+Files@{fbg\+\_\+gles2\+Create\+Program\+From\+Files}}
+\index{fbg\+\_\+gles2\+Create\+Program\+From\+Files@{fbg\+\_\+gles2\+Create\+Program\+From\+Files}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+Program\+From\+Files()}{fbg\_gles2CreateProgramFromFiles()}}
+{\footnotesize\ttfamily G\+Lenum fbg\+\_\+gles2\+Create\+Program\+From\+Files (\begin{DoxyParamCaption}\item[{const char $\ast$}]{vs,  }\item[{const char $\ast$}]{fs }\end{DoxyParamCaption})}
+
+
+
+create a vertex and/or fragment/geometry program from a file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vs} & vertex shader file \\
+\hline
+{\em fs} & fragment shader file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a31d962efec67e4646f4e4d783f771f5b}\label{fbg__opengl__es2_8h_a31d962efec67e4646f4e4d783f771f5b}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+Program\+From\+String@{fbg\+\_\+gles2\+Create\+Program\+From\+String}}
+\index{fbg\+\_\+gles2\+Create\+Program\+From\+String@{fbg\+\_\+gles2\+Create\+Program\+From\+String}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+Program\+From\+String()}{fbg\_gles2CreateProgramFromString()}}
+{\footnotesize\ttfamily G\+Lenum fbg\+\_\+gles2\+Create\+Program\+From\+String (\begin{DoxyParamCaption}\item[{const char $\ast$}]{vs,  }\item[{const char $\ast$}]{fs }\end{DoxyParamCaption})}
+
+
+
+create a vertex and/or fragment/geometry program from a string 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vs} & vertex shader string \\
+\hline
+{\em fs} & fragment shader string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a6fecc8d59fce8fde2aa583d14d40e6c7}\label{fbg__opengl__es2_8h_a6fecc8d59fce8fde2aa583d14d40e6c7}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+Shader@{fbg\+\_\+gles2\+Create\+Shader}}
+\index{fbg\+\_\+gles2\+Create\+Shader@{fbg\+\_\+gles2\+Create\+Shader}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+Shader()}{fbg\_gles2CreateShader()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+gles2\+Create\+Shader (\begin{DoxyParamCaption}\item[{G\+Lenum}]{type,  }\item[{const G\+Lchar $\ast$}]{source }\end{DoxyParamCaption})}
+
+
+
+create a F\+BO 
+
+
+\begin{DoxyParams}{Parameters}
+{\em texture} & GL texture id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL F\+BO idcreate a single shader
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em type} & GL shader type \\
+\hline
+{\em source} & shader code \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a1e9bdd02d2bd4d842a037d89f160c97d}\label{fbg__opengl__es2_8h_a1e9bdd02d2bd4d842a037d89f160c97d}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+Shader\+From\+File@{fbg\+\_\+gles2\+Create\+Shader\+From\+File}}
+\index{fbg\+\_\+gles2\+Create\+Shader\+From\+File@{fbg\+\_\+gles2\+Create\+Shader\+From\+File}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+Shader\+From\+File()}{fbg\_gles2CreateShaderFromFile()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+gles2\+Create\+Shader\+From\+File (\begin{DoxyParamCaption}\item[{G\+Lenum}]{type,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+create a shader from the content of a file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & GL shader type \\
+\hline
+{\em filename} & file to load \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a78b04688484a4ff7ec9651f872d6d7c4}\label{fbg__opengl__es2_8h_a78b04688484a4ff7ec9651f872d6d7c4}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+Texture@{fbg\+\_\+gles2\+Create\+Texture}}
+\index{fbg\+\_\+gles2\+Create\+Texture@{fbg\+\_\+gles2\+Create\+Texture}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+Texture()}{fbg\_gles2CreateTexture()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+gles2\+Create\+Texture (\begin{DoxyParamCaption}\item[{G\+Luint}]{width,  }\item[{G\+Luint}]{height,  }\item[{G\+Lint}]{internal\+\_\+format }\end{DoxyParamCaption})}
+
+
+
+create an empty non-\/interpolated (N\+E\+A\+R\+E\+ST) GL texture 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & width of the requested texture \\
+\hline
+{\em height} & height of the requested texture \\
+\hline
+{\em internal\+\_\+format} & Open\+GL format (G\+L\+\_\+\+R\+G\+BA etc.) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL texture id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a40a597d6ce20e0bbcd1009ae9fe7328e}\label{fbg__opengl__es2_8h_a40a597d6ce20e0bbcd1009ae9fe7328e}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+Texture\+From\+Image@{fbg\+\_\+gles2\+Create\+Texture\+From\+Image}}
+\index{fbg\+\_\+gles2\+Create\+Texture\+From\+Image@{fbg\+\_\+gles2\+Create\+Texture\+From\+Image}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+Texture\+From\+Image()}{fbg\_gles2CreateTextureFromImage()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+gles2\+Create\+Texture\+From\+Image (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg,  }\item[{struct \hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img} $\ast$}]{img }\end{DoxyParamCaption})}
+
+
+
+create a non-\/interpolated (N\+E\+A\+R\+E\+ST) GL texture from a F\+BG image 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em img} & image structure pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL texture id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_ab7c677445f8e1853931f0d58bd53a9c0}\label{fbg__opengl__es2_8h_ab7c677445f8e1853931f0d58bd53a9c0}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+V\+BO@{fbg\+\_\+gles2\+Create\+V\+BO}}
+\index{fbg\+\_\+gles2\+Create\+V\+BO@{fbg\+\_\+gles2\+Create\+V\+BO}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+V\+B\+O()}{fbg\_gles2CreateVBO()}}
+{\footnotesize\ttfamily struct \hyperlink{fbg__opengl__es2_8h_struct__fbg__vbo__data}{\+\_\+fbg\+\_\+vbo\+\_\+data}$\ast$ fbg\+\_\+gles2\+Create\+V\+BO (\begin{DoxyParamCaption}\item[{G\+Lsizeiptr}]{indices\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{indices\+\_\+data,  }\item[{size\+\_\+t}]{sizeof\+\_\+indice\+\_\+type,  }\item[{G\+Lsizeiptr}]{vertices\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{vertices\+\_\+data,  }\item[{G\+Lsizeiptr}]{texcoords\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{texcoords\+\_\+data,  }\item[{G\+Lsizeiptr}]{normals\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{normals\+\_\+data,  }\item[{G\+Lsizeiptr}]{colors\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{colors\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+create a V\+BO from indexed data, support for vertices, U\+Vs, normals and colors 
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices\+\_\+count} & indices count \\
+\hline
+{\em indices\+\_\+data} & data containing indices \\
+\hline
+{\em sizeof\+\_\+indice\+\_\+type} & sizeof indice type \\
+\hline
+{\em vertices\+\_\+count} & vertices count \\
+\hline
+{\em vertices\+\_\+data} & data containing vertices \\
+\hline
+{\em texcoords\+\_\+count} & uv count \\
+\hline
+{\em texcoords\+\_\+data} & data containing uv \\
+\hline
+{\em normals\+\_\+count} & normals count \\
+\hline
+{\em normals\+\_\+data} & data containing normals \\
+\hline
+{\em colors\+\_\+count} & colors count \\
+\hline
+{\em colors\+\_\+data} & data containing colors \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{fbg__opengl__es2_8h_struct__fbg__vbo__data}{\+\_\+fbg\+\_\+vbo\+\_\+data} data structure containing the V\+B\+Os 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_ad5ee72a7f71de24bdee26e09816c51a9}\label{fbg__opengl__es2_8h_ad5ee72a7f71de24bdee26e09816c51a9}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Create\+V\+B\+Ovu@{fbg\+\_\+gles2\+Create\+V\+B\+Ovu}}
+\index{fbg\+\_\+gles2\+Create\+V\+B\+Ovu@{fbg\+\_\+gles2\+Create\+V\+B\+Ovu}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Create\+V\+B\+Ovu()}{fbg\_gles2CreateVBOvu()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+gles2\+Create\+V\+B\+Ovu (\begin{DoxyParamCaption}\item[{G\+Lsizeiptr}]{data\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+create a V\+BO from vertices + UV data packed into a single array 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+count} & vertices data count \\
+\hline
+{\em data} & data containing all vertices (set of 3 x float) then all associated U\+Vs (set of 2 x float) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL V\+BO id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a3ac6ebf34ab696d79368321eb231336e}\label{fbg__opengl__es2_8h_a3ac6ebf34ab696d79368321eb231336e}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Free\+V\+B\+O\+Data@{fbg\+\_\+gles2\+Free\+V\+B\+O\+Data}}
+\index{fbg\+\_\+gles2\+Free\+V\+B\+O\+Data@{fbg\+\_\+gles2\+Free\+V\+B\+O\+Data}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Free\+V\+B\+O\+Data()}{fbg\_gles2FreeVBOData()}}
+{\footnotesize\ttfamily void fbg\+\_\+gles2\+Free\+V\+B\+O\+Data (\begin{DoxyParamCaption}\item[{struct \hyperlink{fbg__opengl__es2_8h_struct__fbg__vbo__data}{\+\_\+fbg\+\_\+vbo\+\_\+data} $\ast$}]{vbo\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+free V\+BO data (created with fbg\+\_\+gles2\+Create\+V\+BO) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vbo\+\_\+data} & data structure containing the V\+B\+Os \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_aa6d3bab630c17f240843c2872b05d18a}\label{fbg__opengl__es2_8h_aa6d3bab630c17f240843c2872b05d18a}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Setup@{fbg\+\_\+gles2\+Setup}}
+\index{fbg\+\_\+gles2\+Setup@{fbg\+\_\+gles2\+Setup}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Setup()}{fbg\_gles2Setup()}}
+{\footnotesize\ttfamily struct \hyperlink{struct__fbg}{\+\_\+fbg}$\ast$ fbg\+\_\+gles2\+Setup (\begin{DoxyParamCaption}\item[{const char $\ast$}]{fb\+\_\+device,  }\item[{int}]{components }\end{DoxyParamCaption})}
+
+
+
+initialize a FB Graphics Open\+GL ES 2 (fbdev or R\+PI direct) context 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fb\+\_\+device} & framebuffer device; example \+: /dev/fb0 \\
+\hline
+{\em components} & fbg context color components (4 for R\+G\+BA or 3 for R\+GB) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+F\+BG data structure pointer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a182413439943678ce07ca310ccfded33}\label{fbg__opengl__es2_8h_a182413439943678ce07ca310ccfded33}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Should\+Close@{fbg\+\_\+gles2\+Should\+Close}}
+\index{fbg\+\_\+gles2\+Should\+Close@{fbg\+\_\+gles2\+Should\+Close}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Should\+Close()}{fbg\_gles2ShouldClose()}}
+{\footnotesize\ttfamily int fbg\+\_\+gles2\+Should\+Close (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg }\end{DoxyParamCaption})}
+
+
+
+Query the user requested (window close etc) close status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean indicating close status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a74b92a4aab0207a1c15d7e8fc1b723dc}\label{fbg__opengl__es2_8h_a74b92a4aab0207a1c15d7e8fc1b723dc}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Update\+Buffer@{fbg\+\_\+gles2\+Update\+Buffer}}
+\index{fbg\+\_\+gles2\+Update\+Buffer@{fbg\+\_\+gles2\+Update\+Buffer}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Update\+Buffer()}{fbg\_gles2UpdateBuffer()}}
+{\footnotesize\ttfamily void fbg\+\_\+gles2\+Update\+Buffer (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg }\end{DoxyParamCaption})}
+
+
+
+this update F\+BG disp\+\_\+buffer with the actual rendered Open\+GL content 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a9629d95895432370d9f324880289ad4d}\label{fbg__opengl__es2_8h_a9629d95895432370d9f324880289ad4d}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Quad@{fbg\+\_\+gles2\+Quad}}
+\index{fbg\+\_\+gles2\+Quad@{fbg\+\_\+gles2\+Quad}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Quad}{fbg\_gles2Quad}}
+{\footnotesize\ttfamily const G\+Lfloat fbg\+\_\+gles2\+Quad\mbox{[}$\,$\mbox{]}}
+
+
+
+Simple quad geometry (vertices + UV) 
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a6986e3484c0e218fd9d527643b74fe54}\label{fbg__opengl__es2_8h_a6986e3484c0e218fd9d527643b74fe54}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Simple\+Fs@{fbg\+\_\+gles2\+Simple\+Fs}}
+\index{fbg\+\_\+gles2\+Simple\+Fs@{fbg\+\_\+gles2\+Simple\+Fs}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Simple\+Fs}{fbg\_gles2SimpleFs}}
+{\footnotesize\ttfamily const char$\ast$ fbg\+\_\+gles2\+Simple\+Fs}
+
+
+
+Simple textured fragment shader. 
+
+\mbox{\Hypertarget{fbg__opengl__es2_8h_a03be1f1cb0a92af8c8c6dc6fcd990b68}\label{fbg__opengl__es2_8h_a03be1f1cb0a92af8c8c6dc6fcd990b68}} 
+\index{fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}!fbg\+\_\+gles2\+Simple\+Vs@{fbg\+\_\+gles2\+Simple\+Vs}}
+\index{fbg\+\_\+gles2\+Simple\+Vs@{fbg\+\_\+gles2\+Simple\+Vs}!fbg\+\_\+opengl\+\_\+es2.\+h@{fbg\+\_\+opengl\+\_\+es2.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+gles2\+Simple\+Vs}{fbg\_gles2SimpleVs}}
+{\footnotesize\ttfamily const char$\ast$ fbg\+\_\+gles2\+Simple\+Vs}
+
+
+
+Simple vertex shader (screen quad, vertices + UV) 
+

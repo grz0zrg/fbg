@@ -142,6 +142,7 @@
     /*!
       \param indices_count indices count
       \param indices_data data containing indices
+      \param sizeof_indice_type sizeof indice type
       \param vertices_count vertices count
       \param vertices_data data containing vertices
       \param texcoords_count uv count

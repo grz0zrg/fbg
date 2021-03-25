@@ -12,75 +12,71 @@ FB Graphics context data structure.
 \subsection*{Data Fields}
 \begin{DoxyCompactItemize}
 \item 
-int \mbox{\hyperlink{struct__fbg_acfa58132f44f89e832ae7f73f5583b7e}{fd}}
-\begin{DoxyCompactList}\small\item\em Framebuffer device file descriptor. \end{DoxyCompactList}\item 
-struct fb\+\_\+var\+\_\+screeninfo \mbox{\hyperlink{struct__fbg_a22447f0d56680de6ff37587b44f7cf4b}{vinfo}}
-\begin{DoxyCompactList}\small\item\em Framebuffer device var. informations. \end{DoxyCompactList}\item 
-struct fb\+\_\+fix\+\_\+screeninfo \mbox{\hyperlink{struct__fbg_a954dd14a4129eed7ebe09f31bd025861}{finfo}}
-\begin{DoxyCompactList}\small\item\em Framebuffer device fix. informations. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a84fb220d4804cba22176997898e75b73}{size}}
+int \hyperlink{struct__fbg_a84fb220d4804cba22176997898e75b73}{size}
 \begin{DoxyCompactList}\small\item\em Framebuffer real data length (with B\+PP) \end{DoxyCompactList}\item 
-unsigned char $\ast$ \mbox{\hyperlink{struct__fbg_abd19f36337c99f866e03eb88f6c2a9d5}{buffer}}
-\begin{DoxyCompactList}\small\item\em Memory-\/mapped framebuffer. \end{DoxyCompactList}\item 
-unsigned char $\ast$ \mbox{\hyperlink{struct__fbg_aa20614c94c7235bc5bc105b6e71e1be8}{disp\+\_\+buffer}}
+unsigned char $\ast$ \hyperlink{struct__fbg_aa20614c94c7235bc5bc105b6e71e1be8}{disp\+\_\+buffer}
 \begin{DoxyCompactList}\small\item\em Front / display buffer. \end{DoxyCompactList}\item 
-unsigned char $\ast$ \mbox{\hyperlink{struct__fbg_a907e7fc97965b972c17114c885e53735}{back\+\_\+buffer}}
+unsigned char $\ast$ \hyperlink{struct__fbg_a907e7fc97965b972c17114c885e53735}{back\+\_\+buffer}
 \begin{DoxyCompactList}\small\item\em Back buffer. \end{DoxyCompactList}\item 
-unsigned char $\ast$ \mbox{\hyperlink{struct__fbg_a0463af9bf583afe770b822c1fbb9a24d}{temp\+\_\+buffer}}
+unsigned char $\ast$ \hyperlink{struct__fbg_a0463af9bf583afe770b822c1fbb9a24d}{temp\+\_\+buffer}
 \begin{DoxyCompactList}\small\item\em Temporary buffer. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} \mbox{\hyperlink{struct__fbg_ad3cac82bd9448a4020a4e08621f5269a}{fill\+\_\+color}}
+int \hyperlink{struct__fbg_ad7796d799a4ad67405101b8548d99ad8}{allow\+\_\+resizing}
+\begin{DoxyCompactList}\small\item\em Wether to allow context resize. \end{DoxyCompactList}\item 
+int \hyperlink{struct__fbg_ac9a25b7b2700bee151d8f9dc3e586487}{initialize\+\_\+buffers}
+\begin{DoxyCompactList}\small\item\em Wether to allow F\+BG to allocate its internal buffers. \end{DoxyCompactList}\item 
+struct \hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb} \hyperlink{struct__fbg_ad3cac82bd9448a4020a4e08621f5269a}{fill\+\_\+color}
 \begin{DoxyCompactList}\small\item\em Current fill color. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} \mbox{\hyperlink{struct__fbg_a4abb858439598b09790ec6d5d8326bb2}{text\+\_\+color}}
+struct \hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb} \hyperlink{struct__fbg_a4abb858439598b09790ec6d5d8326bb2}{text\+\_\+color}
 \begin{DoxyCompactList}\small\item\em Current text color. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} \mbox{\hyperlink{struct__fbg_afd34a8de5a853e915bd101f11d44cf67}{text\+\_\+background}}
+struct \hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb} \hyperlink{struct__fbg_afd34a8de5a853e915bd101f11d44cf67}{text\+\_\+background}
 \begin{DoxyCompactList}\small\item\em Current text background color (based on colorkey value) \end{DoxyCompactList}\item 
-unsigned char \mbox{\hyperlink{struct__fbg_a06e65293cf0b48e70d76d63f5de453e6}{text\+\_\+colorkey}}
+unsigned char \hyperlink{struct__fbg_a06e65293cf0b48e70d76d63f5de453e6}{text\+\_\+colorkey}
 \begin{DoxyCompactList}\small\item\em Current text color key. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a870987786121c51135f20b630d731abd}{text\+\_\+alpha}}
+int \hyperlink{struct__fbg_a870987786121c51135f20b630d731abd}{text\+\_\+alpha}
 \begin{DoxyCompactList}\small\item\em Text background alpha value. \end{DoxyCompactList}\item 
-struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} \mbox{\hyperlink{struct__fbg_a72868d703236aaabb7a5031703a6bbd8}{current\+\_\+font}}
+struct \hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font} \hyperlink{struct__fbg_a72868d703236aaabb7a5031703a6bbd8}{current\+\_\+font}
 \begin{DoxyCompactList}\small\item\em Current font. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width}}
+int \hyperlink{struct__fbg_a7090d672982fe465f2186dbfea384d32}{compositing}
+\begin{DoxyCompactList}\small\item\em Compositing method (only used with fbg\+\_\+draw\+Image for now) \end{DoxyCompactList}\item 
+int \hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width}
 \begin{DoxyCompactList}\small\item\em Display width in pixels. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}{height}}
+int \hyperlink{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}{height}
 \begin{DoxyCompactList}\small\item\em Display height in pixels. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a1ab3f10e8c3483d7286db9850511d46d}{width\+\_\+n\+\_\+height}}
+int \hyperlink{struct__fbg_a1ab3f10e8c3483d7286db9850511d46d}{width\+\_\+n\+\_\+height}
 \begin{DoxyCompactList}\small\item\em Display lenght in pixels (width $\ast$ height) \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a1db77a2ef506723a575644dbc1cfb747}{components}}
+int \hyperlink{struct__fbg_a1db77a2ef506723a575644dbc1cfb747}{components}
 \begin{DoxyCompactList}\small\item\em Display components amount (3 = 24 B\+PP / 4 = 32 B\+PP) \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a7c2e64d2f40575c8a989c759c30acb0e}{comp\+\_\+offset}}
+int \hyperlink{struct__fbg_a7c2e64d2f40575c8a989c759c30acb0e}{comp\+\_\+offset}
 \begin{DoxyCompactList}\small\item\em Offset to add in case of 32 B\+PP. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_af8a1ee8d7004e6f2193f2a3ed98f8ce8}{line\+\_\+length}}
+int \hyperlink{struct__fbg_af8a1ee8d7004e6f2193f2a3ed98f8ce8}{line\+\_\+length}
 \begin{DoxyCompactList}\small\item\em Internal buffers line length. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}}
+int \hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}
 \begin{DoxyCompactList}\small\item\em Requested new display width (resize event) \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height}}
+int \hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height}
 \begin{DoxyCompactList}\small\item\em Requested new display height (resize event) \end{DoxyCompactList}\item 
-int16\+\_\+t \mbox{\hyperlink{struct__fbg_a64b16363bc48d1e19141df2e242930a9}{fps}}
+int16\+\_\+t \hyperlink{struct__fbg_a64b16363bc48d1e19141df2e242930a9}{fps}
 \begin{DoxyCompactList}\small\item\em Current F\+PS. \end{DoxyCompactList}\item 
-char \mbox{\hyperlink{struct__fbg_af447e6ed58d893989c8dad075807a79b}{fps\+\_\+char}} \mbox{[}10\mbox{]}
+char \hyperlink{struct__fbg_af447e6ed58d893989c8dad075807a79b}{fps\+\_\+char} \mbox{[}10\mbox{]}
 \begin{DoxyCompactList}\small\item\em Current F\+PS as a string. \end{DoxyCompactList}\item 
-struct timeval \mbox{\hyperlink{struct__fbg_a07d7bb827a7595c956fe22c2d65bba33}{fps\+\_\+start}}
+struct timeval \hyperlink{struct__fbg_a07d7bb827a7595c956fe22c2d65bba33}{fps\+\_\+start}
 \begin{DoxyCompactList}\small\item\em First frame time for the current second. \end{DoxyCompactList}\item 
-struct timeval \mbox{\hyperlink{struct__fbg_ade17a45bbc82bef326857c2837cdf66c}{fps\+\_\+stop}}
+struct timeval \hyperlink{struct__fbg_ade17a45bbc82bef326857c2837cdf66c}{fps\+\_\+stop}
 \begin{DoxyCompactList}\small\item\em Last frame time for the current second. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_aa3ef83f919d12e680f8c64006b441454}{frame}}
+int \hyperlink{struct__fbg_aa3ef83f919d12e680f8c64006b441454}{frame}
 \begin{DoxyCompactList}\small\item\em Frame counter for the current second. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_a5844c5bf4789117cbc0c972ff160b338}{bgr}}
+int \hyperlink{struct__fbg_a5844c5bf4789117cbc0c972ff160b338}{bgr}
 \begin{DoxyCompactList}\small\item\em Flag indicating a B\+GR framebuffer. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{struct__fbg_ad32509bca6ac4fb467476834cb8ce9d2}{page\+\_\+flipping}}
-\begin{DoxyCompactList}\small\item\em Flag indicating that page flipping is enabled. \end{DoxyCompactList}\item 
-void($\ast$ \mbox{\hyperlink{struct__fbg_aef07a92ae059ea2a43653f4d0c5d928e}{backend\+\_\+resize}} )(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned int \mbox{\hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}}, unsigned int \mbox{\hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height}})
+void($\ast$ \hyperlink{struct__fbg_aef07a92ae059ea2a43653f4d0c5d928e}{backend\+\_\+resize} )(struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, unsigned int \hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}, unsigned int \hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height})
 \begin{DoxyCompactList}\small\item\em Backend resize function. \end{DoxyCompactList}\item 
-void($\ast$ \mbox{\hyperlink{struct__fbg_a68add70dac4b055809c1bcab1e65b18d}{user\+\_\+resize}} )(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned int \mbox{\hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}}, unsigned int \mbox{\hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height}})
+void($\ast$ \hyperlink{struct__fbg_a68add70dac4b055809c1bcab1e65b18d}{user\+\_\+resize} )(struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, unsigned int \hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}, unsigned int \hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height})
 \begin{DoxyCompactList}\small\item\em User-\/defined resize function. \end{DoxyCompactList}\item 
-void($\ast$ \mbox{\hyperlink{struct__fbg_a3f2ad2eb06555cdbe2d18f541231cb37}{user\+\_\+flip}} )(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
+void($\ast$ \hyperlink{struct__fbg_a3f2ad2eb06555cdbe2d18f541231cb37}{user\+\_\+flip} )(struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em User-\/defined flip function. \end{DoxyCompactList}\item 
-void($\ast$ \mbox{\hyperlink{struct__fbg_ac66a762877982c6f381a7cfd54a8f17e}{user\+\_\+draw}} )(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
+void($\ast$ \hyperlink{struct__fbg_ac66a762877982c6f381a7cfd54a8f17e}{user\+\_\+draw} )(struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em User-\/defined draw function. \end{DoxyCompactList}\item 
-void($\ast$ \mbox{\hyperlink{struct__fbg_a88d48b502672cfb8bd2c94ea3feac8d0}{user\+\_\+free}} )(struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)
+void($\ast$ \hyperlink{struct__fbg_a88d48b502672cfb8bd2c94ea3feac8d0}{user\+\_\+free} )(struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)
 \begin{DoxyCompactList}\small\item\em User-\/defined free function. \end{DoxyCompactList}\item 
-void $\ast$ \mbox{\hyperlink{struct__fbg_ae3ecac18abee9dedabacaca9bb063bde}{user\+\_\+context}}
+void $\ast$ \hyperlink{struct__fbg_ae3ecac18abee9dedabacaca9bb063bde}{user\+\_\+context}
 \begin{DoxyCompactList}\small\item\em User-\/defined context structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -89,11 +85,25 @@ FB Graphics context data structure.
 
 Hold all data related to a F\+BG context 
 
-Definition at line 124 of file fbgraphics.\+h.
+Definition at line 123 of file fbgraphics.\+h.
 
 
 
 \subsection{Field Documentation}
+\mbox{\Hypertarget{struct__fbg_ad7796d799a4ad67405101b8548d99ad8}\label{struct__fbg_ad7796d799a4ad67405101b8548d99ad8}} 
+\index{\+\_\+fbg@{\+\_\+fbg}!allow\+\_\+resizing@{allow\+\_\+resizing}}
+\index{allow\+\_\+resizing@{allow\+\_\+resizing}!\+\_\+fbg@{\+\_\+fbg}}
+\subsubsection{\texorpdfstring{allow\+\_\+resizing}{allow\_resizing}}
+{\footnotesize\ttfamily int \+\_\+fbg\+::allow\+\_\+resizing}
+
+
+
+Wether to allow context resize. 
+
+
+
+Definition at line 136 of file fbgraphics.\+h.
+
 \mbox{\Hypertarget{struct__fbg_a907e7fc97965b972c17114c885e53735}\label{struct__fbg_a907e7fc97965b972c17114c885e53735}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!back\+\_\+buffer@{back\+\_\+buffer}}
 \index{back\+\_\+buffer@{back\+\_\+buffer}!\+\_\+fbg@{\+\_\+fbg}}
@@ -106,13 +116,13 @@ Back buffer.
 
 All FB Graphics functions draw into this buffer. 
 
-Definition at line 142 of file fbgraphics.\+h.
+Definition at line 131 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_aef07a92ae059ea2a43653f4d0c5d928e}\label{struct__fbg_aef07a92ae059ea2a43653f4d0c5d928e}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!backend\+\_\+resize@{backend\+\_\+resize}}
 \index{backend\+\_\+resize@{backend\+\_\+resize}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{backend\+\_\+resize}{backend\_resize}}
-{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::backend\+\_\+resize) (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned int \mbox{\hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}}, unsigned int \mbox{\hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height}})}
+{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::backend\+\_\+resize) (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, unsigned int \hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}, unsigned int \hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height})}
 
 
 
@@ -120,7 +130,7 @@ Backend resize function.
 
 
 
-Definition at line 212 of file fbgraphics.\+h.
+Definition at line 209 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a5844c5bf4789117cbc0c972ff160b338}\label{struct__fbg_a5844c5bf4789117cbc0c972ff160b338}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!bgr@{bgr}}
@@ -134,21 +144,7 @@ Flag indicating a B\+GR framebuffer.
 
 
 
-Definition at line 207 of file fbgraphics.\+h.
-
-\mbox{\Hypertarget{struct__fbg_abd19f36337c99f866e03eb88f6c2a9d5}\label{struct__fbg_abd19f36337c99f866e03eb88f6c2a9d5}} 
-\index{\+\_\+fbg@{\+\_\+fbg}!buffer@{buffer}}
-\index{buffer@{buffer}!\+\_\+fbg@{\+\_\+fbg}}
-\subsubsection{\texorpdfstring{buffer}{buffer}}
-{\footnotesize\ttfamily unsigned char$\ast$ \+\_\+fbg\+::buffer}
-
-
-
-Memory-\/mapped framebuffer. 
-
-
-
-Definition at line 137 of file fbgraphics.\+h.
+Definition at line 206 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a7c2e64d2f40575c8a989c759c30acb0e}\label{struct__fbg_a7c2e64d2f40575c8a989c759c30acb0e}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!comp\+\_\+offset@{comp\+\_\+offset}}
@@ -162,7 +158,7 @@ Offset to add in case of 32 B\+PP.
 
 
 
-Definition at line 179 of file fbgraphics.\+h.
+Definition at line 178 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a1db77a2ef506723a575644dbc1cfb747}\label{struct__fbg_a1db77a2ef506723a575644dbc1cfb747}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!components@{components}}
@@ -176,13 +172,27 @@ Display components amount (3 = 24 B\+PP / 4 = 32 B\+PP)
 
 
 
-Definition at line 177 of file fbgraphics.\+h.
+Definition at line 176 of file fbgraphics.\+h.
+
+\mbox{\Hypertarget{struct__fbg_a7090d672982fe465f2186dbfea384d32}\label{struct__fbg_a7090d672982fe465f2186dbfea384d32}} 
+\index{\+\_\+fbg@{\+\_\+fbg}!compositing@{compositing}}
+\index{compositing@{compositing}!\+\_\+fbg@{\+\_\+fbg}}
+\subsubsection{\texorpdfstring{compositing}{compositing}}
+{\footnotesize\ttfamily int \+\_\+fbg\+::compositing}
+
+
+
+Compositing method (only used with fbg\+\_\+draw\+Image for now) 
+
+Default to source-\/over compositing. 
+
+Definition at line 167 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a72868d703236aaabb7a5031703a6bbd8}\label{struct__fbg_a72868d703236aaabb7a5031703a6bbd8}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!current\+\_\+font@{current\+\_\+font}}
 \index{current\+\_\+font@{current\+\_\+font}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{current\+\_\+font}{current\_font}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font}} \+\_\+fbg\+::current\+\_\+font}
+{\footnotesize\ttfamily struct \hyperlink{fbgraphics_8h_struct__fbg__font}{\+\_\+fbg\+\_\+font} \+\_\+fbg\+::current\+\_\+font}
 
 
 
@@ -190,7 +200,7 @@ Current font.
 
 No fonts is loaded by default and the first loaded font will be assigned automatically as the current font. 
 
-Definition at line 168 of file fbgraphics.\+h.
+Definition at line 163 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_aa20614c94c7235bc5bc105b6e71e1be8}\label{struct__fbg_aa20614c94c7235bc5bc105b6e71e1be8}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!disp\+\_\+buffer@{disp\+\_\+buffer}}
@@ -204,27 +214,13 @@ Front / display buffer.
 
 
 
-Definition at line 139 of file fbgraphics.\+h.
-
-\mbox{\Hypertarget{struct__fbg_acfa58132f44f89e832ae7f73f5583b7e}\label{struct__fbg_acfa58132f44f89e832ae7f73f5583b7e}} 
-\index{\+\_\+fbg@{\+\_\+fbg}!fd@{fd}}
-\index{fd@{fd}!\+\_\+fbg@{\+\_\+fbg}}
-\subsubsection{\texorpdfstring{fd}{fd}}
-{\footnotesize\ttfamily int \+\_\+fbg\+::fd}
-
-
-
-Framebuffer device file descriptor. 
-
-
-
-Definition at line 126 of file fbgraphics.\+h.
+Definition at line 128 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_ad3cac82bd9448a4020a4e08621f5269a}\label{struct__fbg_ad3cac82bd9448a4020a4e08621f5269a}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!fill\+\_\+color@{fill\+\_\+color}}
 \index{fill\+\_\+color@{fill\+\_\+color}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{fill\+\_\+color}{fill\_color}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} \+\_\+fbg\+::fill\+\_\+color}
+{\footnotesize\ttfamily struct \hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb} \+\_\+fbg\+::fill\+\_\+color}
 
 
 
@@ -232,21 +228,7 @@ Current fill color.
 
 Default to black. 
 
-Definition at line 148 of file fbgraphics.\+h.
-
-\mbox{\Hypertarget{struct__fbg_a954dd14a4129eed7ebe09f31bd025861}\label{struct__fbg_a954dd14a4129eed7ebe09f31bd025861}} 
-\index{\+\_\+fbg@{\+\_\+fbg}!finfo@{finfo}}
-\index{finfo@{finfo}!\+\_\+fbg@{\+\_\+fbg}}
-\subsubsection{\texorpdfstring{finfo}{finfo}}
-{\footnotesize\ttfamily struct fb\+\_\+fix\+\_\+screeninfo \+\_\+fbg\+::finfo}
-
-
-
-Framebuffer device fix. informations. 
-
-
-
-Definition at line 131 of file fbgraphics.\+h.
+Definition at line 143 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a64b16363bc48d1e19141df2e242930a9}\label{struct__fbg_a64b16363bc48d1e19141df2e242930a9}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!fps@{fps}}
@@ -260,7 +242,7 @@ Current F\+PS.
 
 
 
-Definition at line 192 of file fbgraphics.\+h.
+Definition at line 191 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_af447e6ed58d893989c8dad075807a79b}\label{struct__fbg_af447e6ed58d893989c8dad075807a79b}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!fps\+\_\+char@{fps\+\_\+char}}
@@ -274,7 +256,7 @@ Current F\+PS as a string.
 
 
 
-Definition at line 196 of file fbgraphics.\+h.
+Definition at line 195 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a07d7bb827a7595c956fe22c2d65bba33}\label{struct__fbg_a07d7bb827a7595c956fe22c2d65bba33}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!fps\+\_\+start@{fps\+\_\+start}}
@@ -288,7 +270,7 @@ First frame time for the current second.
 
 
 
-Definition at line 199 of file fbgraphics.\+h.
+Definition at line 198 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_ade17a45bbc82bef326857c2837cdf66c}\label{struct__fbg_ade17a45bbc82bef326857c2837cdf66c}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!fps\+\_\+stop@{fps\+\_\+stop}}
@@ -302,7 +284,7 @@ Last frame time for the current second.
 
 
 
-Definition at line 201 of file fbgraphics.\+h.
+Definition at line 200 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_aa3ef83f919d12e680f8c64006b441454}\label{struct__fbg_aa3ef83f919d12e680f8c64006b441454}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!frame@{frame}}
@@ -316,7 +298,7 @@ Frame counter for the current second.
 
 
 
-Definition at line 204 of file fbgraphics.\+h.
+Definition at line 203 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}\label{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!height@{height}}
@@ -330,7 +312,21 @@ Display height in pixels.
 
 
 
-Definition at line 173 of file fbgraphics.\+h.
+Definition at line 172 of file fbgraphics.\+h.
+
+\mbox{\Hypertarget{struct__fbg_ac9a25b7b2700bee151d8f9dc3e586487}\label{struct__fbg_ac9a25b7b2700bee151d8f9dc3e586487}} 
+\index{\+\_\+fbg@{\+\_\+fbg}!initialize\+\_\+buffers@{initialize\+\_\+buffers}}
+\index{initialize\+\_\+buffers@{initialize\+\_\+buffers}!\+\_\+fbg@{\+\_\+fbg}}
+\subsubsection{\texorpdfstring{initialize\+\_\+buffers}{initialize\_buffers}}
+{\footnotesize\ttfamily int \+\_\+fbg\+::initialize\+\_\+buffers}
+
+
+
+Wether to allow F\+BG to allocate its internal buffers. 
+
+
+
+Definition at line 139 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_af8a1ee8d7004e6f2193f2a3ed98f8ce8}\label{struct__fbg_af8a1ee8d7004e6f2193f2a3ed98f8ce8}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!line\+\_\+length@{line\+\_\+length}}
@@ -344,7 +340,7 @@ Internal buffers line length.
 
 
 
-Definition at line 181 of file fbgraphics.\+h.
+Definition at line 180 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}\label{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!new\+\_\+height@{new\+\_\+height}}
@@ -358,7 +354,7 @@ Requested new display height (resize event)
 
 
 
-Definition at line 186 of file fbgraphics.\+h.
+Definition at line 185 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}\label{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!new\+\_\+width@{new\+\_\+width}}
@@ -372,21 +368,7 @@ Requested new display width (resize event)
 
 
 
-Definition at line 184 of file fbgraphics.\+h.
-
-\mbox{\Hypertarget{struct__fbg_ad32509bca6ac4fb467476834cb8ce9d2}\label{struct__fbg_ad32509bca6ac4fb467476834cb8ce9d2}} 
-\index{\+\_\+fbg@{\+\_\+fbg}!page\+\_\+flipping@{page\+\_\+flipping}}
-\index{page\+\_\+flipping@{page\+\_\+flipping}!\+\_\+fbg@{\+\_\+fbg}}
-\subsubsection{\texorpdfstring{page\+\_\+flipping}{page\_flipping}}
-{\footnotesize\ttfamily int \+\_\+fbg\+::page\+\_\+flipping}
-
-
-
-Flag indicating that page flipping is enabled. 
-
-
-
-Definition at line 209 of file fbgraphics.\+h.
+Definition at line 183 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a84fb220d4804cba22176997898e75b73}\label{struct__fbg_a84fb220d4804cba22176997898e75b73}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!size@{size}}
@@ -400,7 +382,7 @@ Framebuffer real data length (with B\+PP)
 
 
 
-Definition at line 134 of file fbgraphics.\+h.
+Definition at line 125 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a0463af9bf583afe770b822c1fbb9a24d}\label{struct__fbg_a0463af9bf583afe770b822c1fbb9a24d}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!temp\+\_\+buffer@{temp\+\_\+buffer}}
@@ -414,7 +396,7 @@ Temporary buffer.
 
 
 
-Definition at line 144 of file fbgraphics.\+h.
+Definition at line 133 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a870987786121c51135f20b630d731abd}\label{struct__fbg_a870987786121c51135f20b630d731abd}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!text\+\_\+alpha@{text\+\_\+alpha}}
@@ -428,13 +410,13 @@ Text background alpha value.
 
 Default to transparent. 
 
-Definition at line 164 of file fbgraphics.\+h.
+Definition at line 159 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_afd34a8de5a853e915bd101f11d44cf67}\label{struct__fbg_afd34a8de5a853e915bd101f11d44cf67}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!text\+\_\+background@{text\+\_\+background}}
 \index{text\+\_\+background@{text\+\_\+background}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{text\+\_\+background}{text\_background}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} \+\_\+fbg\+::text\+\_\+background}
+{\footnotesize\ttfamily struct \hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb} \+\_\+fbg\+::text\+\_\+background}
 
 
 
@@ -442,13 +424,13 @@ Current text background color (based on colorkey value)
 
 Default to black. 
 
-Definition at line 156 of file fbgraphics.\+h.
+Definition at line 151 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a4abb858439598b09790ec6d5d8326bb2}\label{struct__fbg_a4abb858439598b09790ec6d5d8326bb2}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!text\+\_\+color@{text\+\_\+color}}
 \index{text\+\_\+color@{text\+\_\+color}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{text\+\_\+color}{text\_color}}
-{\footnotesize\ttfamily struct \mbox{\hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb}} \+\_\+fbg\+::text\+\_\+color}
+{\footnotesize\ttfamily struct \hyperlink{fbgraphics_8h_struct__fbg__rgb}{\+\_\+fbg\+\_\+rgb} \+\_\+fbg\+::text\+\_\+color}
 
 
 
@@ -456,7 +438,7 @@ Current text color.
 
 Default to white. 
 
-Definition at line 152 of file fbgraphics.\+h.
+Definition at line 147 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a06e65293cf0b48e70d76d63f5de453e6}\label{struct__fbg_a06e65293cf0b48e70d76d63f5de453e6}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!text\+\_\+colorkey@{text\+\_\+colorkey}}
@@ -470,7 +452,7 @@ Current text color key.
 
 Default to black. 
 
-Definition at line 160 of file fbgraphics.\+h.
+Definition at line 155 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_ae3ecac18abee9dedabacaca9bb063bde}\label{struct__fbg_ae3ecac18abee9dedabacaca9bb063bde}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!user\+\_\+context@{user\+\_\+context}}
@@ -484,13 +466,13 @@ User-\/defined context structure.
 
 
 
-Definition at line 222 of file fbgraphics.\+h.
+Definition at line 219 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_ac66a762877982c6f381a7cfd54a8f17e}\label{struct__fbg_ac66a762877982c6f381a7cfd54a8f17e}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!user\+\_\+draw@{user\+\_\+draw}}
 \index{user\+\_\+draw@{user\+\_\+draw}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{user\+\_\+draw}{user\_draw}}
-{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::user\+\_\+draw) (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)}
+{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::user\+\_\+draw) (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)}
 
 
 
@@ -498,13 +480,13 @@ User-\/defined draw function.
 
 
 
-Definition at line 218 of file fbgraphics.\+h.
+Definition at line 215 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a3f2ad2eb06555cdbe2d18f541231cb37}\label{struct__fbg_a3f2ad2eb06555cdbe2d18f541231cb37}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!user\+\_\+flip@{user\+\_\+flip}}
 \index{user\+\_\+flip@{user\+\_\+flip}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{user\+\_\+flip}{user\_flip}}
-{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::user\+\_\+flip) (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)}
+{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::user\+\_\+flip) (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)}
 
 
 
@@ -512,13 +494,13 @@ User-\/defined flip function.
 
 
 
-Definition at line 216 of file fbgraphics.\+h.
+Definition at line 213 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a88d48b502672cfb8bd2c94ea3feac8d0}\label{struct__fbg_a88d48b502672cfb8bd2c94ea3feac8d0}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!user\+\_\+free@{user\+\_\+free}}
 \index{user\+\_\+free@{user\+\_\+free}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{user\+\_\+free}{user\_free}}
-{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::user\+\_\+free) (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg)}
+{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::user\+\_\+free) (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)}
 
 
 
@@ -526,13 +508,13 @@ User-\/defined free function.
 
 
 
-Definition at line 220 of file fbgraphics.\+h.
+Definition at line 217 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a68add70dac4b055809c1bcab1e65b18d}\label{struct__fbg_a68add70dac4b055809c1bcab1e65b18d}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!user\+\_\+resize@{user\+\_\+resize}}
 \index{user\+\_\+resize@{user\+\_\+resize}!\+\_\+fbg@{\+\_\+fbg}}
 \subsubsection{\texorpdfstring{user\+\_\+resize}{user\_resize}}
-{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::user\+\_\+resize) (struct \mbox{\hyperlink{struct__fbg}{\+\_\+fbg}} $\ast$fbg, unsigned int \mbox{\hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}}, unsigned int \mbox{\hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height}})}
+{\footnotesize\ttfamily void($\ast$ \+\_\+fbg\+::user\+\_\+resize) (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, unsigned int \hyperlink{struct__fbg_a95859bd418a5cfff155cdb1421d295ef}{new\+\_\+width}, unsigned int \hyperlink{struct__fbg_a509aa5f8f0a94d8313bb4da777aa64bc}{new\+\_\+height})}
 
 
 
@@ -540,21 +522,7 @@ User-\/defined resize function.
 
 
 
-Definition at line 214 of file fbgraphics.\+h.
-
-\mbox{\Hypertarget{struct__fbg_a22447f0d56680de6ff37587b44f7cf4b}\label{struct__fbg_a22447f0d56680de6ff37587b44f7cf4b}} 
-\index{\+\_\+fbg@{\+\_\+fbg}!vinfo@{vinfo}}
-\index{vinfo@{vinfo}!\+\_\+fbg@{\+\_\+fbg}}
-\subsubsection{\texorpdfstring{vinfo}{vinfo}}
-{\footnotesize\ttfamily struct fb\+\_\+var\+\_\+screeninfo \+\_\+fbg\+::vinfo}
-
-
-
-Framebuffer device var. informations. 
-
-
-
-Definition at line 129 of file fbgraphics.\+h.
+Definition at line 211 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}\label{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!width@{width}}
@@ -568,7 +536,7 @@ Display width in pixels.
 
 
 
-Definition at line 171 of file fbgraphics.\+h.
+Definition at line 170 of file fbgraphics.\+h.
 
 \mbox{\Hypertarget{struct__fbg_a1ab3f10e8c3483d7286db9850511d46d}\label{struct__fbg_a1ab3f10e8c3483d7286db9850511d46d}} 
 \index{\+\_\+fbg@{\+\_\+fbg}!width\+\_\+n\+\_\+height@{width\+\_\+n\+\_\+height}}
@@ -582,10 +550,10 @@ Display lenght in pixels (width $\ast$ height)
 
 
 
-Definition at line 175 of file fbgraphics.\+h.
+Definition at line 174 of file fbgraphics.\+h.
 
 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{fbgraphics_8h}{fbgraphics.\+h}}\end{DoxyCompactItemize}
+\hyperlink{fbgraphics_8h}{fbgraphics.\+h}\end{DoxyCompactItemize}

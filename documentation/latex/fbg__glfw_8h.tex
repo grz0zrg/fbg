@@ -1,0 +1,469 @@
+\hypertarget{fbg__glfw_8h}{}\section{fbg\+\_\+glfw.\+h File Reference}
+\label{fbg__glfw_8h}\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+{\ttfamily \#include $<$G\+L/glew.\+h$>$}\newline
+{\ttfamily \#include $<$G\+L\+F\+W/glfw3.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}fbgraphics.\+h\char`\"{}}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{fbg__glfw_8h_struct__fbg__glfw__context}{\+\_\+fbg\+\_\+glfw\+\_\+context}
+\begin{DoxyCompactList}\small\item\em G\+L\+FW wrapper data structure.  \hyperlink{fbg__glfw_8h_struct__fbg__glfw__context}{More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$ \hyperlink{fbg__glfw_8h_a41d8a89a2bf7c6d2310d07eae206faa9}{fbg\+\_\+glfw\+Setup} (int width, int height, int components, const char $\ast$title, int monitor, int fullscreen)
+\begin{DoxyCompactList}\small\item\em initialize a FB Graphics Open\+GL context (G\+L\+FW library) \end{DoxyCompactList}\item 
+void \hyperlink{fbg__glfw_8h_a17dd8947f781a20136c59eb9579edf2f}{fbg\+\_\+glfw\+Clear} ()
+\begin{DoxyCompactList}\small\item\em Open\+GL clear. \end{DoxyCompactList}\item 
+void \hyperlink{fbg__glfw_8h_a88a6523e8ce117e334bad1220bfbc55b}{fbg\+\_\+glfw\+Update\+Buffer} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)
+\begin{DoxyCompactList}\small\item\em this update F\+BG disp\+\_\+buffer with the actual rendered Open\+GL content \end{DoxyCompactList}\item 
+int \hyperlink{fbg__glfw_8h_a723385d297914375f9c5269492b05b50}{fbg\+\_\+glfw\+Should\+Close} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg)
+\begin{DoxyCompactList}\small\item\em Query the user requested (window close etc) close status. \end{DoxyCompactList}\item 
+void \hyperlink{fbg__glfw_8h_ab1e510fded4ac300b4a21efd577604f3}{fbg\+\_\+glfw\+Fullscreen} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, int enable)
+\begin{DoxyCompactList}\small\item\em Switch to fullscreen or windowed mode. \end{DoxyCompactList}\item 
+void \hyperlink{fbg__glfw_8h_af724a4a5f9f195765ef6b11255851848}{fbg\+\_\+glfw\+Resize} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, unsigned int new\+\_\+width, unsigned new\+\_\+height)
+\begin{DoxyCompactList}\small\item\em Display resize. \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__glfw_8h_aca78bdcc45f25aeb9ae74a3d6ef136d1}{fbg\+\_\+glfw\+Create\+Texture\+From\+Image} (struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$fbg, struct \hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img} $\ast$img)
+\begin{DoxyCompactList}\small\item\em create a non-\/interpolated (N\+E\+A\+R\+E\+ST) GL texture from a F\+BG image \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__glfw_8h_ac328fff77bfd3e7ddafb2dfdf5d6b4b0}{fbg\+\_\+glfw\+Create\+Texture} (G\+Luint width, G\+Luint height, G\+Lint internal\+\_\+format)
+\begin{DoxyCompactList}\small\item\em create an empty non-\/interpolated (N\+E\+A\+R\+E\+ST) GL texture \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__glfw_8h_a49073f43825b79bdf11b7a20cabac56b}{fbg\+\_\+glfw\+Create\+V\+AO} (G\+Lsizeiptr indices\+\_\+count, const G\+Lvoid $\ast$indices\+\_\+data, size\+\_\+t sizeof\+\_\+indice\+\_\+type, G\+Lsizeiptr vertices\+\_\+count, const G\+Lvoid $\ast$vertices\+\_\+data, G\+Lsizeiptr texcoords\+\_\+count, const G\+Lvoid $\ast$texcoords\+\_\+data, G\+Lsizeiptr normals\+\_\+count, const G\+Lvoid $\ast$normals\+\_\+data, G\+Lsizeiptr colors\+\_\+count, const G\+Lvoid $\ast$colors\+\_\+data)
+\begin{DoxyCompactList}\small\item\em create a V\+AO from indexed data, support for vertices, U\+Vs, normals and colors \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__glfw_8h_af9d4876755370dc34cb76b9209ff8b6c}{fbg\+\_\+glfw\+Create\+V\+A\+Ovu} (G\+Lsizeiptr data\+\_\+count, const G\+Lvoid $\ast$data)
+\begin{DoxyCompactList}\small\item\em create a V\+AO from vertices + UV data packed into a single array \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__glfw_8h_ae16afafa7eec0ed48b8a8fb38bb83ac4}{fbg\+\_\+glfw\+Create\+F\+BO} (G\+Luint texture)
+\begin{DoxyCompactList}\small\item\em create a F\+BO \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__glfw_8h_a3ed78e4ad11ac7e2a021e1747eb59aa8}{fbg\+\_\+glfw\+Create\+Shader} (G\+Lenum type, const G\+Lchar $\ast$source)
+\begin{DoxyCompactList}\small\item\em create a single shader \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__glfw_8h_ab156d8b8da0ef3135888942c054bbbeb}{fbg\+\_\+glfw\+Create\+Shader\+From\+File} (G\+Lenum type, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em create a shader from the content of a file \end{DoxyCompactList}\item 
+G\+Luint \hyperlink{fbg__glfw_8h_a45cf81b5b25c6ef69025693650c9bcb8}{fbg\+\_\+glfw\+Create\+Program} (G\+Luint vertex\+\_\+shader, G\+Luint fragment\+\_\+shader, G\+Luint geometry\+\_\+shader)
+\begin{DoxyCompactList}\small\item\em create a vertex and/or fragment program \end{DoxyCompactList}\item 
+G\+Lenum \hyperlink{fbg__glfw_8h_aeb42580d7148df3ffbbb590bbf0028a8}{fbg\+\_\+glfw\+Create\+Program\+From\+Files} (const char $\ast$vs, const char $\ast$fs, const char $\ast$gs)
+\begin{DoxyCompactList}\small\item\em create a vertex and/or fragment/geometry program from a file \end{DoxyCompactList}\item 
+G\+Lenum \hyperlink{fbg__glfw_8h_a9454484e4d9b5d484a1b46f35a2ed64b}{fbg\+\_\+glfw\+Create\+Program\+From\+String} (const char $\ast$vs, const char $\ast$fs, const char $\ast$gs)
+\begin{DoxyCompactList}\small\item\em create a vertex and/or fragment/geometry program from a string \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const G\+Lfloat \hyperlink{fbg__glfw_8h_a06771c76a305bf753611309286e73c07}{fbg\+\_\+glfw\+Quad} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Simple quad geometry (vertices + UV) \end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{fbg__glfw_8h_a998669be4cb45dda77c48cb23891fc4e}{fbg\+\_\+glfw\+Simple\+Vs}
+\begin{DoxyCompactList}\small\item\em Simple vertex shader (screen quad, vertices + UV) \end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{fbg__glfw_8h_a9fd4455e8dddd7c55fb5fb3e5d973f36}{fbg\+\_\+glfw\+Simple\+Fs}
+\begin{DoxyCompactList}\small\item\em Simple textured fragment shader. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Data Structure Documentation}
+\index{\+\_\+fbg\+\_\+glfw\+\_\+context@{\+\_\+fbg\+\_\+glfw\+\_\+context}}\label{struct__fbg__glfw__context}
+\Hypertarget{fbg__glfw_8h_struct__fbg__glfw__context}
+\subsubsection{struct \+\_\+fbg\+\_\+glfw\+\_\+context}
+G\+L\+FW wrapper data structure. 
+
+Definition at line 37 of file fbg\+\_\+glfw.\+h.
+
+\begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{fbg__glfw_8h_ab9766ea45a75dae87a27b93097849e29}\label{fbg__glfw_8h_ab9766ea45a75dae87a27b93097849e29}} 
+GLuint&
+fbg\_texture&
+F\+BG texture (updated at each frames) \\
+\hline
+
+\mbox{\Hypertarget{fbg__glfw_8h_ae65b56bcf995bc599bc98d6a6d81072a}\label{fbg__glfw_8h_ae65b56bcf995bc599bc98d6a6d81072a}} 
+GLuint&
+fbg\_vao&
+F\+BG V\+AO. \\
+\hline
+
+\mbox{\Hypertarget{fbg__glfw_8h_a0377751d89c499aaa9d3a8b75c6724bb}\label{fbg__glfw_8h_a0377751d89c499aaa9d3a8b75c6724bb}} 
+GLFWmonitor $\ast$&
+monitor&
+G\+L\+FW monitor. \\
+\hline
+
+\mbox{\Hypertarget{fbg__glfw_8h_ab95a2f530b32939e45f3ee7f453acf36}\label{fbg__glfw_8h_ab95a2f530b32939e45f3ee7f453acf36}} 
+GLenum&
+simple\_program&
+Simple G\+L\+SL program (screen-\/aligned textured quad) \\
+\hline
+
+\mbox{\Hypertarget{fbg__glfw_8h_a368de6aed34d9828a84ad7d629a8f96c}\label{fbg__glfw_8h_a368de6aed34d9828a84ad7d629a8f96c}} 
+int&
+update\_buffer&
+tell wether fbg\+\_\+glfw should update fbg disp\+\_\+buffer after rendering \\
+\hline
+
+\mbox{\Hypertarget{fbg__glfw_8h_ae249286407780f32b8c65bce835475f4}\label{fbg__glfw_8h_ae249286407780f32b8c65bce835475f4}} 
+GLFWwindow $\ast$&
+window&
+G\+L\+FW window. \\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{fbg__glfw_8h_a17dd8947f781a20136c59eb9579edf2f}\label{fbg__glfw_8h_a17dd8947f781a20136c59eb9579edf2f}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Clear@{fbg\+\_\+glfw\+Clear}}
+\index{fbg\+\_\+glfw\+Clear@{fbg\+\_\+glfw\+Clear}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Clear()}{fbg\_glfwClear()}}
+{\footnotesize\ttfamily void fbg\+\_\+glfw\+Clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Open\+GL clear. 
+
+\mbox{\Hypertarget{fbg__glfw_8h_ae16afafa7eec0ed48b8a8fb38bb83ac4}\label{fbg__glfw_8h_ae16afafa7eec0ed48b8a8fb38bb83ac4}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+F\+BO@{fbg\+\_\+glfw\+Create\+F\+BO}}
+\index{fbg\+\_\+glfw\+Create\+F\+BO@{fbg\+\_\+glfw\+Create\+F\+BO}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+F\+B\+O()}{fbg\_glfwCreateFBO()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+glfw\+Create\+F\+BO (\begin{DoxyParamCaption}\item[{G\+Luint}]{texture }\end{DoxyParamCaption})}
+
+
+
+create a F\+BO 
+
+
+\begin{DoxyParams}{Parameters}
+{\em texture} & GL texture id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL F\+BO id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_a45cf81b5b25c6ef69025693650c9bcb8}\label{fbg__glfw_8h_a45cf81b5b25c6ef69025693650c9bcb8}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+Program@{fbg\+\_\+glfw\+Create\+Program}}
+\index{fbg\+\_\+glfw\+Create\+Program@{fbg\+\_\+glfw\+Create\+Program}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+Program()}{fbg\_glfwCreateProgram()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+glfw\+Create\+Program (\begin{DoxyParamCaption}\item[{G\+Luint}]{vertex\+\_\+shader,  }\item[{G\+Luint}]{fragment\+\_\+shader,  }\item[{G\+Luint}]{geometry\+\_\+shader }\end{DoxyParamCaption})}
+
+
+
+create a vertex and/or fragment program 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertex\+\_\+shader} & vertex shader id, can be 0 \\
+\hline
+{\em fragment\+\_\+shader} & fragment shader id, can be 0 \\
+\hline
+{\em geometry\+\_\+shader} & geometry shader id, can be 0 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_aeb42580d7148df3ffbbb590bbf0028a8}\label{fbg__glfw_8h_aeb42580d7148df3ffbbb590bbf0028a8}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+Program\+From\+Files@{fbg\+\_\+glfw\+Create\+Program\+From\+Files}}
+\index{fbg\+\_\+glfw\+Create\+Program\+From\+Files@{fbg\+\_\+glfw\+Create\+Program\+From\+Files}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+Program\+From\+Files()}{fbg\_glfwCreateProgramFromFiles()}}
+{\footnotesize\ttfamily G\+Lenum fbg\+\_\+glfw\+Create\+Program\+From\+Files (\begin{DoxyParamCaption}\item[{const char $\ast$}]{vs,  }\item[{const char $\ast$}]{fs,  }\item[{const char $\ast$}]{gs }\end{DoxyParamCaption})}
+
+
+
+create a vertex and/or fragment/geometry program from a file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vs} & vertex shader file \\
+\hline
+{\em fs} & fragment shader file \\
+\hline
+{\em gs} & geometry shader file \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_a9454484e4d9b5d484a1b46f35a2ed64b}\label{fbg__glfw_8h_a9454484e4d9b5d484a1b46f35a2ed64b}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+Program\+From\+String@{fbg\+\_\+glfw\+Create\+Program\+From\+String}}
+\index{fbg\+\_\+glfw\+Create\+Program\+From\+String@{fbg\+\_\+glfw\+Create\+Program\+From\+String}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+Program\+From\+String()}{fbg\_glfwCreateProgramFromString()}}
+{\footnotesize\ttfamily G\+Lenum fbg\+\_\+glfw\+Create\+Program\+From\+String (\begin{DoxyParamCaption}\item[{const char $\ast$}]{vs,  }\item[{const char $\ast$}]{fs,  }\item[{const char $\ast$}]{gs }\end{DoxyParamCaption})}
+
+
+
+create a vertex and/or fragment/geometry program from a string 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vs} & vertex shader string \\
+\hline
+{\em fs} & fragment shader string \\
+\hline
+{\em gs} & geometry shader string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_a3ed78e4ad11ac7e2a021e1747eb59aa8}\label{fbg__glfw_8h_a3ed78e4ad11ac7e2a021e1747eb59aa8}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+Shader@{fbg\+\_\+glfw\+Create\+Shader}}
+\index{fbg\+\_\+glfw\+Create\+Shader@{fbg\+\_\+glfw\+Create\+Shader}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+Shader()}{fbg\_glfwCreateShader()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+glfw\+Create\+Shader (\begin{DoxyParamCaption}\item[{G\+Lenum}]{type,  }\item[{const G\+Lchar $\ast$}]{source }\end{DoxyParamCaption})}
+
+
+
+create a single shader 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & GL shader type \\
+\hline
+{\em source} & shader code \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_ab156d8b8da0ef3135888942c054bbbeb}\label{fbg__glfw_8h_ab156d8b8da0ef3135888942c054bbbeb}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+Shader\+From\+File@{fbg\+\_\+glfw\+Create\+Shader\+From\+File}}
+\index{fbg\+\_\+glfw\+Create\+Shader\+From\+File@{fbg\+\_\+glfw\+Create\+Shader\+From\+File}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+Shader\+From\+File()}{fbg\_glfwCreateShaderFromFile()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+glfw\+Create\+Shader\+From\+File (\begin{DoxyParamCaption}\item[{G\+Lenum}]{type,  }\item[{const char $\ast$}]{filename }\end{DoxyParamCaption})}
+
+
+
+create a shader from the content of a file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & GL shader type \\
+\hline
+{\em filename} & file to load \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL shader id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_ac328fff77bfd3e7ddafb2dfdf5d6b4b0}\label{fbg__glfw_8h_ac328fff77bfd3e7ddafb2dfdf5d6b4b0}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+Texture@{fbg\+\_\+glfw\+Create\+Texture}}
+\index{fbg\+\_\+glfw\+Create\+Texture@{fbg\+\_\+glfw\+Create\+Texture}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+Texture()}{fbg\_glfwCreateTexture()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+glfw\+Create\+Texture (\begin{DoxyParamCaption}\item[{G\+Luint}]{width,  }\item[{G\+Luint}]{height,  }\item[{G\+Lint}]{internal\+\_\+format }\end{DoxyParamCaption})}
+
+
+
+create an empty non-\/interpolated (N\+E\+A\+R\+E\+ST) GL texture 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & width of the requested texture \\
+\hline
+{\em height} & height of the requested texture \\
+\hline
+{\em internal\+\_\+format} & Open\+GL format (G\+L\+\_\+\+R\+G\+BA etc.) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL texture id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_aca78bdcc45f25aeb9ae74a3d6ef136d1}\label{fbg__glfw_8h_aca78bdcc45f25aeb9ae74a3d6ef136d1}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+Texture\+From\+Image@{fbg\+\_\+glfw\+Create\+Texture\+From\+Image}}
+\index{fbg\+\_\+glfw\+Create\+Texture\+From\+Image@{fbg\+\_\+glfw\+Create\+Texture\+From\+Image}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+Texture\+From\+Image()}{fbg\_glfwCreateTextureFromImage()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+glfw\+Create\+Texture\+From\+Image (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg,  }\item[{struct \hyperlink{fbgraphics_8h_struct__fbg__img}{\+\_\+fbg\+\_\+img} $\ast$}]{img }\end{DoxyParamCaption})}
+
+
+
+create a non-\/interpolated (N\+E\+A\+R\+E\+ST) GL texture from a F\+BG image 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em img} & image structure pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL texture id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_a49073f43825b79bdf11b7a20cabac56b}\label{fbg__glfw_8h_a49073f43825b79bdf11b7a20cabac56b}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+V\+AO@{fbg\+\_\+glfw\+Create\+V\+AO}}
+\index{fbg\+\_\+glfw\+Create\+V\+AO@{fbg\+\_\+glfw\+Create\+V\+AO}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+V\+A\+O()}{fbg\_glfwCreateVAO()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+glfw\+Create\+V\+AO (\begin{DoxyParamCaption}\item[{G\+Lsizeiptr}]{indices\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{indices\+\_\+data,  }\item[{size\+\_\+t}]{sizeof\+\_\+indice\+\_\+type,  }\item[{G\+Lsizeiptr}]{vertices\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{vertices\+\_\+data,  }\item[{G\+Lsizeiptr}]{texcoords\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{texcoords\+\_\+data,  }\item[{G\+Lsizeiptr}]{normals\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{normals\+\_\+data,  }\item[{G\+Lsizeiptr}]{colors\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{colors\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+create a V\+AO from indexed data, support for vertices, U\+Vs, normals and colors 
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices\+\_\+count} & indices count \\
+\hline
+{\em indices\+\_\+data} & data containing indices \\
+\hline
+{\em sizeof\+\_\+indice\+\_\+type} & sizeof indice type \\
+\hline
+{\em vertices\+\_\+count} & vertices count \\
+\hline
+{\em vertices\+\_\+data} & data containing vertices \\
+\hline
+{\em texcoords\+\_\+count} & uv count \\
+\hline
+{\em texcoords\+\_\+data} & data containing uv \\
+\hline
+{\em normals\+\_\+count} & normals count \\
+\hline
+{\em normals\+\_\+data} & data containing normals \\
+\hline
+{\em colors\+\_\+count} & colors count \\
+\hline
+{\em colors\+\_\+data} & data containing colors \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL V\+AO id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_af9d4876755370dc34cb76b9209ff8b6c}\label{fbg__glfw_8h_af9d4876755370dc34cb76b9209ff8b6c}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Create\+V\+A\+Ovu@{fbg\+\_\+glfw\+Create\+V\+A\+Ovu}}
+\index{fbg\+\_\+glfw\+Create\+V\+A\+Ovu@{fbg\+\_\+glfw\+Create\+V\+A\+Ovu}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Create\+V\+A\+Ovu()}{fbg\_glfwCreateVAOvu()}}
+{\footnotesize\ttfamily G\+Luint fbg\+\_\+glfw\+Create\+V\+A\+Ovu (\begin{DoxyParamCaption}\item[{G\+Lsizeiptr}]{data\+\_\+count,  }\item[{const G\+Lvoid $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+create a V\+AO from vertices + UV data packed into a single array 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+count} & vertices data count \\
+\hline
+{\em data} & data containing all vertices (set of 3 x float) then all associated U\+Vs (set of 2 x float) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+GL V\+AO id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_ab1e510fded4ac300b4a21efd577604f3}\label{fbg__glfw_8h_ab1e510fded4ac300b4a21efd577604f3}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Fullscreen@{fbg\+\_\+glfw\+Fullscreen}}
+\index{fbg\+\_\+glfw\+Fullscreen@{fbg\+\_\+glfw\+Fullscreen}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Fullscreen()}{fbg\_glfwFullscreen()}}
+{\footnotesize\ttfamily void fbg\+\_\+glfw\+Fullscreen (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg,  }\item[{int}]{enable }\end{DoxyParamCaption})}
+
+
+
+Switch to fullscreen or windowed mode. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em enable} & Boolean indicating windowed or fullscreen \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fbg__glfw_8h_af724a4a5f9f195765ef6b11255851848}\label{fbg__glfw_8h_af724a4a5f9f195765ef6b11255851848}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Resize@{fbg\+\_\+glfw\+Resize}}
+\index{fbg\+\_\+glfw\+Resize@{fbg\+\_\+glfw\+Resize}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Resize()}{fbg\_glfwResize()}}
+{\footnotesize\ttfamily void fbg\+\_\+glfw\+Resize (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg,  }\item[{unsigned int}]{new\+\_\+width,  }\item[{unsigned}]{new\+\_\+height }\end{DoxyParamCaption})}
+
+
+
+Display resize. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+{\em new\+\_\+width} & new display width \\
+\hline
+{\em new\+\_\+height} & new display height \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fbg__glfw_8h_a41d8a89a2bf7c6d2310d07eae206faa9}\label{fbg__glfw_8h_a41d8a89a2bf7c6d2310d07eae206faa9}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Setup@{fbg\+\_\+glfw\+Setup}}
+\index{fbg\+\_\+glfw\+Setup@{fbg\+\_\+glfw\+Setup}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Setup()}{fbg\_glfwSetup()}}
+{\footnotesize\ttfamily struct \hyperlink{struct__fbg}{\+\_\+fbg}$\ast$ fbg\+\_\+glfw\+Setup (\begin{DoxyParamCaption}\item[{int}]{width,  }\item[{int}]{height,  }\item[{int}]{components,  }\item[{const char $\ast$}]{title,  }\item[{int}]{monitor,  }\item[{int}]{fullscreen }\end{DoxyParamCaption})}
+
+
+
+initialize a FB Graphics Open\+GL context (G\+L\+FW library) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & window width \\
+\hline
+{\em height} & window height \\
+\hline
+{\em components} & fbg context color components (4 for R\+G\+BA or 3 for R\+GB) \\
+\hline
+{\em title} & window title \\
+\hline
+{\em monitor} & monitor id (0 = primary display) \\
+\hline
+{\em fullscreen} & 0 = windowed, 1 = fullscreen, 2 = windowed full screen \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+F\+BG data structure pointer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_a723385d297914375f9c5269492b05b50}\label{fbg__glfw_8h_a723385d297914375f9c5269492b05b50}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Should\+Close@{fbg\+\_\+glfw\+Should\+Close}}
+\index{fbg\+\_\+glfw\+Should\+Close@{fbg\+\_\+glfw\+Should\+Close}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Should\+Close()}{fbg\_glfwShouldClose()}}
+{\footnotesize\ttfamily int fbg\+\_\+glfw\+Should\+Close (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg }\end{DoxyParamCaption})}
+
+
+
+Query the user requested (window close etc) close status. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean indicating close status 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fbg__glfw_8h_a88a6523e8ce117e334bad1220bfbc55b}\label{fbg__glfw_8h_a88a6523e8ce117e334bad1220bfbc55b}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Update\+Buffer@{fbg\+\_\+glfw\+Update\+Buffer}}
+\index{fbg\+\_\+glfw\+Update\+Buffer@{fbg\+\_\+glfw\+Update\+Buffer}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Update\+Buffer()}{fbg\_glfwUpdateBuffer()}}
+{\footnotesize\ttfamily void fbg\+\_\+glfw\+Update\+Buffer (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$}]{fbg }\end{DoxyParamCaption})}
+
+
+
+this update F\+BG disp\+\_\+buffer with the actual rendered Open\+GL content 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fbg} & pointer to a F\+BG context / data structure \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{fbg__glfw_8h_a06771c76a305bf753611309286e73c07}\label{fbg__glfw_8h_a06771c76a305bf753611309286e73c07}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Quad@{fbg\+\_\+glfw\+Quad}}
+\index{fbg\+\_\+glfw\+Quad@{fbg\+\_\+glfw\+Quad}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Quad}{fbg\_glfwQuad}}
+{\footnotesize\ttfamily const G\+Lfloat fbg\+\_\+glfw\+Quad\mbox{[}$\,$\mbox{]}}
+
+
+
+Simple quad geometry (vertices + UV) 
+
+\mbox{\Hypertarget{fbg__glfw_8h_a9fd4455e8dddd7c55fb5fb3e5d973f36}\label{fbg__glfw_8h_a9fd4455e8dddd7c55fb5fb3e5d973f36}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Simple\+Fs@{fbg\+\_\+glfw\+Simple\+Fs}}
+\index{fbg\+\_\+glfw\+Simple\+Fs@{fbg\+\_\+glfw\+Simple\+Fs}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Simple\+Fs}{fbg\_glfwSimpleFs}}
+{\footnotesize\ttfamily const char$\ast$ fbg\+\_\+glfw\+Simple\+Fs}
+
+
+
+Simple textured fragment shader. 
+
+\mbox{\Hypertarget{fbg__glfw_8h_a998669be4cb45dda77c48cb23891fc4e}\label{fbg__glfw_8h_a998669be4cb45dda77c48cb23891fc4e}} 
+\index{fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}!fbg\+\_\+glfw\+Simple\+Vs@{fbg\+\_\+glfw\+Simple\+Vs}}
+\index{fbg\+\_\+glfw\+Simple\+Vs@{fbg\+\_\+glfw\+Simple\+Vs}!fbg\+\_\+glfw.\+h@{fbg\+\_\+glfw.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+glfw\+Simple\+Vs}{fbg\_glfwSimpleVs}}
+{\footnotesize\ttfamily const char$\ast$ fbg\+\_\+glfw\+Simple\+Vs}
+
+
+
+Simple vertex shader (screen quad, vertices + UV) 
+

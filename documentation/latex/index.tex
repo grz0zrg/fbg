@@ -1,0 +1,490 @@
+F\+B\+Graphics (F\+BG) is a simple C 24, 32 bpp (internal format) graphics library with parallelism and custom rendering backend support (graphics A\+PI agnostic).
+
+The library is only two .c files on most use cases, the renderer agnostic library {\ttfamily fbgraphics.\+c} and one of the rendering backend found in {\ttfamily custom\+\_\+backend} directory.
+
+The library come with five backend (see {\ttfamily custom\+\_\+backend} folder) \+:
+\begin{DoxyItemize}
+\item a Linux framebuffer rendering backend (with 16 bpp support through 24/32 bpp conversion)
+\item Open\+GL backend which use the \href{http://www.glfw.org/}{\tt G\+L\+FW} library
+\item Open\+GL ES 2.\+0 backend for fbdev or Raspberry PI
+\item fast dispmanx backend (Video Core IV; Raspberry PI)
+\item G\+BA backend (slow due to 24/32 bpp -\/$>$ 16 bpp support, mostly done as a proof of concept for portability on low memory hardware)
+\end{DoxyItemize}
+
+Features \+:
+
+
+\begin{DoxyItemize}
+\item Easy to write / use custom rendering backend support flexible enough to target low memory hardware!
+\item Cross-\/platform with the G\+L\+FW backend (some examples may need to be adapted to the target OS)
+\item Linux framebuffer (fbdev) rendering backend support
+\begin{DoxyItemize}
+\item Double buffering (with optional page flipping mechanism)
+\item 16, 24 (B\+G\+R/\+R\+GB), 32 bpp support
+\end{DoxyItemize}
+\item G\+BA rendering backend
+\item Open\+GL rendering backend through G\+L\+FW
+\item Open\+GL ES 2.\+0 rendering backend for Raspberry PI or through fbdev (tested on Nano PI Fire 3 board)
+\item dispmanx rendering backend (Video Core IV; Raspberry PI)
+\item Optional \+: Full parallelism, execute graphics code on multiple C\+PU cores {\bfseries with a single function}
+\item P\+N\+G/\+J\+P\+EG images loading (provided by \href{https://lodev.org/lodepng/}{\tt Lode\+P\+NG} and \href{http://keyj.emphy.de/nanojpeg/}{\tt Nano\+J\+P\+EG})
+\item Bitmap fonts for drawing texts
+\item Bare-\/metal graphics primitive (pixels, rectangles, lines, polygon)
+\item Easy to do fading, clipping and screen-\/clearing related effects (motion blur etc.)
+\item Drawing calls can be used to render into a specified target buffer such as fbg\+\_\+image etc.
+\item Framerate tracking \& display for all cores
+\item Lightweight enough to be hackable; adapt to all kinds of needs (and still support parallelism easily)
+\end{DoxyItemize}
+
+The library is generic, most functions (including parallel ones) only manipulate buffers and you can build a custom rendering backend pretty easily with few functions call, see the {\ttfamily custom\+\_\+backend} folder.
+
+\section*{Table of Contents }
+
+
+\begin{DoxyItemize}
+\item F\+B\+Graphics
+\begin{DoxyItemize}
+\item \href{#about}{\tt About}
+\begin{DoxyItemize}
+\item \href{#quickstart}{\tt Quickstart}
+\item \href{#parallelism}{\tt Parallelism}
+\item \href{#technical-implementation}{\tt Technical implementation}
+\end{DoxyItemize}
+\item \href{#benchmark}{\tt Benchmark}
+\item \href{#documentation}{\tt Documentation}
+\item \href{#building}{\tt Building}
+\item \href{#Rendering-backend}{\tt Rendering backend}
+\item \href{#GLFW-backend}{\tt G\+L\+FW backend}
+\item \href{#OpenGL-ES-2-backend}{\tt Open\+GL ES 2.\+0 backend}
+\item \href{#screenshots}{\tt Screenshots}
+\item \href{#license}{\tt License}
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\subsection*{About}
+
+F\+B\+Graphics was built to produce fullscreen pixels effects easily (think of Processing-\/like creative coding etc.) with non-\/accelerated framebuffer by leveraging multi-\/core processors, it is a bit like a software G\+PU but much less complex and featured, the initial target platform was a Raspberry PI 3B / Nano\+PI.
+
+F\+B\+Graphics was extended to support any numbers of custom rendering backend; all graphics calls manipulate internal buffers and a simple interface allow to draw the result the way you want to.
+
+F\+B\+Graphics can support low memory hardware such as G\+BA. It should be noted that all internal buffers are manipulated in 24/32 bpp so it has to convert to 16bpp on G\+BA.
+
+An Open\+GL rendering backend which use the \href{http://www.glfw.org/}{\tt G\+L\+FW library} was created to demonstrate the custom backend feature, it allow to draw the non-\/accelerated FB Graphics buffer into an Open\+GL context through a texture and thus allow to interwine 3D or 2D graphics produced with standard Open\+GL calls with C\+P\+U-\/only graphics produced by F\+B\+Graphics draw calls.
+
+An Open\+GL ES 2.\+0 backend is also available with similar features, it target platforms with support for Open\+GL ES 2.\+0 through fbdev (tested on Nano PI Fire 3 S\+BC) or Raspberry PI dispmanx and similar platforms, it wouldn\textquotesingle{}t be hard to extend this for more Open\+GL ES 2.\+0 platforms...
+
+There is also a dispmanx backend targeting Raspberry PI, it have better performances than the Open\+GL ES 2 backend on this platform and is recommended if you don\textquotesingle{}t need 3D stuff.
+
+F\+B\+Graphics was built so that it is possible to create any number of rendering context using different backend running at the same time while exploiting multi-\/core processors... the content of any rendering context can be transfered into other context through images when calling {\ttfamily fbg\+\_\+draw\+Into}
+
+F\+B\+Graphics framebuffer settings support 16, 24 (B\+G\+R/\+R\+GB), 32 bpp, 16 bpp mode is handled by converting from 24 bpp to 16 bpp upon drawing, page flipping mechanism is disabled in 16 bpp mode, {\bfseries 24 bpp is the fastest mode}.
+
+F\+B\+Graphics is lightweight and does not intend to be a fully featured graphics library, it provide a limited set of graphics primitive and a small set of useful functions to start doing computer graphics anywhere right away with or without multi-\/core support.
+
+If you want to use the parallelism features with advanced graphics primitives, take a look at great libraries such as \href{http://libgd.github.io/}{\tt libgd}, \href{https://github.com/adafruit/Adafruit-GFX-Library}{\tt Adafruit G\+FX library} or even \href{https://imagemagick.org}{\tt Image\+Magick} which should be easy to integrate.
+
+F\+B\+Graphics is fast but should be used with caution, display bounds checking is not implemented on most primitives, this allow raw performances at the cost of crashs if not careful.
+
+Multi-\/core support is optional and is only enabled when {\ttfamily F\+B\+G\+\_\+\+P\+A\+R\+A\+L\+L\+EL} C definition is present.
+
+F\+B\+Graphics framebuffer backend support a mechanism known as page flipping, it allow fast double buffering by doubling the framebuffer virtual area, it is disabled by default because it is actually slower on some devices. You can enable it with a {\ttfamily fbg\+\_\+fbdev\+Setup} call.
+
+V\+Sync is automatically enabled if supported.
+
+{\bfseries Note} \+: F\+B\+Graphics framebuffer backend does not let you setup the framebuffer, it expect the framebuffer to be configured prior launch with a command such as \+:
+
+
+\begin{DoxyCode}
+fbset -fb /dev/fb0 -g 512 240 512 240 24 -vsync high
+setterm -cursor off > /dev/tty0
+\end{DoxyCode}
+
+
+{\ttfamily fbset} should be available in your package manager.
+
+\subsubsection*{Framebuffer Quickstart}
+
+The simplest example (no parallelism, without texts and images) \+:
+
+
+\begin{DoxyCode}
+\textcolor{preprocessor}{#include <sys/stat.h>}
+\textcolor{preprocessor}{#include <signal.h>}
+
+\textcolor{preprocessor}{#include "\hyperlink{fbg__fbdev_8h}{fbg\_fbdev.h}"}
+\textcolor{preprocessor}{#include "\hyperlink{fbgraphics_8h}{fbgraphics.h}"}
+
+\textcolor{keywordtype}{int} keep\_running = 1;
+
+\textcolor{keywordtype}{void} int\_handler(\textcolor{keywordtype}{int} dummy) \{
+    keep\_running = 0;
+\}
+
+\textcolor{keywordtype}{int} main(\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char}* argv[]) \{
+    signal(SIGINT, int\_handler);
+
+    \textcolor{keyword}{struct }\hyperlink{struct__fbg}{\_fbg} *fbg = \hyperlink{fbg__fbdev_8h_a038c291213ab0fa68de9fadd0fb2d31e}{fbg\_fbdevSetup}(\textcolor{stringliteral}{"/dev/fb0"}, 0); \textcolor{comment}{// you can also directly use
+       fbg\_fbdevInit(); for "/dev/fb0", last argument mean that will not use page flipping mechanism  for double
+       buffering (it is actually slower on some devices!)}
+
+    \textcolor{keywordflow}{do} \{
+        \hyperlink{fbgraphics_8h_aab50cccf3eceac81bda220a0c09e38e0}{fbg\_clear}(fbg, 0); \textcolor{comment}{// can also be replaced by fbg\_fill(fbg, 0, 0, 0);}
+
+        \hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\_draw}(fbg);
+
+        \hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\_rect}(fbg, fbg->\hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width} / 2 - 32, fbg->\hyperlink{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}{height} / 2 - 32, 16, 16, 0, 255, 0);
+
+        \hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\_pixel}(fbg, fbg->\hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width} / 2, fbg->\hyperlink{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}{height} / 2, 255, 0, 0);
+
+        \hyperlink{fbgraphics_8h_aedfec23bc4c51ff5ffb843bb289d448b}{fbg\_flip}(fbg);
+
+    \} \textcolor{keywordflow}{while} (keep\_running);
+
+    \hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\_close}(fbg);
+
+    \textcolor{keywordflow}{return} 0;
+\}
+\end{DoxyCode}
+
+
+A simple quickstart example with most features (but no parallelism, see below) \+:
+
+
+\begin{DoxyCode}
+\textcolor{preprocessor}{#include <sys/stat.h>}
+\textcolor{preprocessor}{#include <signal.h>}
+
+\textcolor{preprocessor}{#include "\hyperlink{fbg__fbdev_8h}{fbg\_fbdev.h}"}
+\textcolor{preprocessor}{#include "\hyperlink{fbgraphics_8h}{fbgraphics.h}"}
+
+\textcolor{keywordtype}{int} keep\_running = 1;
+
+\textcolor{keywordtype}{void} int\_handler(\textcolor{keywordtype}{int} dummy) \{
+    keep\_running = 0;
+\}
+
+\textcolor{keywordtype}{int} main(\textcolor{keywordtype}{int} argc, \textcolor{keywordtype}{char}* argv[]) \{
+    signal(SIGINT, int\_handler);
+
+    \textcolor{keyword}{struct }\hyperlink{struct__fbg}{\_fbg} *fbg = \hyperlink{fbg__fbdev_8h_a8ebf35a2c6451e36bd33e3e985f418dc}{fbg\_fbdevInit}();
+
+    \textcolor{keyword}{struct }\hyperlink{fbgraphics_8h_struct__fbg__img}{\_fbg\_img} *texture = \hyperlink{fbgraphics_8h_a731ce4c5439d16555aa6ec48751ecea6}{fbg\_loadImage}(fbg, \textcolor{stringliteral}{"texture.png"});
+    \textcolor{keyword}{struct }\hyperlink{fbgraphics_8h_struct__fbg__img}{\_fbg\_img} *bb\_font\_img = \hyperlink{fbgraphics_8h_a731ce4c5439d16555aa6ec48751ecea6}{fbg\_loadImage}(fbg, \textcolor{stringliteral}{"bbmode1\_8x8.png"});
+
+    \textcolor{keyword}{struct }\hyperlink{fbgraphics_8h_struct__fbg__font}{\_fbg\_font} *bbfont = \hyperlink{fbgraphics_8h_afdcb72ae08437471569c4880fb43f20c}{fbg\_createFont}(fbg, bb\_font\_img, 8, 8, 33);
+
+    \textcolor{keywordflow}{do} \{
+        \hyperlink{fbgraphics_8h_aab50cccf3eceac81bda220a0c09e38e0}{fbg\_clear}(fbg, 0);
+
+        \hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\_draw}(fbg);
+
+        \textcolor{comment}{// you can also use fbg\_image(fbg, texture, 0, 0)}
+        \textcolor{comment}{// but you must be sure that your image size fit on the display}
+        \hyperlink{fbgraphics_8h_a3610bf730319af99045283ea66955741}{fbg\_imageClip}(fbg, texture, 0, 0, 0, 0, fbg->\hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width}, fbg->
+      \hyperlink{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}{height});
+
+        \hyperlink{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}{fbg\_write}(fbg, \textcolor{stringliteral}{"Quickstart example\(\backslash\)nFPS:"}, 4, 2);
+        \hyperlink{fbgraphics_8h_a45d1d295d53d80013ca6d55487c02fa0}{fbg\_write}(fbg, fbg->\hyperlink{struct__fbg_af447e6ed58d893989c8dad075807a79b}{fps\_char}, 32 + 8, 2 + 8);
+
+        \hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\_rect}(fbg, fbg->\hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width} / 2 - 32, fbg->\hyperlink{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}{height} / 2 - 32, 16, 16, 0, 255, 0);
+
+        \hyperlink{fbgraphics_8h_a7d81b1ddf54b0d4da0f30e36d7e2f3bb}{fbg\_pixel}(fbg, fbg->\hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width} / 2, fbg->\hyperlink{struct__fbg_a3a3bd409e71d020fa77f69a541d832f8}{height} / 2, 255, 0, 0);
+
+        \hyperlink{fbgraphics_8h_aedfec23bc4c51ff5ffb843bb289d448b}{fbg\_flip}(fbg);
+
+    \} \textcolor{keywordflow}{while} (keep\_running);
+
+    \hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\_freeImage}(texture);
+    \hyperlink{fbgraphics_8h_a737482b6170ea3273d6679fdca63a27c}{fbg\_freeImage}(bb\_font\_img);
+    \hyperlink{fbgraphics_8h_aae823fe76a206cbc1fdd405c13d26830}{fbg\_freeFont}(bbfont);
+
+    \hyperlink{fbgraphics_8h_a390cd3fb535cbad76856700a035ed401}{fbg\_close}(fbg);
+
+    \textcolor{keywordflow}{return} 0;
+\}
+\end{DoxyCode}
+
+
+{\bfseries Note} \+: Functions like {\ttfamily fbg\+\_\+clear} or {\ttfamily fbg\+\_\+fpixel} are fast functions, there is slower equivalent (but more parametrable) such as {\ttfamily fbg\+\_\+background} or {\ttfamily fbg\+\_\+pixel}, some functions variant also support transparency such as `{\ttfamily fbg\+\_\+pixela} or {\ttfamily fbg\+\_\+recta}.
+
+{\bfseries Note} \+: You can generate monospace bitmap fonts to be used with {\ttfamily fbg\+\_\+create\+Font} function by using my \href{https://github.com/grz0zrg/monoBitmapFontCreator}{\tt mono\+Bitmap\+Font\+Creator} tool available \href{https://fbg-bitmap-font-creator.netlify.com/}{\tt here}
+
+\subsubsection*{Parallelism}
+
+Exploiting multiple cores with F\+B\+Graphics is really easy, first you have to prepare 3 functions (of which two are optional if you don\textquotesingle{}t have any allocations to do) of the following definition \+:
+
+
+\begin{DoxyCode}
+\textcolor{comment}{// optional function}
+\textcolor{keywordtype}{void} *fragmentStart(\textcolor{keyword}{struct} \hyperlink{struct__fbg}{\_fbg} *fbg) \{
+    \textcolor{comment}{// typically used to allocate your per-thread data}
+    \textcolor{comment}{// see full\_example.c for more informations}
+
+    \textcolor{keywordflow}{return} NULL; \textcolor{comment}{// return your user data here}
+\}
+\end{DoxyCode}
+
+
+
+\begin{DoxyCode}
+\textcolor{keywordtype}{void} fragment(\textcolor{keyword}{struct} \hyperlink{struct__fbg}{\_fbg} *fbg, \textcolor{keyword}{struct} \_fragment\_user\_data *user\_data) \{
+    \textcolor{comment}{// this function will be executed by each threads}
+    \textcolor{comment}{// you are free to call any FBG graphics primitive here}
+
+    \hyperlink{fbgraphics_8h_aab50cccf3eceac81bda220a0c09e38e0}{fbg\_clear}(fbg, 0);
+
+    \textcolor{comment}{// you are also free to fill each threads back buffer the way you want to}
+    \textcolor{comment}{// fbg->task\_id : thread identifier (starting at 1, 0 is reserved for the main thread)}
+    \textcolor{comment}{// each threads will draw an horizontal line, the shade of the blue color will change based on the
+       thread it is drawn from}
+    \textcolor{keywordtype}{int} x = 0, y = 0;
+    \textcolor{keywordflow}{for} (y = fbg->task\_id; y < fbg->height; y += 4) \{
+        \textcolor{keywordflow}{for} (x = 0; x < fbg->\hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width}; x += 1) \{
+            \textcolor{keywordtype}{int} i = (x + y * fbg->\hyperlink{struct__fbg_a1d3c76643e4ee424f4d17e27991d5e2e}{width}) * 3;
+            fbg->\hyperlink{struct__fbg_a907e7fc97965b972c17114c885e53735}{back\_buffer}[i] = fbg->task\_id * 85; \textcolor{comment}{// note : BGR format}
+            fbg->\hyperlink{struct__fbg_a907e7fc97965b972c17114c885e53735}{back\_buffer}[i + 1] = 0;
+            fbg->\hyperlink{struct__fbg_a907e7fc97965b972c17114c885e53735}{back\_buffer}[i + 2] = 0;
+        \}
+    \}
+
+    \textcolor{comment}{// simple graphics primitive (4 blue rectangle which will be handled by different threads in parallel)}
+    \hyperlink{fbgraphics_8h_ad208d61ec4f50a5fd13f2cc8dd2ee0e5}{fbg\_rect}(fbg, fbg->task\_id * 32, 0, 32, 32, 0, 0, 255);
+\}
+\end{DoxyCode}
+
+
+
+\begin{DoxyCode}
+\textcolor{comment}{// optional function}
+\textcolor{keywordtype}{void} fragmentStop(\textcolor{keyword}{struct} \hyperlink{struct__fbg}{\_fbg} *fbg, \textcolor{keyword}{struct} \_fragment\_user\_data *data) \{
+    \textcolor{comment}{// typically used to free your per-thread data}
+    \textcolor{comment}{// see full\_example.c for more informations}
+\}
+\end{DoxyCode}
+
+
+Then you have to create a \textquotesingle{}Fragment\textquotesingle{} which is a F\+BG multi-\/core task \+:
+
+
+\begin{DoxyCode}
+fbg\_createFragment(fbg, fragmentStart, fragment, fragmentStop, 3);
+\end{DoxyCode}
+
+
+Where \+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily fbg} is the main library data structure returned by {\ttfamily fbg\+\_\+custom\+Setup} and any backend {\ttfamily fbg\+\_\+backendname\+Setup} calls (see available backends in {\ttfamily custom\+\_\+backend} directory)
+\item {\ttfamily fragment\+Start}is a C function which will be executed when the thread start (can be N\+U\+LL)
+\item {\ttfamily fragment}is a C function which will be executed indefinitly for each threads and where all the draw code will happen
+\item {\ttfamily fragment\+Stop} is a C function which will be executed when the thread end (can be N\+U\+LL)
+\item {\ttfamily 3}is the number of parallel tasks (this will launch 3 threads)
+\end{DoxyItemize}
+
+And finally you just have to make a call to your fragment function in your drawing loop and call {\ttfamily fbg\+\_\+draw}!
+
+
+\begin{DoxyCode}
+fragment(fbg, NULL);
+\hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\_draw}(fbg, NULL);
+\end{DoxyCode}
+
+
+{\ttfamily fbg\+\_\+draw} will wait until all the data are received from all the threads then draw to screen
+
+{\bfseries Note} \+: This example will use 4 threads (including your app one) for drawing things on the screen but calling the fragment function in your drawing loop is totally optional, you could for example make use of threads for intensive drawing tasks and just use the main thread to draw the G\+UI or the inverse etc. it is up to you!
+
+And that is all you have to do!
+
+See {\ttfamily simple\+\_\+parallel\+\_\+example.\+c} and {\ttfamily full\+\_\+example.\+c} for more informations.
+
+{\bfseries Note} \+: By default, the resulting buffer of each tasks are additively mixed into the main back buffer, you can override this behavior by specifying a mixing function as the last argument of {\ttfamily fbg\+\_\+draw} such as \+:
+
+
+\begin{DoxyCode}
+\textcolor{comment}{// function called for each tasks in the fbg\_draw function}
+\textcolor{keywordtype}{void} selectiveMixing(\textcolor{keyword}{struct} \hyperlink{struct__fbg}{\_fbg} *fbg, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} *buffer, \textcolor{keywordtype}{int} task\_id) \{
+    \textcolor{comment}{// fbg is the main fbg structure returned by fbg\_customSetup calls and any backend setup calls}
+    \textcolor{comment}{// buffer is the current task buffer}
+    \textcolor{comment}{// task\_id is the current task id}
+    \textcolor{keywordtype}{int} j = 0;
+    \textcolor{keywordflow}{for} (j = 0; j < fbg->\hyperlink{struct__fbg_a84fb220d4804cba22176997898e75b73}{size}; j += 1) \{
+        fbg->\hyperlink{struct__fbg_a907e7fc97965b972c17114c885e53735}{back\_buffer}[j] = (fbg->\hyperlink{struct__fbg_a907e7fc97965b972c17114c885e53735}{back\_buffer}[j] > buffer[j]) ? fbg->
+      \hyperlink{struct__fbg_a907e7fc97965b972c17114c885e53735}{back\_buffer}[j] : buffer[j];
+    \}
+\}
+\end{DoxyCode}
+
+
+Then you just have to specify it to the {\ttfamily fbg\+\_\+draw} function \+:
+
+
+\begin{DoxyCode}
+\hyperlink{fbgraphics_8h_a2dfb2f17bc31e161868e6baf1c391816}{fbg\_draw}(fbg, additiveMixing);
+\end{DoxyCode}
+
+
+By using the mixing function, you can have different layers handled by different cores with different compositing rule, see {\ttfamily compositing.\+c} for an example of alpha blending compositing 2 layers running on their own cores.
+
+{\bfseries Note} \+: You can only create one Fragment per fbg instance, another call to {\ttfamily fbg\+\_\+create\+Fragment} will stop all tasks for the passed fbg context and will create a new set of tasks.
+
+{\bfseries Note} \+: On low performances platforms you may encounter performance issues at high resolution and with a high number of fragments, this is because all the threads buffer need to be mixed back onto the main thread before being displayed and at high resolution / threads count that is alot of pixels to process! You can see an alternative implementation using pure pthread in the {\ttfamily custom\+\_\+backend} folder and {\ttfamily dispmanx\+\_\+pure\+\_\+parallel.\+c} but it doesn\textquotesingle{}t have compositing. If your platform support some sort of S\+I\+MD instructions you could also do all the compositing using S\+I\+MD which should result in a 5x or more speed increase!
+
+\subsubsection*{Technical implementation}
+
+F\+B\+Graphics threads come with their own fbg context data which is essentialy a copy of the actual fbg context, they make use of C atomic types.
+
+Initially parallelism was implemented using \href{http://liblfds.org/}{\tt liblfds} library for its Ringbuffer and Freelist data structure.
+
+Now parallelism has two implementation, liblfds and a custom synchronization mechanism which has the advantage to not require additional libraries and thus execute on more platforms.
+
+You can still use the liblfds implementation using the {\ttfamily F\+B\+G\+\_\+\+L\+F\+DS} define, it may be faster.
+
+\paragraph*{With liblfds}
+
+Each threads begin by fetching a pre-\/allocated buffer from a freelist, then the fragment function is called to fill that buffer, the thread then place the buffer into a ringbuffer data structure which will be fetched upon calling {\ttfamily fbg\+\_\+draw}, the buffers are then mixed into the main back buffer and put back into the freelist.
+
+\paragraph*{Without liblfds}
+
+Each threads fragment function is called to fill the local buffer, each threads then wait till that buffer is consumed by the main thread upon calling {\ttfamily fbg\+\_\+draw}, the buffers are then mixed into the main back buffer and {\ttfamily fbg\+\_\+draw} wake up all threads.
+
+\subsection*{Benchmark (framebuffer)}
+
+A simple unoptimized per pixels screen clearing with 4 cores on a Raspberry PI 3B \+: 30 F\+PS @ 1280x768 and 370 F\+PS @ 320x240
+
+Note \+: Using the dispmanx backend a screen clearing + rectangle moving on a Raspberry PI 3B \+: 60 F\+PS @ 1920x1080
+
+\subsubsection*{Full example}
+
+Fullscreen per pixels perlin noise with texture mapping and scrolling (unoptimized)
+
+{\bfseries Device} \+: Raspberry PI 3B ( Quad Core 1.\+2\+G\+Hz )
+
+{\bfseries Settings} \+: 320x240
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Cores used to draw graphics }&\textbf{ F\+PS  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Cores used to draw graphics }&\textbf{ F\+PS  }\\\cline{1-2}
+\endhead
+1 &42 F\+PS \\\cline{1-2}
+2 &81 F\+PS \\\cline{1-2}
+3 &120 F\+PS \\\cline{1-2}
+\end{longtabu}
+See screenshots below.
+
+\subsubsection*{Tunnel example}
+
+Fullscreen texture-\/mapped and animated tunnel made of 40800 2px rectangles with motion blur (unoptimized)
+
+{\bfseries Device} \+: Raspberry PI 3B ( Quad Core 1.\+2\+G\+Hz )
+
+{\bfseries Settings} \+: 320x240
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Cores used to draw graphics }&\textbf{ F\+PS  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Cores used to draw graphics }&\textbf{ F\+PS  }\\\cline{1-2}
+\endhead
+1 &36 F\+PS \\\cline{1-2}
+2 &69 F\+PS \\\cline{1-2}
+3 &99 F\+PS \\\cline{1-2}
+4 &66 F\+PS \\\cline{1-2}
+\end{longtabu}
+Note \+: The framerate drop with 4 cores is due to the main thread being too busy which make all the other threads follow due to the synchronization.
+
+See screenshots below.
+
+\subsection*{Documentation}
+
+All usable functions and structures are documented in the {\ttfamily \hyperlink{fbgraphics_8h}{fbgraphics.\+h}} file with \href{http://www.stack.nl/~dimitri/doxygen/}{\tt Doxygen}
+
+The H\+T\+ML documentation can be found in the {\ttfamily docs} directory.
+
+Examples demonstrating all features are available in the {\ttfamily examples} directory.
+
+Some effects come from \href{https://www.openprocessing.org/user/130883#sketches}{\tt my Open Processing sketches}
+
+\subsection*{Building}
+
+C11 standard should be supported by the C compiler.
+
+All examples found in {\ttfamily examples} directory make use of the framebuffer device {\ttfamily /dev/fb0} and can be built by typing {\ttfamily make} into the examples directory then run them by typing {\ttfamily ./run\+\_\+quickstart} for example (this handle the framebuffer setup prior launch), you will need to compile liblfds for the parallelism features. (see below)
+
+All examples were tested on a Raspberry PI 3B with framebuffer settings \+: 320x240 24 bpp
+
+For the default build (no parallelism), F\+B\+Graphics come with a header file {\ttfamily \hyperlink{fbgraphics_8h}{fbgraphics.\+h}} and a C file {\ttfamily fbgraphics.\+c} to be included / compiled / linked with your program plus one of the rendering backend found in {\ttfamily custom\+\_\+backend} directory, you will also need to compile the {\ttfamily lodepng.\+c} library and {\ttfamily nanojpeg.\+c} library, see the examples directory for examples of Makefile.
+
+For parallelism support, {\ttfamily F\+B\+G\+\_\+\+P\+A\+R\+A\+L\+L\+EL} need to be defined.
+
+If you need to use the slightly different parallelism implementation (see technical implementation section) you will need the \href{http://liblfds.org/}{\tt liblfds} library \+:
+
+
+\begin{DoxyItemize}
+\item Get latest liblfds 7.\+1.\+1 package on the official website
+\item uncompress, go into the directory {\ttfamily liblfds711}
+\item go into the directory {\ttfamily build/gcc\+\_\+gnumake}
+\item type {\ttfamily make} in a terminal
+\item {\ttfamily liblfds711.\+a} can now be found in the {\ttfamily bin} directory, you need to link against it when compiling (see examples)
+\end{DoxyItemize}
+
+To compile liblfds parallel examples, just copy {\ttfamily liblfds711.\+a} / {\ttfamily liblfds711.\+h} file and {\ttfamily liblfds711} directory into the {\ttfamily examples} directory then type {\ttfamily make lfds711}.
+
+{\bfseries Note} \+: F\+B\+Graphics with liblfds work on A\+R\+M64 platforms but you will need liblfds720 which is not yet released.
+
+\subsubsection*{Executable size optimization}
+
+This library may be used for size optimized executable for things like \href{https://en.wikipedia.org/wiki/Demoscene}{\tt demos}
+
+P\+NG and J\+P\+EG support can be disabled with the {\ttfamily W\+I\+T\+H\+O\+U\+T\+\_\+\+J\+P\+EG} and {\ttfamily W\+I\+T\+H\+O\+U\+T\+\_\+\+P\+NG} define.
+
+See {\ttfamily tiny} makefile rule inside the {\ttfamily custom\+\_\+backend} or {\ttfamily examples} folder for some compiler optimizations related to executable size.
+
+Under Linux \href{https://github.com/BR903/ELFkickers/tree/master/sstrip}{\tt sstrip} and \href{https://upx.github.io/}{\tt U\+PX} can be used to bring the size down even futher.
+
+\subsection*{Rendering backend}
+
+See {\ttfamily R\+E\+A\+D\+ME} into {\ttfamily custom\+\_\+backend} folder
+
+\subsection*{G\+L\+FW backend}
+
+See {\ttfamily R\+E\+A\+D\+ME} into {\ttfamily custom\+\_\+backend} folder
+
+The G\+L\+FW backend was made to demonstrate how to write a backend but it is complete enough to be used by default.
+
+The G\+L\+FW backend has a cool lightweight Lua example which setup a Processing-\/like environment making use of the parallelism feature of the library, allowing the user to prototype multithreaded graphical stuff without C code compilation through the Lua language.
+
+\subsection*{Open\+GL ES 2 backend}
+
+See {\ttfamily R\+E\+A\+D\+ME} into {\ttfamily custom\+\_\+backend} folder
+
+\subsection*{G\+BA backend}
+
+See {\ttfamily R\+E\+A\+D\+ME} into {\ttfamily custom\+\_\+backend} folder
+
+\subsection*{Screenshots}
+
+
+
+
+
+
+
+
+
+
+
+\subsection*{License}
+
+B\+SD, see L\+I\+C\+E\+N\+SE file 

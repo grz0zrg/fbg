@@ -1,0 +1,101 @@
+\hypertarget{fbg__fbdev_8h}{}\section{fbg\+\_\+fbdev.\+h File Reference}
+\label{fbg__fbdev_8h}\index{fbg\+\_\+fbdev.\+h@{fbg\+\_\+fbdev.\+h}}
+{\ttfamily \#include $<$linux/fb.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}fbgraphics.\+h\char`\"{}}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{fbg__fbdev_8h_struct__fbg__fbdev__context}{\+\_\+fbg\+\_\+fbdev\+\_\+context}
+\begin{DoxyCompactList}\small\item\em fbdev wrapper data structure  \hyperlink{fbg__fbdev_8h_struct__fbg__fbdev__context}{More...}\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{fbg__fbdev_8h_a8ebf35a2c6451e36bd33e3e985f418dc}{fbg\+\_\+fbdev\+Init}()~\hyperlink{fbg__fbdev_8h_a038c291213ab0fa68de9fadd0fb2d31e}{fbg\+\_\+fbdev\+Setup}(N\+U\+LL, 0)
+\begin{DoxyCompactList}\small\item\em initialize a FB Graphics context with \textquotesingle{}/dev/fb0\textquotesingle{} as framebuffer device and no page flipping \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__fbg}{\+\_\+fbg} $\ast$ \hyperlink{fbg__fbdev_8h_a038c291213ab0fa68de9fadd0fb2d31e}{fbg\+\_\+fbdev\+Setup} (char $\ast$fb\+\_\+device, int page\+\_\+flipping)
+\begin{DoxyCompactList}\small\item\em initialize a FB Graphics context (framebuffer) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Data Structure Documentation}
+\index{\+\_\+fbg\+\_\+fbdev\+\_\+context@{\+\_\+fbg\+\_\+fbdev\+\_\+context}}\label{struct__fbg__fbdev__context}
+\Hypertarget{fbg__fbdev_8h_struct__fbg__fbdev__context}
+\subsubsection{struct \+\_\+fbg\+\_\+fbdev\+\_\+context}
+fbdev wrapper data structure 
+
+Definition at line 35 of file fbg\+\_\+fbdev.\+h.
+
+\begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{fbg__fbdev_8h_ab55635eae34af7a431d2bc1e811ce708}\label{fbg__fbdev_8h_ab55635eae34af7a431d2bc1e811ce708}} 
+unsigned char $\ast$&
+buffer&
+Memory-\/mapped framebuffer. \\
+\hline
+
+\mbox{\Hypertarget{fbg__fbdev_8h_a1bc9cdf0319e87ed2e4f4b7a32397da1}\label{fbg__fbdev_8h_a1bc9cdf0319e87ed2e4f4b7a32397da1}} 
+int&
+fd&
+Framebuffer device file descriptor. \\
+\hline
+
+\mbox{\Hypertarget{fbg__fbdev_8h_adff746dbaa8d0ff15492a3003a6ccd4c}\label{fbg__fbdev_8h_adff746dbaa8d0ff15492a3003a6ccd4c}} 
+struct fb\_fix\_screeninfo&
+finfo&
+Framebuffer device fix. informations. \\
+\hline
+
+\mbox{\Hypertarget{fbg__fbdev_8h_a895ef3bfc6f4797eb2812371f8b69b43}\label{fbg__fbdev_8h_a895ef3bfc6f4797eb2812371f8b69b43}} 
+int&
+page\_flipping&
+Flag indicating that page flipping is enabled. \\
+\hline
+
+\mbox{\Hypertarget{fbg__fbdev_8h_ae522c89dc6af43b8500741f0f7e8f34f}\label{fbg__fbdev_8h_ae522c89dc6af43b8500741f0f7e8f34f}} 
+struct fb\_var\_screeninfo&
+vinfo&
+Framebuffer device var. informations. \\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{fbg__fbdev_8h_a8ebf35a2c6451e36bd33e3e985f418dc}\label{fbg__fbdev_8h_a8ebf35a2c6451e36bd33e3e985f418dc}} 
+\index{fbg\+\_\+fbdev.\+h@{fbg\+\_\+fbdev.\+h}!fbg\+\_\+fbdev\+Init@{fbg\+\_\+fbdev\+Init}}
+\index{fbg\+\_\+fbdev\+Init@{fbg\+\_\+fbdev\+Init}!fbg\+\_\+fbdev.\+h@{fbg\+\_\+fbdev.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+fbdev\+Init}{fbg\_fbdevInit}}
+{\footnotesize\ttfamily \#define fbg\+\_\+fbdev\+Init(\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})~\hyperlink{fbg__fbdev_8h_a038c291213ab0fa68de9fadd0fb2d31e}{fbg\+\_\+fbdev\+Setup}(N\+U\+LL, 0)}
+
+
+
+initialize a FB Graphics context with \textquotesingle{}/dev/fb0\textquotesingle{} as framebuffer device and no page flipping 
+
+
+
+Definition at line 60 of file fbg\+\_\+fbdev.\+h.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{fbg__fbdev_8h_a038c291213ab0fa68de9fadd0fb2d31e}\label{fbg__fbdev_8h_a038c291213ab0fa68de9fadd0fb2d31e}} 
+\index{fbg\+\_\+fbdev.\+h@{fbg\+\_\+fbdev.\+h}!fbg\+\_\+fbdev\+Setup@{fbg\+\_\+fbdev\+Setup}}
+\index{fbg\+\_\+fbdev\+Setup@{fbg\+\_\+fbdev\+Setup}!fbg\+\_\+fbdev.\+h@{fbg\+\_\+fbdev.\+h}}
+\subsubsection{\texorpdfstring{fbg\+\_\+fbdev\+Setup()}{fbg\_fbdevSetup()}}
+{\footnotesize\ttfamily struct \hyperlink{struct__fbg}{\+\_\+fbg}$\ast$ fbg\+\_\+fbdev\+Setup (\begin{DoxyParamCaption}\item[{char $\ast$}]{fb\+\_\+device,  }\item[{int}]{page\+\_\+flipping }\end{DoxyParamCaption})}
+
+
+
+initialize a FB Graphics context (framebuffer) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fb\+\_\+device} & framebuffer device (example \+: /dev/fb0) \\
+\hline
+{\em page\+\_\+flipping} & wether to use page flipping mechanism for double buffering (slow on some devices) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{struct__fbg}{\+\_\+fbg} structure pointer to pass to any F\+BG library functions 
+\end{DoxyReturn}
