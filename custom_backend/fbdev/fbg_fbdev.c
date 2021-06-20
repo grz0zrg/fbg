@@ -21,7 +21,7 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
     }
 
     char *default_fb_device = "/dev/fb0";
-    char *fb_device = fb_device ? fb_device : default_fb_device;
+    fb_device = fb_device ? fb_device : default_fb_device;
 
     fbdev_context->fd = open(fb_device, O_RDWR);
 
