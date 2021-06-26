@@ -630,7 +630,7 @@
     */
     extern void fbg_image(struct _fbg *fbg, struct _fbg_img *img, int x, int y);
 
-    //! draw an image with colorkey support (image colorkey value will be ignored)
+    //! draw an image with colorkeying support (image colorkey value will be ignored)
     /*!
       \param fbg pointer to a FBG context / data structure
       \param img image structure pointer
@@ -664,7 +664,7 @@
     */
     extern void fbg_imageFlip(struct _fbg_img *img);
 
-    //! draw an image with support for clipping and scaling
+    //! draw an image with support for clipping and scaling (Nearest-neighbor algorithm)
     /*!
       \param fbg pointer to a FBG context / data structure
       \param img image structure pointer
@@ -824,7 +824,7 @@
     */
     #define fbg_write(fbg, text, x, y) fbg_text(fbg, &fbg->current_font, text, x, y, fbg->text_color.r, fbg->text_color.g, fbg->text_color.b)
 
-    //! draw a scaled image
+    //! draw a scaled image (Nearest-neighbor algorithm)
     /*!
       \param fbg pointer to a FBG context / data structure
       \param img image structure pointer

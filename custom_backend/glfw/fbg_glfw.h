@@ -47,6 +47,12 @@
         GLuint fbg_texture;
         //! tell wether fbg_glfw should update fbg disp_buffer after rendering
         int update_buffer;
+        //! context width
+        int width;
+        //! context height
+        int height;
+        //! upscale factor for the fbg buffer (serve off as antialiasing; the fbg buffer is downscaled to display size)
+        int ssaa;
     };
 
     //! Simple quad geometry (vertices + UV)
@@ -66,9 +72,10 @@
       \param title window title
       \param monitor monitor id (0 = primary display)
       \param fullscreen 0 = windowed, 1 = fullscreen, 2 = windowed full screen
+      \param ssaa the resolution factor of the fbg context (not OpenGL), mainly for antiliasing, note that you may need to use the glfw_context->width then to refer to the display width instead of fbg->width which will be the internal resolution
       \return FBG data structure pointer
     */
-    extern struct _fbg *fbg_glfwSetup(int width, int height, int components, const char *title, int monitor, int fullscreen);
+    extern struct _fbg *fbg_glfwSetup(int width, int height, int components, const char *title, int monitor, int fullscreen, int ssaa);
 
     //! OpenGL clear
     extern void fbg_glfwClear();

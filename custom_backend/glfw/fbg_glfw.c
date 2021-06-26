@@ -23,6 +23,26 @@ const char *fbg_glfwSimpleFs = "#version 330\n \
 				  	final_color = texture(t0, uv); \
 				  }";
 
+const char *fbg_glfwDownsampleFs = "#version 330\n \
+				  in vec2 uv; \
+				  out vec4 final_color; \
+				  uniform sampler2D t0; \
+				  uniform int ssaa; \
+				  void main() { \
+    				vec3 accum = vec3(0., 0., 0.); \
+					vec2 target_res = textureSize(t0, 0) / ssaa; \
+    				float x_subpix_off = 1.0 / (target_res.x * float(ssaa)); \
+    				float y_subpix_off = 1.0 / (target_res.y * float(ssaa)); \
+					for (int i=0; i < ssaa; i++) { \
+						for (int j=0; j < ssaa; j++) { \
+							vec2 sample_uv = vec2(uv.x + float(i) * x_subpix_off, uv.y + float(j) * y_subpix_off); \
+							accum += texture2D(t0, sample_uv).rgb; \
+						} \
+					} \
+    				vec3 final = accum / (floor(float(ssaa)) * floor(float(ssaa))); \
+				  	final_color = vec4(final, 0.); \
+				  }";
+
 struct _fbg **fbg_contexts = NULL;
 int fbg_contexts_count = 0;
 
@@ -42,7 +62,7 @@ void fbg_glfwFramebufferResizeCb(GLFWwindow* window, int new_width, int new_heig
 		struct _fbg *fbg = fbg_contexts[i];
 		struct _fbg_glfw_context *glfw_context = fbg->user_context;
 		if (glfw_context->window == window) {
-			fbg_pushResize(fbg, new_width, new_height);
+			fbg_pushResize(fbg, new_width * glfw_context->ssaa, new_height * glfw_context->ssaa);
 			// called from fbg_resize
 			//fbg_glfwResize(fbg, new_width, new_height);
 
@@ -51,7 +71,7 @@ void fbg_glfwFramebufferResizeCb(GLFWwindow* window, int new_width, int new_heig
 	}
 }
 
-struct _fbg *fbg_glfwSetup(int width, int height, int components, const char *title, int monitor_id, int fullscreen) {
+struct _fbg *fbg_glfwSetup(int width, int height, int components, const char *title, int monitor_id, int fullscreen, int ssaa) {
     struct _fbg_glfw_context *glfw_context = (struct _fbg_glfw_context *)calloc(1, sizeof(struct _fbg_glfw_context));
     if (!glfw_context) {
         fprintf(stderr, "fbg_glfwSetup: glfw context calloc failed!\n");
@@ -118,22 +138,43 @@ struct _fbg *fbg_glfwSetup(int width, int height, int components, const char *ti
 
     glfwSwapInterval(1);
 
-	glfw_context->window = window;
-	glfw_context->monitor = monitor;
-	glfw_context->simple_program = fbg_glfwCreateProgramFromString(fbg_glfwSimpleVs, fbg_glfwSimpleFs, 0);
-	glfw_context->fbg_vao = fbg_glfwCreateVAOvu(12, &fbg_glfwQuad[0]);
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glPixelStorei(GL_PACK_ALIGNMENT, 1); 
-
 #ifdef DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(fbg_debugGlCb, 0);
 #endif
 
-	struct _fbg *fbg = fbg_customSetup(width, height, components, 1, 1, (void *)glfw_context, fbg_glfwDraw, fbg_glfwFlip, fbg_glfwResize, fbg_glfwFree);
+	glfw_context->window = window;
+	glfw_context->monitor = monitor;
+	glfw_context->simple_program = fbg_glfwCreateProgramFromString(fbg_glfwSimpleVs, ssaa > 1 ? fbg_glfwDownsampleFs : fbg_glfwSimpleFs, 0);
+	glfw_context->fbg_vao = fbg_glfwCreateVAOvu(12, &fbg_glfwQuad[0]);
 
-	glfw_context->fbg_texture = fbg_glfwCreateTexture(width, height, fbg->components == 4 ? GL_RGBA : GL_RGB);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glPixelStorei(GL_PACK_ALIGNMENT, 1); 
+
+	glfw_context->width = width;
+	glfw_context->height = height;
+
+	int fbg_width = width;
+	int fbg_height = height;
+
+	if (ssaa > 1) {
+		fbg_width *= ssaa;
+		fbg_height *= ssaa;
+
+		glfw_context->ssaa = ssaa;
+	} else {
+		glfw_context->ssaa = 1;
+	}
+
+	glUseProgram(glfw_context->simple_program);
+	GLint ssaa_location = glGetUniformLocation(glfw_context->simple_program, "ssaa");
+	glUniform1i(ssaa_location, glfw_context->ssaa);
+
+	struct _fbg *fbg = fbg_customSetup(fbg_width, fbg_height, components, 1, 1, (void *)glfw_context, fbg_glfwDraw, fbg_glfwFlip, fbg_glfwResize, fbg_glfwFree);
+
+	glfw_context->fbg_texture = fbg_glfwCreateTexture(fbg_width, fbg_height, fbg->components == 4 ? GL_RGBA : GL_RGB);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	fbg_contexts_count += 1;
 
@@ -183,6 +224,7 @@ void fbg_glfwResize(struct _fbg *fbg, unsigned int new_width, unsigned new_heigh
     glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &twrap_mode); 
 
 	glDeleteTextures(1, &glfw_context->fbg_texture);
+
 	glfw_context->fbg_texture = fbg_glfwCreateTexture(new_width, new_height, fbg->components == 4 ? GL_RGBA : GL_RGB);
 
 	// and we restore its user defined parameters again (if any)
@@ -191,7 +233,7 @@ void fbg_glfwResize(struct _fbg *fbg, unsigned int new_width, unsigned new_heigh
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, swrap_mode);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, twrap_mode);
 
-	glViewport(0, 0, new_width, new_height);
+	glViewport(0, 0, new_width / glfw_context->ssaa, new_height / glfw_context->ssaa);
 }
 
 int fbg_glfwShouldClose(struct _fbg *fbg) {

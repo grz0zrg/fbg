@@ -55,17 +55,9 @@ See `dispmanx_pure_parallel.c`
 
 See `dispmanx_parallel.c`
 
-## GLFW
-
-FBG OpenGL 3.x+ rendering backend with GL utilities, multi-platform, use the [GLFW](https://www.glfw.org/) and [GLEW](http://glew.sourceforge.net/) library.
-
-**How it work** : An OpenGL texture is updated in real-time with a FB Graphics context content, as such all FB Graphics draw calls work but are handled by the CPU and the resulting frame buffer is handled by the GPU, you are free to call any OpenGL calls and mix software rendered graphics with accelerated graphics.
-
-It is also possible to modify the way the FBG display buffer is rendered through a shader, see the advanced example where the software rendered background is actually the FBG buffer with a fragment shader applied to it.
-
 ## GBA
 
-Very simple Game Boy Advance backend written as a proof of concept for targeting low memory hardware. It is slow due to 24/32 bpp -> 16 bpp conversion upon fbg_draw() calls.
+Very simple Game Boy Advance backend written as a proof of concept to target low memory hardware. It is slow due to 24/32 bpp -> 16 bpp conversion upon fbg_draw() calls.
 
 ### Compiling
 
@@ -80,6 +72,23 @@ see `gba_example.c`
 ### Documentation
 
 See the FB Graphics documentation.
+
+## GLFW
+
+FBG OpenGL 3.x+ rendering backend with GL utilities, multi-platform, use the [GLFW](https://www.glfw.org/) and [GLEW](http://glew.sourceforge.net/) library.
+
+**How it work** : An OpenGL texture is updated in real-time with a FB Graphics context content, as such all FB Graphics draw calls work but are handled by the CPU and the resulting frame buffer is handled by the GPU, you are free to call any OpenGL calls and mix software rendered graphics with accelerated graphics.
+
+It is also possible to modify the way the FBG display buffer is rendered through a shader, see the advanced example where the software rendered background is actually the FBG buffer with a fragment shader applied to it.
+
+`fbg_glfwSetup` accept a [SSAA](https://en.wikipedia.org/wiki/Supersampling) parameter (last one) which will increase the FB Graphics context resolution by the specified factor (anti-aliasing amount) and downscale the context upon rendering, this is a cheap solution (albeit slow) to [anti-aliasing](https://en.wikipedia.org/wiki/Anti-aliasing) and removing jaggies. When using the SSAA parameter `fbg->width` and `fbg->height` refer to the internal upscaled FBG context, not the window size. To get the window size you must then use:
+
+```c
+struct _fbg_glfw_context *glfw_context = fbg->user_context;
+// use glfw_context->width or glfw_context->height to get display size
+```
+
+Note: The SSAA parameter only increase the FBG context resolution, as such the anti-aliasing will be applied on the FBG context, not the OpenGL context.
 
 ### Lua example
 
@@ -97,7 +106,7 @@ Just call `fbg_glfwSetup` then any FB Graphics calls can be used.
 
 `fbg_glfwClear` can also be useful (a wrapper to glClear)
 
-`fbg_glfwShouldClose` can be used to know when the user close the window.
+`fbg_glfwShouldClose` can be used to know when the window is closed.
 
 ### Advanced usage
 
@@ -108,7 +117,6 @@ It also has built-in OpenGL debugging when `DEBUG` is defined.
 The `glfw_example_advanced.c` demonstrate nearly all features and mix 2D graphics (FBG) with 3D graphics.
 
 ![Spooky](spooky.png "Advanced demonstration")
-
 
 ### Simple example
 
@@ -163,4 +171,3 @@ int main(int argc, char* argv[]) {
     fbg_close(fbg);
 }
 ```
-

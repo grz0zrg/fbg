@@ -63,7 +63,7 @@ void onResize(struct _fbg *fbg, unsigned int new_width, unsigned int new_height)
 }
 
 int main(int argc, char* argv[]) {
-    struct _fbg *fbg = fbg_glfwSetup(800, 600, 3, "glfw example", 0, 0);
+    struct _fbg *fbg = fbg_glfwSetup(800, 600, 3, "glfw example", 0, 0, 1);
     if (fbg == NULL) {
         return 0;
     }

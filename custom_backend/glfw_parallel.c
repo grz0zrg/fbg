@@ -112,7 +112,7 @@ void fbg_XORMixing(struct _fbg *fbg, unsigned char *buffer, int task_id) {
 }
 
 int main(int argc, char* argv[]) {
-    struct _fbg *fbg = fbg_glfwSetup(800, 600, 3, "glfw example", 0, 0);
+    struct _fbg *fbg = fbg_glfwSetup(800, 600, 3, "glfw example", 0, 0, 1);
     if (fbg == NULL) {
         return 0;
     }
