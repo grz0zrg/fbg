@@ -1460,7 +1460,7 @@ struct _fbg_img *fbg_loadImage(struct _fbg *fbg, const char *filename) {
     }
 #endif
 
-#ifndef WITHOUT_STD_IMAGE
+#ifndef WITHOUT_STB_IMAGE
     if (img == NULL) {
         img = fbg_loadSTBImage(fbg, filename);
     }
