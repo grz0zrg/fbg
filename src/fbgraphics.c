@@ -38,6 +38,11 @@
 #include "nanojpeg/nanojpeg.c"
 #endif
 
+#ifndef WITHOUT_STB_IMAGE
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
+#endif
+
 #include "fbgraphics.h"
 
 #ifdef FBG_PARALLEL
@@ -1413,6 +1418,35 @@ struct _fbg_img *fbg_loadPNG(struct _fbg *fbg, const char *filename) {
 }
 #endif
 
+#ifndef WITHOUT_STB_IMAGE
+struct _fbg_img *fbg_loadSTBImage(struct _fbg *fbg, const char *filename) {
+    unsigned char *data;
+    int width;
+    int height;
+    int components;
+
+    data = stbi_load(filename, &width, &height, &components, fbg->components);
+    if (!data) {
+        fprintf(stderr, "fbg_loadSTBImage: %s\n", stbi_failure_reason());
+
+        return NULL;
+    }
+
+    struct _fbg_img *img = fbg_createImage(fbg, width, height);
+    if (!img) {
+        fprintf(stderr, "fbg_loadSTBImage: Image '%s' data allocation failed\n", filename);
+
+        stbi_image_free(data);
+
+        return NULL;
+    }
+
+    img->data = data;
+
+    return img;
+}
+#endif
+
 struct _fbg_img *fbg_loadImage(struct _fbg *fbg, const char *filename) {
     struct _fbg_img *img = NULL;
     
@@ -1423,6 +1457,12 @@ struct _fbg_img *fbg_loadImage(struct _fbg *fbg, const char *filename) {
 #ifndef WITHOUT_JPEG
     if (img == NULL) {
         img = fbg_loadJPEG(fbg, filename);
+    }
+#endif
+
+#ifndef WITHOUT_STB_IMAGE
+    if (img == NULL) {
+        img = fbg_loadSTBImage(fbg, filename);
     }
 #endif
 

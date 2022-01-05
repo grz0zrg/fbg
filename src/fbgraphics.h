@@ -611,6 +611,18 @@
     extern struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename);
 #endif
 
+#ifndef WITHOUT_STB_IMAGE
+
+    //! load an image from a file (STB Image library)
+    /*!
+      \param fbg pointer to a FBG context / data structure
+      \param filename image filename
+      \return _fbg_img data structure pointer
+      \sa fbg_freeImage(), fbg_image(), fbg_imageFlip(), fbg_createFont(), fbg_imageClip(), fbg_loadImage(), fbg_imageEx(), fbg_imageScale(), fbg_imageColorkey()
+    */
+    extern struct _fbg_img *fbg_loadSTBImage(struct _fbg *fbg, const char *filename);
+#endif
+
     //! load an image (PNG or JPEG)
     /*!
       \param fbg pointer to a FBG context / data structure

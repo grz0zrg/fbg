@@ -24,7 +24,7 @@ Features :
  * OpenGL ES 2.0 rendering backend for Raspberry PI or through fbdev (tested on Nano PI Fire 3 board)
  * dispmanx rendering backend (Video Core IV; Raspberry PI)
  * Optional : Full parallelism, execute graphics code on multiple CPU cores **with a single function**
- * PNG/JPEG images loading (provided by [LodePNG](https://lodev.org/lodepng/) and [NanoJPEG](http://keyj.emphy.de/nanojpeg/))
+ * Image loading (provided by [LodePNG](https://lodev.org/lodepng/), [NanoJPEG](http://keyj.emphy.de/nanojpeg/), and [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h))
  * Bitmap fonts for drawing texts
  * Bare-metal graphics primitive (pixels, rectangles, lines, polygon)
  * Easy to do fading, clipping and screen-clearing related effects (motion blur etc.)
@@ -393,7 +393,10 @@ To compile liblfds parallel examples, just copy `liblfds711.a` / `liblfds711.h` 
 
 This library may be used for size optimized executable for things like [demos](https://en.wikipedia.org/wiki/Demoscene)
 
-PNG and JPEG support can be disabled with the `WITHOUT_JPEG` and `WITHOUT_PNG` define.
+Image support can be disabled with the following defines:
+- `WITHOUT_JPEG`
+- `WITHOUT_PNG`
+- `WITHOUT_STB_IMAGE`
 
 See `tiny` makefile rule inside the `custom_backend` or `examples` folder for some compiler optimizations related to executable size.
 
