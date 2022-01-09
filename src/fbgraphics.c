@@ -27,6 +27,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+// TODO: Allow implementation of our own error reporting through WITHOUT_STDIO
 #include <stdio.h>
 
 #ifndef WITHOUT_PNG
@@ -1268,6 +1269,7 @@ struct _fbg_img *fbg_createImage(struct _fbg *fbg, unsigned int width, unsigned 
     return img;
 }
 
+#ifndef WITHOUT_STDIO
 #ifndef WITHOUT_JPEG
 struct _fbg_img *fbg_loadJPEG(struct _fbg *fbg, const char *filename) {
     unsigned char *data;
@@ -1441,6 +1443,7 @@ struct _fbg_img *fbg_loadSTBImage(struct _fbg *fbg, const char *filename) {
         return NULL;
     }
 
+    free(img->data);
     img->data = data;
 
     return img;
@@ -1463,6 +1466,51 @@ struct _fbg_img *fbg_loadImage(struct _fbg *fbg, const char *filename) {
 #ifndef WITHOUT_STB_IMAGE
     if (img == NULL) {
         img = fbg_loadSTBImage(fbg, filename);
+    }
+#endif
+
+    return img;
+}
+#endif // WITHOUT_STDIO
+
+#ifndef WITHOUT_STB_IMAGE
+struct _fbg_img *fbg_loadSTBImageFromMemory(struct _fbg *fbg, const unsigned char *buffer, int size) {
+    unsigned char *output;
+    int width;
+    int height;
+    int components;
+    output = stbi_load_from_memory(buffer, size, &width, &height, &components, fbg->components);
+    if (!output) {
+        fprintf(stderr, "fbg_loadSTBImage: %s\n", stbi_failure_reason());
+
+        return NULL;
+    }
+
+    struct _fbg_img *img = fbg_createImage(fbg, width, height);
+    if (!img) {
+        fprintf(stderr, "fbg_loadSTBImageFromMemory: Image of %ix%i data allocation failed\n", width, height);
+
+        stbi_image_free(output);
+
+        return NULL;
+    }
+
+    free(img->data);
+    img->data = output;
+
+    return img;
+}
+#endif
+
+struct _fbg_img *fbg_loadImageFromMemory(struct _fbg *fbg, const unsigned char *data, int size) {
+    struct _fbg_img *img = NULL;
+
+    // TODO: Implement fbg_loadPNGFromMemory()
+    // TODO: Implement fbg_loadJPEGFromMemory()
+
+#ifndef WITHOUT_STB_IMAGE
+    if (img == NULL) {
+        img = fbg_loadSTBImageFromMemory(fbg, data, size);
     }
 #endif
 
