@@ -38,7 +38,7 @@ all:
 	$(CC) $(SRC7) $(INCS) $(STANDARD_FLAGS) $(DEFP) $(RELEASE_FLAGS) $(LIBS2) -o $(OUT7)
 
 tiny:
-	$(CC) ../custom_backend/fbdev/fbg_fbdev.c ../src/fbgraphics.c simple_parallel_example.c $(INCS) $(STANDARD_FLAGS) $(DEFP) -fdata-sections -ffunction-sections -flto -DFBG_LIGHT -Os -lpthread -o $(OUT2) -Wl,--gc-sections,-flto
+	$(CC) ../custom_backend/fbdev/fbg_fbdev.c ../src/fbgraphics.c tiny.c $(INCS) $(STANDARD_FLAGS) -fdata-sections -ffunction-sections -flto -DWITHOUT_STB_IMAGE -DWITHOUT_JPEG -DWITHOUT_PNG -Os -o tiny -Wl,--gc-sections,-flto
 
 debug:
 	$(CC) $(SRC1) $(INCS) $(STANDARD_FLAGS) $(DEBUG_FLAGS) $(LIBS1) -o $(OUT1)

@@ -225,6 +225,10 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
 
         fbg->size = new_size;
 
+        if (fbg->user_resize) {
+            fbg->user_resize(fbg, new_width, new_height);
+        }
+
 #ifdef FBG_PARALLEL
         if (fbg->tasks || create_fragments) {
             if (!user_fragment_start) {
@@ -242,10 +246,10 @@ void fbg_resize(struct _fbg *fbg, int new_width, int new_height) {
             fbg_createFragment(fbg, user_fragment_start, user_fragment, user_fragment_stop, parallel_tasks);
         }
 #endif
-    }
-
-    if (fbg->user_resize) {
-        fbg->user_resize(fbg, new_width, new_height);
+    } else {
+        if (fbg->user_resize) {
+            fbg->user_resize(fbg, new_width, new_height);
+        }
     }
 }
 
