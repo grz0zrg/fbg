@@ -1605,10 +1605,19 @@ void fbg_imageEx(struct _fbg *fbg, struct _fbg_img *img, int x, int y, float sx,
     int h2 = (float)(ch + cy) * sy;
     int i, j;
 
-    int d = w2 - cx2;
+    int dw = w2 - cx2;
+    int dh = h2 - cy2;
 
-    if (d >= (fbg->width - x)) {
-        w2 -= (d - (fbg->width - x));
+    if (dw >= (fbg->width - x)) {
+	w2 -= (dw - (fbg->width - x));
+	printf("Warning: Resulting width is greater than framebuffer width. \
+			Image will be compromised\n");
+    }
+
+    if (dh >= (fbg->height - y)) {
+	h2 -= (dh - (fbg->height - y));
+	printf("Warning: Resulting height is greater than framebuffer height. \
+			Image will be compromised\n");
     }
 
     unsigned char *pix_pointer = (unsigned char *)(fbg->back_buffer + (y * fbg->line_length + x * fbg->components));
