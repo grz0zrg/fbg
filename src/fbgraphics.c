@@ -742,9 +742,9 @@ void fbg_pixela(struct _fbg *fbg, int x, int y, unsigned char r, unsigned char g
 
     *pix_pointer = ((a * r + (255 - a) * (*pix_pointer)) >> 8);
     pix_pointer += 1;
-    *pix_pointer = ((a * g + (255 - a) * (*pix_pointer)) >> 8);;
+    *pix_pointer = ((a * g + (255 - a) * (*pix_pointer)) >> 8);
     pix_pointer += 1;
-    *pix_pointer = ((a * b + (255 - a) * (*pix_pointer)) >> 8);;
+    *pix_pointer = ((a * b + (255 - a) * (*pix_pointer)) >> 8);
     pix_pointer += 1;
     pix_pointer += fbg->comp_offset;
 }
@@ -1059,38 +1059,38 @@ void fbg_background(struct _fbg *fbg, unsigned char r, unsigned char g, unsigned
 }
 
 float fbg_hue2rgb(float v1, float v2, float vH) {
-	if (vH < 0)
-		vH += 1;
+    if (vH < 0)
+        vH += 1;
 
-	if (vH > 1)
-		vH -= 1;
+    if (vH > 1)
+        vH -= 1;
 
-	if ((6 * vH) < 1)
-		return (v1 + (v2 - v1) * 6 * vH);
+    if ((6 * vH) < 1)
+        return (v1 + (v2 - v1) * 6 * vH);
 
-	if ((2 * vH) < 1)
-		return v2;
+    if ((2 * vH) < 1)
+        return v2;
 
-	if ((3 * vH) < 2)
-		return (v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);
+    if ((3 * vH) < 2)
+        return (v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);
 
-	return v1;
+    return v1;
 }
 
 void fbg_hslToRGB(struct _fbg_rgb *color, float h, float s, float l) {
-	if (s == 0) {
-		color->r = color->g = color->b = (unsigned char)(l * 255);
-	} else {
-		float v1, v2;
-		float hue = (float)h / 360;
+    if (s == 0) {
+        color->r = color->g = color->b = (unsigned char)(l * 255);
+    } else {
+        float v1, v2;
+        float hue = (float)h / 360;
 
-		v2 = (l < 0.5) ? (l * (1 + s)) : ((l + s) - (l * s));
-		v1 = 2 * l - v2;
+        v2 = (l < 0.5) ? (l * (1 + s)) : ((l + s) - (l * s));
+        v1 = 2 * l - v2;
 
-		color->r = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue + (1.0f / 3)));
-		color->g = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue));
-		color->b = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue - (1.0f / 3)));
-	}
+        color->r = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue + (1.0f / 3)));
+        color->g = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue));
+        color->b = (unsigned char)(255 * fbg_hue2rgb(v1, v2, hue - (1.0f / 3)));
+    }
 }
 
 void fbg_rgbToHsl(struct _fbg_hsl *color, float r, float g, float b) {

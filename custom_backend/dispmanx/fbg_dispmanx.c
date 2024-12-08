@@ -267,4 +267,6 @@ void fbg_dispmanxFree(struct _fbg *fbg) {
         fprintf(stderr, "fbg_dispmanxFree: vc_dispmanx_display_close failed\n");
     }
 #endif
+
+    free(dispmanx_context);
 }

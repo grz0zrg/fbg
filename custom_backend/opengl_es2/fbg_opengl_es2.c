@@ -296,6 +296,8 @@ void fbg_gles2Free(struct _fbg *fbg) {
 #ifndef FBG_RPI
     close(gles2_context->fd);
 #endif
+
+    free(gles2_context);
 }
 
 GLuint fbg_gles2CreateTextureFromImage(struct _fbg *fbg, struct _fbg_img *img) {

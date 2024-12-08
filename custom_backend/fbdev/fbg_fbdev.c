@@ -28,6 +28,8 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
     if (fbdev_context->fd == -1) {
         fprintf(stderr, "fbg_fbdevSetup: Cannot open '%s'!\n", fb_device);
 
+        free(fbdev_context);
+
         return NULL;
     }
 
@@ -36,6 +38,8 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
 
         close(fbdev_context->fd);
 
+        free(fbdev_context);
+
         return NULL;
     }
 
@@ -43,6 +47,8 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
         fprintf(stderr, "fbg_fbdevSetup: '%s' Cannot obtain framebuffer FBIOGET_FSCREENINFO informations!\n", fb_device);
 
         close(fbdev_context->fd);
+
+        free(fbdev_context);
 
         return NULL;
     }
@@ -66,6 +72,8 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
 
         close(fbdev_context->fd);
 
+        free(fbdev_context);
+
         return NULL;
     }
 
@@ -84,6 +92,8 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
         fprintf(stderr, "fbg_fbdevSetup: fbg_customSetup failed\n");
 
         close(fbdev_context->fd);
+
+        free(fbdev_context);
 
         return NULL;
     }
@@ -122,6 +132,8 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
 
                     close(fbdev_context->fd);
 
+                    free(fbdev_context);
+
                     return NULL;
                 }
             }
@@ -152,6 +164,8 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
 
             close(fbdev_context->fd);
 
+            free(fbdev_context);
+
             return NULL;
         }
 
@@ -161,6 +175,8 @@ struct _fbg *fbg_fbdevSetup(char *fb_device, int page_flipping) {
 
             free(fbg->back_buffer);
             close(fbdev_context->fd);
+
+            free(fbdev_context);
 
             return NULL;
         }
@@ -230,4 +246,6 @@ void fbg_fbdevFree(struct _fbg *fbg) {
         munmap(fbdev_context->buffer, fbdev_context->finfo.smem_len);
         close(fbdev_context->fd);
     }
+
+    free(fbdev_context);
 }
